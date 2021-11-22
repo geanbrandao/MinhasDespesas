@@ -16,3 +16,5 @@ buildscript {
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
+
+apply(from = "/app/version_control.gradle.kts")
