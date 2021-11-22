@@ -41,6 +41,12 @@ android {
     }
 }
 
+//tasks.register("teste") {
+//    doLast {
+//       println(VERSION_NAME_REVISION)
+//    }
+//}
+
 dependencies {
 
     implementation("androidx.core:core-ktx:${Androidx.core}")
