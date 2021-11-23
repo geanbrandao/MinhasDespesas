@@ -58,7 +58,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:${Androidx.lifecycleRuntime}")
     implementation("androidx.activity:activity-compose:${Androidx.activityCompose}")
     implementation("androidx.compose.material3:material3:${Androidx.Compose.material3}")
-
+    implementation("androidx.navigation:navigation-compose:${Androidx.navigation}")
 
     testImplementation ("junit:junit:$junitVersion")
     androidTestImplementation("androidx.test.ext:junit:${Androidx.Test.junit}")
