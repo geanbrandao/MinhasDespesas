@@ -16,6 +16,7 @@ object Androidx {
     object Compose {
         const val ui = composeVersion
         const val material = composeVersion
+        const val material3 = "1.0.0-alpha01"
         const val toolingPreview = composeVersion
         const val tooling = composeVersion
         object Test {
