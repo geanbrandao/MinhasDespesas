@@ -7,6 +7,7 @@ object Androidx {
     const val appcompat = "1.3.1"
     const val lifecycleRuntime = "2.4.0"
     const val activityCompose = "1.4.0"
+    const val navigation = "2.4.0-beta02"
 
     object Test {
         const val junit = "1.1.3"
