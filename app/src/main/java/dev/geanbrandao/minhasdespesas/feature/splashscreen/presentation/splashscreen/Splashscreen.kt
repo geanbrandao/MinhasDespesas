@@ -1,5 +1,7 @@
-package dev.geanbrandao.minhasdespesas.feature_splashscreen.presentation.splashscreen
+package dev.geanbrandao.minhasdespesas.feature.splashscreen.presentation.splashscreen
 
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,18 +15,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import dev.geanbrandao.minhasdespesas.R
+import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Screen
 import dev.geanbrandao.minhasdespesas.ui.theme.SplashscreenLogoHomeSize
 
 @Composable
-fun Splashscreen() {
+fun Splashscreen(
+    navHostController: NavHostController,
+) {
+    Handler(Looper.getMainLooper()).postDelayed({
+        navHostController.navigate(Screen.Expenses.route)
+    }, 2000)
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.primary),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
 
-    ) {
+        ) {
         Image(
             painter = painterResource(id = R.drawable.ic_home),
             contentDescription = stringResource(id = R.string.splashscreen_content_description_ic_home),
@@ -36,5 +47,5 @@ fun Splashscreen() {
 @Preview("Splashscreen")
 @Composable
 fun Preview() {
-    Splashscreen()
+    Splashscreen(rememberNavController())
 }

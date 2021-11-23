@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">My Expenses Compose</string>
     <string name="splashscreen_content_description_ic_home">Logo do app</string>
+    <string name="nav_bar_item_content_description_expenses">Ícone da logo do app</string>
+    <string name="nav_bar_item_content_description_add">Ícone de adicionar</string>
+    <string name="nav_bar_item_content_description_profile">Ícone de perfil</string>
+    <string name="nav_bar_item_label_expenses">Despesas</string>
+    <string name="nav_bar_item_label_add">Adicionar</string>
+    <string name="nav_bar_item_label_profile">Perfil</string>
 </resources>
