@@ -7,4 +7,207 @@
     <string name="nav_bar_item_label_expenses">Despesas</string>
     <string name="nav_bar_item_label_add">Adicionar</string>
     <string name="nav_bar_item_label_profile">Perfil</string>
+
+    <string name="bottom_navigation_button_label_expenses">Despesas</string>
+    <string name="bottom_navigation_button_labal_add_expense">Adicionar</string>
+    <string name="bottom_navigation_button_label_profile">Perfil</string>
+    <!-- BOTTOM NAVIGATION -->
+
+    <!-- DEFAULT VALUES -->
+    <!-- DEFAULT VALUES | TEXT -->
+    <string name="text_default_value_cipher">R$ %.2f</string>
+    <string name="text_default_value_without_cipher">%.2f</string>
+    <string name="text_default_category_home">Casa</string>
+    <string name="text_default_category_education">Educação</string>
+    <string name="text_default_category_eletronics">Eletrônicos</string>
+    <string name="text_default_category_others">Outros</string>
+    <string name="text_default_category_restaurant">Restaurante</string>
+    <string name="text_default_category_health">Saúde</string>
+    <string name="text_default_category_services">Serviços</string>
+    <string name="text_default_category_supermarket">Supermercado</string>
+    <string name="text_default_category_transport">Transporte</string>
+    <string name="text_default_category_clothing">Vestuário</string>
+    <string name="text_default_category_travel">Viagem</string>
+    <string name="text_default_category_credit">Crédito</string>
+    <string name="text_default_category_debit">Débito</string>
+    <string name="text_default_category_money">Dinheiro</string>
+    <string name="text_default_category_recreation">Lazer</string>
+    <string name="text_default_category_church">Igreja</string>
+    <string name="text_default_category_gym">Academia</string>
+    <string name="text_default_period_monthly">mensal</string>
+    <string name="text_default_period_weekly">semanal</string>
+    <string name="text_default_spent_limit_above">Acima do limite</string>
+    <string name="text_default_spent_limit_bellow">Abaixo do limite</string>
+    <string name="text_default_spent_limit_over">No limite</string>
+    <string name="text_default_spent_limit_label_text">Valor %s definido: %s</string>
+    <string name="text_default_error_message">Desculpe, algo deu errado.</string>
+    <string name="text_default_item_remove_expense_selected_categories">Categorias selecionadas</string>
+
+
+    <!-- DEFAULT VALUES | BUTTON -->
+    <string name="button_default_text_save">Salvar</string>
+    <string name="button_default_text_ok">O.k.</string>
+    <string name="button_text_default_cancel">Cancelar</string>
+    <string name="button_text_default_apply">Aplicar</string>
+    <string name="button_text_default_clean">Limpar</string>
+    <string name="button_text_default_remove">Remover</string>
+    <!-- DEFAULT VALUES | KEYS -->
+    <string name="key_text_value_input_limit_expense">input_limit_expense</string>
+    <string name="key_text_value_list_period">list_period</string>
+    <string name="key_text_value_switch_limit">switch_limit</string>
+    <!-- DEFAULT VALUES -->
+
+    <!-- FRAGMENTS -->
+    <!-- ADD EDIT EXPENSES FRAGMENT -->
+    <string name="fragment_add_edit_expense_input_description_label">Descrição do item (opcional)</string>
+    <string name="fragment_add_edit_expense_text_select_the_categories">Selecione as categorias</string>
+    <string name="fragment_add_edit_expense_text_title">Preencha os campos e salva sua despesa</string>
+    <string name="fragment_add_edit_expense_add_expense_success">Despesa adicionada</string>
+    <string name="fragment_add_edit_expense_update_expense_success">Despesa atualizada</string>
+    <string name="fragment_add_edit_expense_cipher" translatable="false">R$</string>
+    <string name="fragment_add_edit_expense_default_value" translatable="false">0,00</string>
+    <string name="fragment_add_edit_expense_input_name_hint">Digite o nome</string>
+
+    <!-- EXPENSES FRAGMENT -->
+    <string name="fragment_expenses_text_title_how_much_i_spent">Quanto já gastei?</string>
+    <string name="fragment_expenses_text_label">Quantidade de itens: %d</string>
+    <string name="fragment_expenses_warning_title_no_expenses">Ops, nada por aqui</string>
+    <string name="fragment_expenses_warning_message_no_expenses">Para começar, selecione o menu adicionar e adicione sua primeira despesa para que ela possa ser listada e seu valor contabilizado</string>
+    <string name="fragment_expenses_warning_title_no_expenses_when_filter_selected">Ops, nada por aqui</string>
+    <string name="fragment_expenses_warning_message_no_expenses_when_filter_selected">Nenhuma despesa a ser listada de acordo com o(s) filtro(s) selecionados</string>
+
+    <!-- PROFILE FRAGMENT -->
+    <string name="fragment_profile_text_option_1">Excluir despesas</string>
+    <string name="fragment_profile_text_option_2">Limite de gastos</string>
+    <string name="fragment_profile_text_option_3">Estatísticas</string>
+    <string name="fragment_profile_text_option_4" translatable="false">teste</string>
+    <string name="fragment_profile_text_option_5">Sobre</string>
+    <string name="fragment_profile_text_option_6">Versão do App: %s(%s)</string>
+    <string name="fragment_profile_text_option_7">Configurações</string>
+    <string name="fragment_profile_text_option_8">Avaliar</string>
+    <string name="fragment_profile_text_option_9">Me pague um café</string>
+
+    <!-- CATEGORIES FRAGMENT -->
+    <string name="fragment_categoires_text_label_top">Criar categoria</string>
+    <string name="fragment_categories_title_toolbar">Categorias</string>
+
+    <!-- FILTERS FRAGMENT -->
+    <string name="fragment_filters_title_toolbar">Escolher filtros</string>
+    <string name="fragment_filters_text_label_filter_by_date">Filtrar por data</string>
+    <string name="fragment_filters_text_label_filter_by_categories">Filtrar por categorias</string>
+
+    <!-- SETTINGS FRAGMENT -->
+    <string name="fragment_settings_title_toolbar">Configurações</string>
+
+    <!-- LIMIT EXPENSES FRAGMENT -->
+    <string name="fragment_limit_expenses_title_toolbar">Limite de gastos</string>
+
+    <!-- REMOVE EXPENSES FRAGMENT -->
+    <string name="fragment_remove_expense_title_toolbar">Excluir depesas</string>
+    <string name="fragment_remove_expense_title_toolbar_quantity">%d itens selecionados</string>
+    <!-- FRAGMENTS -->
+
+    <!-- VIEW PAGER FRAGMENT -->
+    <!-- SPENT LIMIT -->
+    <!-- VIEW PAGER FRAGMENT -->
+
+    <!-- DIALOGS -->
+    <!-- DIALOGS CREATE CATEGORY -->
+    <string name="dialog_create_category_text_title">Digite o nome da categoria</string>
+    <string name="dialog_create_category_input_hint">Nome</string>
+    <string name="dialog_create_category_error_category_name_size">A categoria precisa ter no mínimo 2 carácteres.</string>
+
+    <!-- DIALOGS PICKER DATE -->
+    <string name="dialog_picker_range_date_title_initial_date">Data inicial</string>
+    <string name="dialog_picker_range_date_title_final_date">Data final</string>
+    <string name="dialog_filter_pick_categories_text_title">Selecione as categorias</string>
+
+    <!-- DIALOGS CONFIRMATION -->
+    <string name="dialog_confirmation_message_remove_all_expenses">Tem certeza que deseja remover as despesas selecionadas?</string>
+    <string name="dialog_confirmation_message_remove_expense">Tem certeza que deseja remover essa despesa?</string>
+    <string name="dialog_confirmation_message_remove_category">Tem certeza que deseja remover essa categoria?</string>
+    <!-- DIALOGS -->
+
+
+    <!-- BOTTOM SHEET DIALOGS -->
+    <string name="bottom_sheet_dialog_filter_option_1">Todas as despesas</string>
+    <string name="bottom_sheet_dialog_filter_option_2">Últimos 7 dias</string>
+    <string name="bottom_sheet_dialog_filter_option_3">Últimos 30 dias</string>
+    <string name="bottom_sheet_dialog_filter_option_8">Mês atual</string>
+    <string name="bottom_sheet_dialog_filter_option_4">Último ano</string>
+    <string name="bottom_sheet_dialog_filter_option_5">Escolher data</string>
+    <string name="bottom_sheet_dialog_filter_option_6">Escolher um período</string>
+    <string name="bottom_sheet_dialog_filter_option_7">Escolher categoria(s)</string>
+    <!-- BOTTOM SHEET DIALOGS -->
+
+    <!-- SNACKBAR -->
+    <string name="snackbar_message_category_removed">Categoria removida</string>
+    <string name="snackbar_message_category_added">Categoria adicionada</string>
+    <string name="snackbar_action_undo">Desfazer</string>
+    <string name="snackbar_action_ok">OK</string>
+    <string name="snackbar_action_empty" />
+    <!-- SNACKBAR -->
+    <!-- TOAST -->
+    <string name="toast_message_not_implemented">Não implementado ainda!</string>
+    <!-- TOAST -->
+
+    <!-- COMPONENTS -->
+    <!-- COMPONENTS HEADER FILTERS -->
+    <string name="componet_header_filters_text_title">Filtros ativos</string>
+    <string name="component_header_filters_text_warnign_filter_by_date">Nenhum filtro por data selecionado</string>
+    <string name="component_header_filters_text_warnign_filter_by_categories">Nenhum filtro por categoria selecionado</string>
+    <!-- COMPONENTS -->
+
+
+    <!-- PREFERENCES THEME -->
+    <string name="preferences_theme_label">Temas</string>
+    <string name="preferences_key_theme_name" translatable="false">theme_name</string>
+    <string-array name="preferences_theme_entries">
+        <item>Padrão do sistema</item>
+        <item>Claro</item>
+        <item>Escuro</item>
+    </string-array>
+    <string-array name="preferences_theme_values">
+        <item>auto</item>
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+    <!-- PREFERENCES THEME -->
+
+    <!-- PREFERENCES LIMIT EXPENSES -->
+    <string-array name="preferences_limit_expenses_entries">
+        <item>Semanal</item>
+        <item>Mensal</item>
+    </string-array>
+    <!-- PREFERENCES LIMIT EXPENSES -->
+
+
+    <!--    Array color names -->
+    <string-array name="colorNames">
+        <item>green</item>
+        <item>dark_red</item>
+        <item>medium_blue</item>
+        <item>light_green</item>
+        <item>saddle_brown</item>
+        <item>dark_magenta</item>
+        <item>dark_blue</item>
+        <item>blue_violet</item>
+        <item>olive</item>
+        <item>purple</item>
+        <item>maroon</item>
+        <item>dark_green</item>
+        <item>aquamarine</item>
+        <item>chartreuse</item>
+        <item>olive_drab</item>
+        <item>indigo</item>
+        <item>medium_turquoise</item>
+        <item>dark_slate_blue</item>
+        <item>royal_blue</item>
+        <item>medium_sea_green</item>
+        <item>lime_green</item>
+        <item>dark_slate_gray</item>
+        <item>forest_green</item>
+        <item>midnight_blue</item>
+    </string-array>
+
 </resources>

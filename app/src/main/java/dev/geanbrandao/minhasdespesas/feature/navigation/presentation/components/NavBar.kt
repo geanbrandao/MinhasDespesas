@@ -18,6 +18,9 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import dev.geanbrandao.minhasdespesas.feature.navigation.utils.NavBarItem
+import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Screen
+import dev.geanbrandao.minhasdespesas.feature.splashscreen.util.navigateForNavBar
+import dev.geanbrandao.minhasdespesas.ui.theme.NavBarHeightSize
 
 val items = listOf(
     NavBarItem.Expenses,
@@ -31,7 +34,10 @@ fun NavBar(
 ) {
     val navBackStackEntry by navHostController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    NavigationBar {
+
+    NavigationBar(
+        modifier = Modifier.height(height = NavBarHeightSize)
+    ) {
         items.forEach { navBarItem ->
             NavigationBarItem(
                 icon = {
@@ -42,20 +48,13 @@ fun NavBar(
                         )
                     )
                 },
-                label = { Text(text = stringResource(id = navBarItem.labelId)) },
                 selected = currentDestination?.hierarchy?.any {
                     it.route == navBarItem.route
                 } == true,
-                alwaysShowLabel = false,
+                label = { Text(text = stringResource(id = navBarItem.labelId)) },
                 onClick = {
-                    navHostController.navigate(navBarItem.route) {
-                        popUpTo(navHostController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
+                    navHostController.navigateForNavBar(navBarItem.route)
+                },
             )
         }
     }

@@ -1,13 +1,16 @@
 package dev.geanbrandao.minhasdespesas.feature.navigation.presentation.components
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import dev.geanbrandao.minhasdespesas.feature.splashscreen.presentation.splashscreen.Splashscreen
+import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.ExpensesScreen
 import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Screen
+import dev.geanbrandao.minhasdespesas.feature.splashscreen.presentation.splashscreen.Splashscreen
+import dev.geanbrandao.minhasdespesas.ui.theme.NavBarHeightSize
 
 @Composable
 fun NavGraph(navHostController: NavHostController) {
@@ -16,10 +19,16 @@ fun NavGraph(navHostController: NavHostController) {
         startDestination = Screen.Splashscreen.route
     ) {
         composable(route = Screen.Splashscreen.route) {
-            Splashscreen(navHostController = navHostController)
+            Splashscreen(
+                navHostController = navHostController,
+                modifier = Modifier,
+            )
         }
         composable(route = Screen.Expenses.route) {
-            Text(text = "EXPENSES")
+            ExpensesScreen(
+                modifier = Modifier.padding(bottom = NavBarHeightSize),
+                navHostController = navHostController
+            )
         }
         composable(route = Screen.Add.route) {
             Text(text = "ADD")

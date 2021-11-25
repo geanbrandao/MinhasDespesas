@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    compileSdk= 31
+    compileSdk = 31
 
     defaultConfig {
         applicationId = "dev.geanbrandao.minhasdespesas"
@@ -20,9 +20,19 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            applicationIdSuffix = ".debug"
+            isDebuggable = true
+        }
+    }
+
+    buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -39,30 +49,33 @@ android {
         kotlinCompilerExtensionVersion = composeVersion
         kotlinCompilerVersion = kotlinVersion
     }
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 }
-
-//tasks.register("teste") {
-//    doLast {
-//       println(VERSION_NAME_REVISION)
-//    }
-//}
 
 dependencies {
 
     implementation("androidx.core:core-ktx:${Androidx.core}")
     implementation("androidx.appcompat:appcompat:${Androidx.appcompat}")
     implementation("com.google.android.material:material:${Google.material}")
-    implementation("androidx.compose.ui:ui:${Androidx.Compose.ui}")
+    implementation("androidx.compose.ui:ui:$composeVersion")
 //    implementation("androidx.compose.material:material:${Androidx.Compose.material}")
-    implementation("androidx.compose.ui:ui-tooling-preview:${Androidx.Compose.toolingPreview}")
+    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:${Androidx.lifecycleRuntime}")
     implementation("androidx.activity:activity-compose:${Androidx.activityCompose}")
     implementation("androidx.compose.material3:material3:${Androidx.Compose.material3}")
     implementation("androidx.navigation:navigation-compose:${Androidx.navigation}")
+    implementation("androidx.compose.material:material:$composeVersion")
 
-    testImplementation ("junit:junit:$junitVersion")
+    testImplementation("junit:junit:$junitVersion")
     androidTestImplementation("androidx.test.ext:junit:${Androidx.Test.junit}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${Androidx.Test.espresso}")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
-    debugImplementation("androidx.compose.ui:ui-tooling:${Androidx.Compose.tooling}")
+    androidTestImplementation("androidx.test:core-ktx:1.4.0")
+    androidTestImplementation("androidx.compose.ui:ui-test:${Androidx.Compose.uiTest}")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
+    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
 }
