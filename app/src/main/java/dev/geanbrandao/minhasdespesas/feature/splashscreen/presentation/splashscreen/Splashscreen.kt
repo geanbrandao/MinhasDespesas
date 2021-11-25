@@ -4,6 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,17 +20,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Screen
+import dev.geanbrandao.minhasdespesas.feature.splashscreen.util.navigateAndRemoveFromBackStack
 import dev.geanbrandao.minhasdespesas.ui.theme.SplashscreenLogoHomeSize
+import kotlinx.coroutines.delay
 
 @Composable
 fun Splashscreen(
     navHostController: NavHostController,
+    modifier: Modifier
 ) {
-    Handler(Looper.getMainLooper()).postDelayed({
-        navHostController.navigate(Screen.Expenses.route)
-    }, 2000)
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.primary),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -40,6 +41,12 @@ fun Splashscreen(
             painter = painterResource(id = R.drawable.ic_home),
             contentDescription = stringResource(id = R.string.splashscreen_content_description_ic_home),
             modifier = Modifier.size(size = SplashscreenLogoHomeSize)
+                .clickable {
+                    navHostController.navigateAndRemoveFromBackStack(
+                        destinationRoute = Screen.Expenses.route,
+                        currentRoute = Screen.Splashscreen.route
+                    )
+                }
         )
     }
 }
@@ -47,5 +54,5 @@ fun Splashscreen(
 @Preview("Splashscreen")
 @Composable
 fun Preview() {
-    Splashscreen(rememberNavController())
+    Splashscreen(rememberNavController(), Modifier)
 }

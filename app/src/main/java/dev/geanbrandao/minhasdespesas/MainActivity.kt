@@ -9,7 +9,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -38,9 +37,15 @@ class MainActivity : ComponentActivity() {
                 }
                 navHostController.addOnDestinationChangedListener { _, destination, _ ->
                     visibilityState.value = when (destination.route) {
-                        Screen.Expenses.route -> { true }
-                        Screen.Add.route -> { true }
-                        Screen.Profile.route -> { true }
+                        Screen.Expenses.route -> {
+                            true
+                        }
+                        Screen.Add.route -> {
+                            true
+                        }
+                        Screen.Profile.route -> {
+                            true
+                        }
                         else -> false
                     }
                 }
@@ -58,8 +63,7 @@ class MainActivity : ComponentActivity() {
                     },
                 ) {
                     Surface(
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
                     ) {
                         NavGraph(navHostController = navHostController)
                     }
@@ -74,10 +78,41 @@ fun Greeting(name: String) {
     Text(text = "Hello $name!")
 }
 
+@ExperimentalMaterial3Api
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     AppTheme {
-        Greeting("Android")
+        val navHostController = rememberNavController()
+        val visibilityState = remember {
+            mutableStateOf(false)
+        }
+        navHostController.addOnDestinationChangedListener { _, destination, _ ->
+            visibilityState.value = when (destination.route) {
+                Screen.Expenses.route -> {
+                    true
+                }
+                Screen.Add.route -> {
+                    true
+                }
+                Screen.Profile.route -> {
+                    true
+                }
+                else -> false
+            }
+        }
+        Scaffold(
+            bottomBar = {
+                NavBar(
+                    navHostController = navHostController,
+                )
+            },
+        ) {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                NavGraph(navHostController = navHostController)
+            }
+        }
     }
 }

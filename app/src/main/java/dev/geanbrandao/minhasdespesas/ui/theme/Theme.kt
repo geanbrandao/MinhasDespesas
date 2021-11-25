@@ -70,25 +70,28 @@ fun AppTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
-    val colorScheme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        val context = LocalContext.current
-        if (useDarkTheme) {
-            dynamicDarkColorScheme(context = context)
-        } else {
-            dynamicLightColorScheme(context = context)
-        }
+//    val colorScheme =
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//        val context = LocalContext.current
+//        if (useDarkTheme) {
+//            dynamicDarkColorScheme(context = context)
+//        } else {
+//            dynamicLightColorScheme(context = context)
+//        }
+//    }
+//        else {
+    val colorScheme = if (useDarkTheme) {
+        DarkThemeColors
     } else {
-        if (useDarkTheme) {
-            DarkThemeColors
-        } else {
-            LightThemeColors
-        }
+        LightThemeColors
     }
-
-
+//    }
     MaterialTheme(
         colorScheme = colorScheme,
         typography = AppTypography,
         content = content
     )
 }
+
+val ColorSwipeToDelete = error
+val ColorSwipeToEdit = seed
