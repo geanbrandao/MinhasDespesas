@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.ExpensesScreen
+import dev.geanbrandao.minhasdespesas.feature.filters.presentation.FiltersScreen
 import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Screen
 import dev.geanbrandao.minhasdespesas.feature.splashscreen.presentation.splashscreen.Splashscreen
 import dev.geanbrandao.minhasdespesas.ui.theme.NavBarHeightSize
@@ -35,6 +36,9 @@ fun NavGraph(navHostController: NavHostController) {
         }
         composable(route = Screen.Profile.route) {
             Text(text = "PROFILE")
+        }
+        composable(route = Screen.Filters.route) {
+            FiltersScreen()
         }
     }
 }

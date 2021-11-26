@@ -3,18 +3,20 @@ package dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,12 +36,14 @@ import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.components.ScreenWarningWithTitleMessage
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.components.ItemExpenseWithSwipe
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.components.ItemFilter
+import dev.geanbrandao.minhasdespesas.common.components.ListFilters
 import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Screen
 import dev.geanbrandao.minhasdespesas.feature.splashscreen.util.navigateForNavBar
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.CardElevation
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
+import dev.geanbrandao.minhasdespesas.ui.theme.PaddingHalf
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -69,14 +73,15 @@ fun ExpensesScreen(
     ) {
         ExpensesScreenHeader(amountExpense, countExpense)
         Column {
-            ListSelectedFilters(itemFilterList)
+            ListFilters(itemFilterList)
             Box(modifier = Modifier.fillMaxSize()) {
                 ListExpenses(itemExpenseList, navHostController)
                 if (itemExpenseList.isEmpty() and itemFilterList.isEmpty()) {
                     ScreenWarningWithTitleMessage(
                         modifier = Modifier.align(alignment = Alignment.BottomCenter),
                         emptyWarningTitle = stringResource(
-                            id = R.string.fragment_expenses_warning_title_no_expenses),
+                            id = R.string.fragment_expenses_warning_title_no_expenses
+                        ),
                         emptyWarningMessage = stringResource(
                             id = R.string.fragment_expenses_warning_message_no_expenses
                         )
@@ -92,6 +97,16 @@ fun ExpensesScreen(
                             id = R.string.fragment_expenses_warning_message_no_expenses_when_filter_selected
                         )
                     )
+                }
+                FloatingActionButton(
+                    onClick = {
+                        navHostController.navigate(Screen.Filters.route)
+                    },
+                    modifier = Modifier
+                        .align(alignment = Alignment.BottomEnd)
+                        .padding(end = PaddingHalf, bottom = PaddingHalf)
+                ) {
+                    Icon(imageVector = Icons.Rounded.Add, contentDescription = null)
                 }
             }
         }
@@ -127,17 +142,6 @@ private fun ListExpenses(
 }
 
 @Composable
-private fun ListSelectedFilters(itemFilterList: SnapshotStateList<String>) {
-    LazyRow(contentPadding = PaddingValues(all = MarginDefault)) {
-        items(itemFilterList) { item ->
-            ItemFilter(item) {
-                itemFilterList.remove(item)
-            }
-        }
-    }
-}
-
-@Composable
 private fun ExpensesScreenHeader(
     amountExpense: MutableState<Float>,
     countExpense: MutableState<Int>
@@ -162,7 +166,10 @@ private fun ExpensesScreenHeader(
                 color = MaterialTheme.colorScheme.onSecondaryContainer,
             )
             Text(
-                text = stringResource(id = R.string.fragment_expenses_text_label, countExpense.value),
+                text = stringResource(
+                    id = R.string.fragment_expenses_text_label,
+                    countExpense.value
+                ),
                 style = AppTypography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )

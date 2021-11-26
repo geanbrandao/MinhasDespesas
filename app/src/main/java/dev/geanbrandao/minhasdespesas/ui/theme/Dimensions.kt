@@ -20,4 +20,5 @@ val ItemFilterCorners = 8.dp
 // elevation
 val ItemFilterElevation = 8.dp
 
-val CardElevation = 16.dp
+val CardElevation = 8.dp
+val CardElevationLow = 2.dp
