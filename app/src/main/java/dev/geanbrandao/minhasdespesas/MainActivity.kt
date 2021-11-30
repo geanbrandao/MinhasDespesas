@@ -8,6 +8,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -26,6 +27,7 @@ import dev.geanbrandao.minhasdespesas.ui.theme.AppTheme
 @ExperimentalAnimationApi
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
+    @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -78,6 +80,8 @@ fun Greeting(name: String) {
     Text(text = "Hello $name!")
 }
 
+@ExperimentalMaterialApi
+@ExperimentalAnimationApi
 @ExperimentalMaterial3Api
 @Preview(showBackground = true)
 @Composable

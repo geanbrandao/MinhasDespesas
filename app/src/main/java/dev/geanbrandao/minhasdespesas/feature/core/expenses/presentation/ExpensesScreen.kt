@@ -1,6 +1,7 @@
 package dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
@@ -35,7 +35,6 @@ import androidx.navigation.compose.rememberNavController
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.components.ScreenWarningWithTitleMessage
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.components.ItemExpenseWithSwipe
-import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.components.ItemFilter
 import dev.geanbrandao.minhasdespesas.common.components.ListFilters
 import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Screen
 import dev.geanbrandao.minhasdespesas.feature.splashscreen.util.navigateForNavBar
@@ -45,13 +44,16 @@ import dev.geanbrandao.minhasdespesas.ui.theme.MarginDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingHalf
 
+
+
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ExpensesScreen(
     modifier: Modifier,
     navHostController: NavHostController,
 ) {
-    val itemFilterList = remember {
+    val listFilters = remember {
         mutableStateListOf("Filtro 1", "Filtro 2", "Filtro 3", "Filtro 4", "Filtro 5")
     }
     val itemExpenseList = remember {
@@ -73,10 +75,12 @@ fun ExpensesScreen(
     ) {
         ExpensesScreenHeader(amountExpense, countExpense)
         Column {
-            ListFilters(itemFilterList)
+            ListFilters(listFilters) { index ->
+                val x = 0
+            }
             Box(modifier = Modifier.fillMaxSize()) {
                 ListExpenses(itemExpenseList, navHostController)
-                if (itemExpenseList.isEmpty() and itemFilterList.isEmpty()) {
+                if (itemExpenseList.isEmpty() and listFilters.isEmpty()) {
                     ScreenWarningWithTitleMessage(
                         modifier = Modifier.align(alignment = Alignment.BottomCenter),
                         emptyWarningTitle = stringResource(
@@ -87,7 +91,7 @@ fun ExpensesScreen(
                         )
                     )
                 }
-                if (itemExpenseList.isEmpty() and itemFilterList.isNotEmpty()) {
+                if (itemExpenseList.isEmpty() and listFilters.isNotEmpty()) {
                     ScreenWarningWithTitleMessage(
                         modifier = Modifier.align(alignment = Alignment.BottomCenter),
                         emptyWarningTitle = stringResource(
@@ -99,14 +103,19 @@ fun ExpensesScreen(
                     )
                 }
                 FloatingActionButton(
+                    backgroundColor = MaterialTheme.colorScheme.secondary,
                     onClick = {
                         navHostController.navigate(Screen.Filters.route)
                     },
                     modifier = Modifier
                         .align(alignment = Alignment.BottomEnd)
-                        .padding(end = PaddingHalf, bottom = PaddingHalf)
+                        .padding(end = PaddingDefault, bottom = PaddingDefault)
                 ) {
-                    Icon(imageVector = Icons.Rounded.Add, contentDescription = null)
+                    Icon(
+                        imageVector = Icons.Rounded.Add,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSecondary
+                    )
                 }
             }
         }
@@ -126,8 +135,7 @@ private fun ListExpenses(
             }
         ) { index, item ->
             ItemExpenseWithSwipe(
-                index = index,
-                itemExpenseList = itemExpenseList,
+                isLastItem = itemExpenseList.lastIndex == index,
                 onSwipeToDelete = {
                     itemExpenseList.remove(item)
                 },

@@ -16,9 +16,12 @@ val MarginHalf = 4.dp
 
 // corners
 val ItemFilterCorners = 8.dp
+val CornersDefault = 8.dp
 
 // elevation
 val ItemFilterElevation = 8.dp
 
 val CardElevation = 8.dp
 val CardElevationLow = 2.dp
+
+val RotationHalf = 180f

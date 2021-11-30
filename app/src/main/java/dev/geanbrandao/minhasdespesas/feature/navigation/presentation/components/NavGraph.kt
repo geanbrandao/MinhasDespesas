@@ -1,6 +1,8 @@
 package dev.geanbrandao.minhasdespesas.feature.navigation.presentation.components
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,6 +15,8 @@ import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Screen
 import dev.geanbrandao.minhasdespesas.feature.splashscreen.presentation.splashscreen.Splashscreen
 import dev.geanbrandao.minhasdespesas.ui.theme.NavBarHeightSize
 
+@ExperimentalAnimationApi
+@ExperimentalMaterialApi
 @Composable
 fun NavGraph(navHostController: NavHostController) {
     NavHost(

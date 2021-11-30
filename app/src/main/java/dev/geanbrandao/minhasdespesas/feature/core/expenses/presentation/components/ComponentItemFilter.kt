@@ -22,14 +22,13 @@ import dev.geanbrandao.minhasdespesas.feature.core.expenses.util.TestTags.ITEM_F
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.util.TestTags.ITEM_FILTER_ROOT
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.ItemFilterCorners
-import dev.geanbrandao.minhasdespesas.ui.theme.ItemFilterElevation
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginHalf
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingHalf
 
 @Composable
 fun ItemFilter(
-    filterText: String,
+    item: String,
     onClickItemFilter: () -> Unit,
 ) {
     Card(
@@ -37,8 +36,7 @@ fun ItemFilter(
         modifier = Modifier
             .testTag(ITEM_FILTER_ROOT)
             .padding(end = MarginDefault),
-        elevation = ItemFilterElevation,
-        backgroundColor = MaterialTheme.colorScheme.onSurface,
+        backgroundColor = MaterialTheme.colorScheme.secondary,
     ) {
         Row(
             modifier = Modifier
@@ -51,15 +49,15 @@ fun ItemFilter(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = filterText,
+                text = item,
                 style = AppTypography.labelMedium,
-                color = MaterialTheme.colorScheme.surface,
+                color = MaterialTheme.colorScheme.onSecondary,
             )
             Spacer(modifier = Modifier.size(size = 4.dp))
             Icon(
                 imageVector = Icons.Rounded.Close,
                 contentDescription = "Close icon",
-                tint = MaterialTheme.colorScheme.surface,
+                tint = MaterialTheme.colorScheme.onSecondary,
                 modifier = Modifier
                     .testTag(ITEM_FILTER_ICON_CLOSE)
                     .align(alignment = Alignment.CenterVertically)

@@ -21,6 +21,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,16 +29,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.geanbrandao.minhasdespesas.R
+import dev.geanbrandao.minhasdespesas.common.components.ItemDefaultDivider
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.util.TestTags.ITEM_EXPENSE_ROOT
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
+import dev.geanbrandao.minhasdespesas.ui.theme.PaddingHalf
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ItemExpenseWithSwipe(
-    index: Int,
-    itemExpenseList: SnapshotStateList<String>,
+    isLastItem: Boolean,
     onSwipeToDelete: () -> Unit,
     onSwipeToEdit: () -> Unit,
 ) {
@@ -62,23 +64,39 @@ fun ItemExpenseWithSwipe(
             }
         },
         dismissThresholds = {
-            FractionalThreshold(0.5f)
+            FractionalThreshold(0.8f)
         },
     ) {
-        ItemExpense(isLastItem = index == itemExpenseList.lastIndex)
+        Column(
+            modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.background)
+        ) {
+            ItemExpense()
+            Spacer(
+                modifier = Modifier
+                    .height(8.dp)
+                    .background(color = Color.Black)
+            )
+            ItemDefaultDivider(
+                color = MaterialTheme.colorScheme.onBackground,
+                shouldShow = isLastItem.not(),
+                modifier = Modifier.padding(horizontal = PaddingDefault)
+            )
+        }
     }
 }
 
+@Preview("Item expense")
 @Composable
-private fun ItemExpense(isLastItem: Boolean) { // should recieve a model
+private fun ItemExpense() {
     Column(
         modifier = Modifier
             .testTag(tag = ITEM_EXPENSE_ROOT)
-            .background(color = MaterialTheme.colorScheme.background)
+//            .background(color = Color.Red)
             .padding(
                 start = PaddingDefault,
                 end = PaddingDefault,
-                top = PaddingDefault
+                top = PaddingHalf,
             )
     ) {
         Row(
@@ -117,23 +135,15 @@ private fun ItemExpense(isLastItem: Boolean) { // should recieve a model
                 color = MaterialTheme.colorScheme.onBackground,
             )
         }
-        if (isLastItem.not()) {
-            Spacer(modifier = Modifier.size(size = MarginDefault))
-            Spacer(
-                modifier = Modifier
-                    .height(height = 1.dp)
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.onBackground)
-                    .alpha(alpha = 0.6f)
-            )
-        }
     }
 }
 
-@Preview("ItemExpensePreview")
+@Preview("ItemExpenseWithSwipe preview")
 @Composable
 fun ItemExpensePreview() {
-    ItemExpense(
-        isLastItem = false
+    ItemExpenseWithSwipe(
+        isLastItem = false,
+        onSwipeToDelete = { },
+        onSwipeToEdit = { },
     )
 }
