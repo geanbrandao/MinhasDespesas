@@ -3,7 +3,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven(url = "https://jitpack.io")
     }
 }
 rootProject.name = "My Expenses Compose"
 include (":app")
+include(":pie-charts")

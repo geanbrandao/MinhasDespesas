@@ -30,4 +30,11 @@ sealed class NavBarItem(
         contentDescriptionId = R.string.nav_bar_item_content_description_profile,
         route = Screen.Profile.route,
     )
+
+    object Charts : NavBarItem(
+        labelId = R.string.nav_bar_item_label_charts,
+        iconId = R.drawable.ic_pie_chart,
+        contentDescriptionId = R.string.nav_bar_item_content_description_charts,
+        route = Screen.Charts.route,
+    )
 }
