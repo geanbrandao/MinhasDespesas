@@ -48,6 +48,9 @@ class MainActivity : ComponentActivity() {
                         Screen.Profile.route -> {
                             true
                         }
+                        Screen.Charts.route -> {
+                            true
+                        }
                         else -> false
                     }
                 }

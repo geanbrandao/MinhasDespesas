@@ -4,9 +4,11 @@
     <string name="nav_bar_item_content_description_expenses">Ícone da logo do app</string>
     <string name="nav_bar_item_content_description_add">Ícone de adicionar</string>
     <string name="nav_bar_item_content_description_profile">Ícone de perfil</string>
+    <string name="nav_bar_item_content_description_charts">Ícone de gráficos</string>
     <string name="nav_bar_item_label_expenses">Despesas</string>
     <string name="nav_bar_item_label_add">Adicionar</string>
     <string name="nav_bar_item_label_profile">Perfil</string>
+    <string name="nav_bar_item_label_charts">Gráficos</string>
 
     <string name="bottom_navigation_button_label_expenses">Despesas</string>
     <string name="bottom_navigation_button_labal_add_expense">Adicionar</string>

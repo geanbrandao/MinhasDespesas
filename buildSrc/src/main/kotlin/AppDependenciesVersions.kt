@@ -30,3 +30,7 @@ object Androidx {
 object Google {
     const val material = "1.4.0"
 }
+
+object Preferences {
+    const val composePreferences = "0.1.1"
+}
