@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -36,6 +38,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -71,6 +74,15 @@ dependencies {
     implementation("androidx.compose.material:material:$composeVersion")
     implementation("com.github.Sh4dowSoul.ComposePreferences:compose-preferences:${Preferences.composePreferences}")
 
+    implementation("androidx.room:room-runtime:${Androidx.room}")
+    implementation("androidx.room:room-ktx:${Androidx.room}")
+    "kapt"("androidx.room:room-compiler:${Androidx.room}")
+
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    "kapt"("com.google.dagger:hilt-android-compiler:$hiltVersion")
+    implementation("androidx.hilt:hilt-lifecycle-viewmodel:${Androidx.hilt}")
+    "kapt"("androidx.hilt:hilt-compiler:${Androidx.hilt}")
+
     testImplementation("junit:junit:$junitVersion")
     androidTestImplementation("androidx.test.ext:junit:${Androidx.Test.junit}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${Androidx.Test.espresso}")
@@ -79,4 +91,6 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test:${Androidx.Compose.uiTest}")
     debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
+
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 }

@@ -7,6 +7,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,8 +15,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
@@ -35,16 +36,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.AppToolbar
+import dev.geanbrandao.minhasdespesas.common.components.FiltersButton
 import dev.geanbrandao.minhasdespesas.common.components.ItemDefaultDivider
 import dev.geanbrandao.minhasdespesas.common.components.ListFilters
 import dev.geanbrandao.minhasdespesas.common.log.DebugLog
 import dev.geanbrandao.minhasdespesas.feature.filters.presentation.components.ItemCategory
 import dev.geanbrandao.minhasdespesas.feature.filters.utils.TypeFilterDate
+import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Screen
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.CardElevationLow
 import dev.geanbrandao.minhasdespesas.ui.theme.CornersDefault
+import dev.geanbrandao.minhasdespesas.ui.theme.MarginLarge
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingHalf
 import dev.geanbrandao.minhasdespesas.ui.theme.RotationHalf
@@ -53,12 +59,19 @@ private val log: DebugLog = DebugLog("FiltersScreen")
 
 @ExperimentalAnimationApi
 @Composable
-fun FiltersScreen() {
+fun FiltersScreen(
+    navHostController: NavHostController,
+) {
 
     val listFilters = remember {
-        mutableStateListOf("Últimos 7 dias", "Qualquer")
+        mutableStateListOf(
+            "Últimos 7 dias",
+            "Qualquer",
+            "auhduahduad",
+            "aidaijdaijdaidja",
+            "15118515151"
+        )
     }
-
     val color = MaterialTheme.colorScheme.secondaryContainer
     val onColor = MaterialTheme.colorScheme.onSecondaryContainer
 
@@ -67,48 +80,53 @@ fun FiltersScreen() {
             .background(color = MaterialTheme.colorScheme.background)
             .fillMaxSize()
     ) {
-        AppToolbar(topBarTitle = stringResource(id = R.string.fragment_filters_title_toolbar))
-        if (listFilters.isEmpty()) {
-            Text(
-                text = "Nenhum filtro selecionado",
-                style = AppTypography.labelLarge,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(all = PaddingDefault),
-            )
-        } else {
-            ListFilters(data = listFilters, onClickItemFilter = {
-
-            })
-        }
-
-        TopicFilter(
-            topicName = stringResource(id = R.string.fragment_filters_text_label_filter_by_date),
-            color = color,
-            onColor = onColor,
-            onClickTopic = {}
-        ) {
-            OptionsFiltersByDate(onColor = onColor) { value: TypeFilterDate ->
-                log.debug("typeFilter - $value")
+        AppToolbar(
+            topBarTitle = stringResource(id = R.string.fragment_filters_title_toolbar),
+            navHostController = navHostController,
+        )
+        LazyColumn {
+            item {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    FiltersButton(
+                        activeFiltersSize = listFilters.size,
+                        modifier = Modifier.align(alignment = Alignment.CenterEnd)
+                    )
+                }
             }
-        }
-        TopicFilter(
-            topicName = stringResource(id = R.string.fragment_filters_text_label_filter_by_categories),
-            color = color,
-            onColor = onColor,
-            onClickTopic = {}
-        ) {
-            OptionsFilterByCategory(
-                listOf("Lanche", "Débito", "Pet", "Supermercado aduahudhaduhadua audhada"),
-                onColor = onColor,
-                onCheckedChange = { item: String, isChecked: Boolean ->
-                    log.debug("Item $item isChecked $isChecked")
-                    if (isChecked) {
-                        listFilters.add(item)
-                    } else {
-                        listFilters.remove(item)
+            item {
+                TopicFilter(
+                    topicName = stringResource(id = R.string.fragment_filters_text_label_filter_by_date),
+                    color = color,
+                    onColor = onColor,
+                    onClickTopic = {}
+                ) {
+                    OptionsFiltersByDate(onColor = onColor) { value: TypeFilterDate ->
+                        log.debug("typeFilter - $value")
                     }
                 }
-            )
+            }
+            item {
+                TopicFilter(
+                    topicName = stringResource(id = R.string.fragment_filters_text_label_filter_by_categories),
+                    color = color,
+                    onColor = onColor,
+                    onClickTopic = {}
+                ) {
+                    OptionsFilterByCategory(
+                        listOf("Lanche", "Débito", "Pet", "Supermercado aduahudhaduhadua audhada"),
+                        onColor = onColor,
+                        onCheckedChange = { item: String, isChecked: Boolean ->
+                            log.debug("Item $item isChecked $isChecked")
+                            if (isChecked) {
+                                listFilters.add(item)
+                            } else {
+                                listFilters.remove(item)
+                            }
+                        }
+                    )
+                }
+                Spacer(modifier = Modifier.size(size = MarginLarge))
+            }
         }
     }
 }
@@ -256,8 +274,8 @@ fun OptionsFilterByCategory(
     onColor: Color,
     onCheckedChange: (item: String, isChecked: Boolean) -> Unit,
 ) {
-    LazyColumn {
-        itemsIndexed(categories) { index, item ->
+    Column {
+        categories.forEachIndexed { index, item ->
             ItemCategory(color = onColor, item = item, onCheckChange = { isChecked ->
                 onCheckedChange(
                     item,
@@ -271,6 +289,7 @@ fun OptionsFilterByCategory(
             )
         }
     }
+
 }
 
 @Composable
@@ -301,5 +320,7 @@ fun TextFilterByDate(
 @Preview
 @Composable
 fun FilterScreenPreview() {
-    FiltersScreen()
+    FiltersScreen(
+        navHostController = rememberNavController()
+    )
 }

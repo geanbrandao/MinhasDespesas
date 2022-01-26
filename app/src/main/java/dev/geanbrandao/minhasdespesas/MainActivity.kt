@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import dev.geanbrandao.minhasdespesas.feature.navigation.presentation.components.NavBar
 import dev.geanbrandao.minhasdespesas.feature.navigation.presentation.components.NavGraph
 import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Screen
@@ -26,8 +27,10 @@ import dev.geanbrandao.minhasdespesas.ui.theme.AppTheme
 
 @ExperimentalAnimationApi
 @ExperimentalMaterial3Api
+@ExperimentalMaterialApi
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @ExperimentalMaterialApi
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -40,9 +43,6 @@ class MainActivity : ComponentActivity() {
                 navHostController.addOnDestinationChangedListener { _, destination, _ ->
                     visibilityState.value = when (destination.route) {
                         Screen.Expenses.route -> {
-                            true
-                        }
-                        Screen.Add.route -> {
                             true
                         }
                         Screen.Profile.route -> {

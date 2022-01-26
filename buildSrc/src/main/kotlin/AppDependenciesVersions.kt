@@ -1,6 +1,7 @@
 const val composeVersion = "1.0.5"
 const val kotlinVersion = "1.5.31"
 const val junitVersion = "4.13.2"
+const val hiltVersion = "2.40.5"
 
 object Androidx {
     const val core = "1.7.0"
@@ -8,6 +9,8 @@ object Androidx {
     const val lifecycleRuntime = "2.4.0"
     const val activityCompose = "1.4.0"
     const val navigation = "2.4.0-beta02"
+    const val room = "2.4.0"
+    const val hilt = "1.0.0-alpha03"
 
     object Test {
         const val junit = "1.1.3"
@@ -21,6 +24,7 @@ object Androidx {
         const val material3 = "1.0.0-alpha01"
         const val toolingPreview = composeVersion
         const val tooling = composeVersion
+
         object Test {
             const val junit = composeVersion
         }
@@ -29,6 +33,7 @@ object Androidx {
 
 object Google {
     const val material = "1.4.0"
+    const val hilt = "2.40.5"
 }
 
 object Preferences {

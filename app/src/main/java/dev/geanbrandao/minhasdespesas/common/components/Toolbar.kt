@@ -1,6 +1,7 @@
 package dev.geanbrandao.minhasdespesas.common.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,9 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
@@ -32,9 +36,10 @@ import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 @Preview("TopBar preview")
 @Composable
 fun AppToolbar(
+    navHostController: NavHostController = rememberNavController(),
     topBarTitle: String = "Title bar",
-    color: Color = MaterialTheme.colorScheme.surface,
-    onColor: Color = MaterialTheme.colorScheme.onSurface,
+    color: Color = MaterialTheme.colorScheme.secondaryContainer,
+    onColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
 ) {
     Card(elevation = 1.dp, shape = RectangleShape) {
         Row(
@@ -48,16 +53,22 @@ fun AppToolbar(
                 painter = painterResource(id = R.drawable.ic_arrow_back),
                 contentDescription = "Icone voltar",
                 tint = onColor,
-                modifier = Modifier.align(alignment = CenterVertically).size(48.dp)
+                modifier = Modifier
+                    .align(alignment = CenterVertically)
+                    .size(24.dp)
+                    .clickable {
+                        navHostController.navigateUp()
+                    }
             )
             Spacer(modifier = Modifier.width(width = PaddingDefault))
             Text(
                 text = topBarTitle,
-                style = AppTypography.titleLarge,
+                style = AppTypography.bodyLarge,
                 color = onColor,
                 modifier = Modifier
                     .align(alignment = CenterVertically)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                fontWeight = FontWeight.Bold,
             )
         }
     }

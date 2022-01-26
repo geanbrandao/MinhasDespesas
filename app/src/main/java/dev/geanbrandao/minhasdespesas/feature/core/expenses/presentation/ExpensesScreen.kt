@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.geanbrandao.minhasdespesas.R
+import dev.geanbrandao.minhasdespesas.common.components.FiltersButton
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.components.ScreenWarningWithTitleMessage
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.components.ItemExpenseWithSwipe
 import dev.geanbrandao.minhasdespesas.common.components.ListFilters
@@ -43,8 +44,6 @@ import dev.geanbrandao.minhasdespesas.ui.theme.CardElevation
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingHalf
-
-
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -75,8 +74,11 @@ fun ExpensesScreen(
     ) {
         ExpensesScreenHeader(amountExpense, countExpense)
         Column {
-            ListFilters(listFilters) { index ->
-                val x = 0
+            Box(modifier = Modifier.fillMaxWidth()) {
+                FiltersButton(
+                    activeFiltersSize = listFilters.size,
+                    modifier = Modifier.align(alignment = Alignment.CenterEnd)
+                ) { navHostController.navigate(Screen.Filters.route) }
             }
             Box(modifier = Modifier.fillMaxSize()) {
                 ListExpenses(itemExpenseList, navHostController)
@@ -105,7 +107,7 @@ fun ExpensesScreen(
                 FloatingActionButton(
                     backgroundColor = MaterialTheme.colorScheme.secondary,
                     onClick = {
-                        navHostController.navigate(Screen.Filters.route)
+                        navHostController.navigate(Screen.Add.route)
                     },
                     modifier = Modifier
                         .align(alignment = Alignment.BottomEnd)

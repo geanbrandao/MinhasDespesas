@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import dev.geanbrandao.lib.compose.piecharts.domain.model.PieChartModel
 import dev.geanbrandao.lib.compose.piecharts.presentation.PieChart
+import dev.geanbrandao.minhasdespesas.feature.add.presentation.AddScreen
 import dev.geanbrandao.minhasdespesas.feature.core.charts.presentation.ChartsScreen
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.ExpensesScreen
 import dev.geanbrandao.minhasdespesas.feature.filters.presentation.FiltersScreen
@@ -43,16 +44,16 @@ fun NavGraph(navHostController: NavHostController) {
             )
         }
         composable(route = Screen.Add.route) {
-            Text(text = "ADD")
+            AddScreen(navHostController = navHostController)
         }
         composable(route = Screen.Profile.route) {
             Text(text = "PROFILE")
         }
         composable(route = Screen.Filters.route) {
-            FiltersScreen()
+            FiltersScreen(navHostController = navHostController)
         }
         composable(route = Screen.Charts.route) {
-            ChartsScreen()
+            ChartsScreen(navHostController = navHostController)
         }
     }
 }
