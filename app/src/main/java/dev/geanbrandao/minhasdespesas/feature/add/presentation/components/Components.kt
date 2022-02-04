@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.ListFilters
 import dev.geanbrandao.minhasdespesas.common.components.icons.IconInput
+import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerFill
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
 import dev.geanbrandao.minhasdespesas.common.utils.extensions.toStringDateFormatted
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginTwo
@@ -39,7 +40,7 @@ fun ViewCalendarDate(
             iconSize = SizeIconLarge,
             contentDescription = null
         )
-        Spacer(modifier = Modifier.weight(weight = 1f))
+        SpacerFill(modifier = Modifier.weight(weight = 1f))
         Text(
             text = calendarState.selectionState.selection.firstOrNull()?.toStringDateFormatted()
                 .orEmpty(),
@@ -50,7 +51,7 @@ fun ViewCalendarDate(
                 },
             color = MaterialTheme.colorScheme.secondary
         )
-        Spacer(modifier = Modifier.size(size = MarginTwo))
+        SpacerTwo()
         IconInput(
             iconId = R.drawable.ic_arrow_right,
             iconSize = SizeIconDefault,
@@ -68,7 +69,7 @@ fun ViewCalendarPreview() {
         mutableStateOf(false)
     }
     ViewCalendarDate(
-        calendarState = rememberSelectableCalendarState(),
+        calendarState = calendarState,
         isDataPickerVisible = isDataPickerVisible,
     )
 }

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.util.TestTags.COMPONENT_SCREEN_WARNING
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginTwo
@@ -35,7 +36,7 @@ fun ScreenWarningWithTitleMessage(
             color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
         )
-        Spacer(modifier = Modifier.size(size = MarginTwo))
+        SpacerTwo()
         Text(
             text = emptyWarningMessage,
             style = AppTypography.labelMedium,

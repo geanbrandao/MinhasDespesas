@@ -33,6 +33,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.FiltersButton
+import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.components.ScreenWarningWithTitleMessage
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.components.ItemExpenseWithSwipe
 import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Screen
@@ -180,7 +181,7 @@ private fun ExpensesScreenHeader(
                 style = AppTypography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
-            Spacer(modifier = Modifier.size(size = MarginTwo))
+            SpacerTwo()
         }
     }
 }

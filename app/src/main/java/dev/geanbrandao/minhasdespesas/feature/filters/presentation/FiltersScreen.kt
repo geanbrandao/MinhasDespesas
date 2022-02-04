@@ -42,6 +42,8 @@ import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.toolbar.AppToolbar
 import dev.geanbrandao.minhasdespesas.common.components.FiltersButton
 import dev.geanbrandao.minhasdespesas.common.components.dividers.ItemDefaultDivider
+import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerThree
+import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
 import dev.geanbrandao.minhasdespesas.common.log.DebugLog
 import dev.geanbrandao.minhasdespesas.feature.filters.presentation.components.ItemCategory
 import dev.geanbrandao.minhasdespesas.feature.filters.utils.TypeFilterDate
@@ -123,7 +125,7 @@ fun FiltersScreen(
                         }
                     )
                 }
-                Spacer(modifier = Modifier.size(size = MarginThree))
+                SpacerThree()
             }
         }
     }
@@ -262,7 +264,7 @@ fun OptionsFiltersByDate(
 @Composable
 fun TopicRowSpacer(visible: Boolean) {
     AnimatedVisibility(visible = visible) {
-        Spacer(modifier = Modifier.height(height = PaddingHalf))
+        SpacerTwo()
     }
 }
 

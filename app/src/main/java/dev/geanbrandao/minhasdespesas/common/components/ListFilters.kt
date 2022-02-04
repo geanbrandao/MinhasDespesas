@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import dev.geanbrandao.minhasdespesas.R
+import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.components.ItemFilter
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginTwo
@@ -96,7 +97,7 @@ fun FiltersButton(
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.secondary,
             )
-            Spacer(modifier = Modifier.size(MarginTwo))
+            SpacerTwo()
             Text(
                 text = "Filtros($activeFiltersSize)",
                 modifier = Modifier

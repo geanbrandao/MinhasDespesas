@@ -5,8 +5,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginFour
+import dev.geanbrandao.minhasdespesas.ui.theme.MarginOne
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginThree
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginTwo
+
+@Composable
+fun SpacerOne() {
+    Spacer(modifier = Modifier.size(size = MarginOne))
+}
 
 @Composable
 fun SpacerTwo() {

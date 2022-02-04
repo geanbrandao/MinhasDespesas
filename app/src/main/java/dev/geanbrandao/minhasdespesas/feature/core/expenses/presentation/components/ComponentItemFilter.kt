@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerOne
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.util.TestTags.ITEM_FILTER_ICON_CLOSE
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.util.TestTags.ITEM_FILTER_ROOT
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
@@ -53,7 +54,7 @@ fun ItemFilter(
                 style = AppTypography.labelMedium,
                 color = MaterialTheme.colorScheme.onSecondary,
             )
-            Spacer(modifier = Modifier.size(size = 4.dp))
+            SpacerOne()
             Icon(
                 imageVector = Icons.Rounded.Close,
                 contentDescription = "Close icon",

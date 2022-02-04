@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.dividers.ItemDefaultDivider
+import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.util.TestTags.ITEM_EXPENSE_ROOT
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginTwo
@@ -70,11 +71,7 @@ fun ItemExpenseWithSwipe(
                 .background(color = MaterialTheme.colorScheme.background)
         ) {
             ItemExpense()
-            Spacer(
-                modifier = Modifier
-                    .height(8.dp)
-                    .background(color = Color.Black)
-            )
+            SpacerTwo()
             ItemDefaultDivider(
                 color = MaterialTheme.colorScheme.onBackground,
                 shouldShow = isLastItem.not(),
@@ -115,7 +112,7 @@ private fun ItemExpense() {
                     color = MaterialTheme.colorScheme.onBackground,
                 )
             }
-            Spacer(modifier = Modifier.size(size = MarginTwo))
+            SpacerTwo()
             Text(
                 text = "Aquele lanche maroto ahdaudhaudhaudhaudhaud",
                 style = AppTypography.bodyMedium,
@@ -125,7 +122,7 @@ private fun ItemExpense() {
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
-            Spacer(modifier = Modifier.size(size = MarginTwo))
+            SpacerTwo()
             Text(
                 text = stringResource(id = R.string.text_default_value_cipher, 25.6f),
                 style = AppTypography.titleLarge,
