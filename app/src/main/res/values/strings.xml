@@ -66,9 +66,13 @@
 
     <!-- FRAGMENTS -->
     <!-- ADD EDIT EXPENSES FRAGMENT -->
-    <string name="fragment_add_edit_expense_input_description_label">Descrição do item (opcional)</string>
+    <string name="fragment_add_edit_expense_toolbar_title">Adicionar despesa</string>
     <string name="fragment_add_edit_expense_text_select_the_categories">Selecione as categorias</string>
     <string name="fragment_add_edit_expense_text_title">Preencha os campos e salve a despesa</string>
+    <string name="fragment_add_edit_expense_label_input_description">Descrição do item (opcional)</string>
+    <string name="fragment_add_edit_expense_label_input_value">Digite o valor da despesa</string>
+    <string name="fragment_add_edit_expense_label_input_name">Digite o nome da despesa</string>
+    <string name="fragment_add_edit_expense_label_calendar">Selecione a data da despesa</string>
     <string name="fragment_add_edit_expense_add_expense_success">Despesa adicionada</string>
     <string name="fragment_add_edit_expense_update_expense_success">Despesa atualizada</string>
     <string name="fragment_add_edit_expense_cipher" translatable="false">R$</string>
@@ -217,5 +221,9 @@
         <item>forest_green</item>
         <item>midnight_blue</item>
     </string-array>
+
+<!--    MASKS-->
+
+    <string name="mask_date">##/##/####</string>
 
 </resources>

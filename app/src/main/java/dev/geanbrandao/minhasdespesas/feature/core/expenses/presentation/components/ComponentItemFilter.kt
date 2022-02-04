@@ -22,8 +22,8 @@ import dev.geanbrandao.minhasdespesas.feature.core.expenses.util.TestTags.ITEM_F
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.util.TestTags.ITEM_FILTER_ROOT
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.ItemFilterCorners
-import dev.geanbrandao.minhasdespesas.ui.theme.MarginDefault
-import dev.geanbrandao.minhasdespesas.ui.theme.MarginHalf
+import dev.geanbrandao.minhasdespesas.ui.theme.MarginTwo
+import dev.geanbrandao.minhasdespesas.ui.theme.MarginOne
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingHalf
 
 @Composable
@@ -35,16 +35,16 @@ fun ItemFilter(
         shape = RoundedCornerShape(size = ItemFilterCorners),
         modifier = Modifier
             .testTag(ITEM_FILTER_ROOT)
-            .padding(end = MarginDefault),
+            .padding(end = MarginTwo),
         backgroundColor = MaterialTheme.colorScheme.secondary,
     ) {
         Row(
             modifier = Modifier
                 .padding(
                     start = PaddingHalf,
-                    end = MarginHalf,
-                    top = MarginHalf,
-                    bottom = MarginHalf
+                    end = MarginOne,
+                    top = MarginOne,
+                    bottom = MarginOne
                 ),
             verticalAlignment = Alignment.CenterVertically,
         ) {

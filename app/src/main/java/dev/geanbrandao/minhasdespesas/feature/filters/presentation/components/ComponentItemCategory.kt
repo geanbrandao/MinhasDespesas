@@ -25,7 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
-import dev.geanbrandao.minhasdespesas.ui.theme.MarginDefault
+import dev.geanbrandao.minhasdespesas.ui.theme.MarginTwo
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 
 @Composable
@@ -53,7 +53,7 @@ fun ItemCategory(
             tint = color,
             modifier = Modifier.align(alignment = Alignment.CenterVertically)
         )
-        Spacer(modifier = Modifier.width(width = MarginDefault))
+        Spacer(modifier = Modifier.width(width = MarginTwo))
         ItemCategoryText(
             categoryName = item,
             modifier = Modifier
@@ -61,7 +61,7 @@ fun ItemCategory(
                 .align(alignment = Alignment.CenterVertically),
             color = color
         )
-        Spacer(modifier = Modifier.width(width = MarginDefault))
+        Spacer(modifier = Modifier.width(width = MarginTwo))
         Checkbox(
             checked = isChecked.value,
             onCheckedChange = null,

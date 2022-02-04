@@ -2,6 +2,7 @@ const val composeVersion = "1.0.5"
 const val kotlinVersion = "1.5.31"
 const val junitVersion = "4.13.2"
 const val hiltVersion = "2.40.5"
+const val calendarCompose = "0.3.0"
 
 object Androidx {
     const val core = "1.7.0"

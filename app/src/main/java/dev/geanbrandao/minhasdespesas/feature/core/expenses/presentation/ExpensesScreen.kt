@@ -1,7 +1,6 @@
 package dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -36,14 +35,12 @@ import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.FiltersButton
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.components.ScreenWarningWithTitleMessage
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.components.ItemExpenseWithSwipe
-import dev.geanbrandao.minhasdespesas.common.components.ListFilters
 import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Screen
 import dev.geanbrandao.minhasdespesas.feature.splashscreen.util.navigateForNavBar
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.CardElevation
-import dev.geanbrandao.minhasdespesas.ui.theme.MarginDefault
+import dev.geanbrandao.minhasdespesas.ui.theme.MarginTwo
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
-import dev.geanbrandao.minhasdespesas.ui.theme.PaddingHalf
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -183,7 +180,7 @@ private fun ExpensesScreenHeader(
                 style = AppTypography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
-            Spacer(modifier = Modifier.size(size = MarginDefault))
+            Spacer(modifier = Modifier.size(size = MarginTwo))
         }
     }
 }

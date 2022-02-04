@@ -17,10 +17,8 @@ import androidx.compose.material.rememberDismissState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -29,10 +27,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.geanbrandao.minhasdespesas.R
-import dev.geanbrandao.minhasdespesas.common.components.ItemDefaultDivider
+import dev.geanbrandao.minhasdespesas.common.components.dividers.ItemDefaultDivider
 import dev.geanbrandao.minhasdespesas.feature.core.expenses.util.TestTags.ITEM_EXPENSE_ROOT
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
-import dev.geanbrandao.minhasdespesas.ui.theme.MarginDefault
+import dev.geanbrandao.minhasdespesas.ui.theme.MarginTwo
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingHalf
 
@@ -117,7 +115,7 @@ private fun ItemExpense() {
                     color = MaterialTheme.colorScheme.onBackground,
                 )
             }
-            Spacer(modifier = Modifier.size(size = MarginDefault))
+            Spacer(modifier = Modifier.size(size = MarginTwo))
             Text(
                 text = "Aquele lanche maroto ahdaudhaudhaudhaudhaud",
                 style = AppTypography.bodyMedium,
@@ -127,7 +125,7 @@ private fun ItemExpense() {
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
-            Spacer(modifier = Modifier.size(size = MarginDefault))
+            Spacer(modifier = Modifier.size(size = MarginTwo))
             Text(
                 text = stringResource(id = R.string.text_default_value_cipher, 25.6f),
                 style = AppTypography.titleLarge,

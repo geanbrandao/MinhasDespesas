@@ -11,9 +11,10 @@ val PaddingDefault = 16.dp
 val PaddingHalf = 8.dp
 
 // margin
-val MarginDefault = 8.dp
-val MarginHalf = 4.dp
-val MarginLarge = 16.dp
+val MarginOne = 4.dp
+val MarginTwo = 8.dp
+val MarginThree = 16.dp
+val MarginFour = 24.dp
 
 // corners
 val ItemFilterCorners = 8.dp
@@ -24,6 +25,7 @@ val ItemFilterElevation = 8.dp
 
 // Icon size
 val SizeIconLarge = 32.dp
+val SizeIconDefault = 24.dp
 
 val CardElevation = 8.dp
 val CardElevationLow = 2.dp

@@ -83,6 +83,8 @@ dependencies {
     implementation("androidx.hilt:hilt-lifecycle-viewmodel:${Androidx.hilt}")
     "kapt"("androidx.hilt:hilt-compiler:${Androidx.hilt}")
 
+    implementation("io.github.boguszpawlowski.composecalendar:composecalendar:$calendarCompose")
+
     testImplementation("junit:junit:$junitVersion")
     androidTestImplementation("androidx.test.ext:junit:${Androidx.Test.junit}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${Androidx.Test.espresso}")

@@ -13,7 +13,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:windowSoftInputMode="stateVisible|adjustResize"
             android:theme="@style/Theme.MyExpensesCompose.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

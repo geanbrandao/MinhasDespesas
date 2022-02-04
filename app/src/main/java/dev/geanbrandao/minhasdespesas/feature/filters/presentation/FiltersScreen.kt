@@ -39,18 +39,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.geanbrandao.minhasdespesas.R
-import dev.geanbrandao.minhasdespesas.common.components.AppToolbar
+import dev.geanbrandao.minhasdespesas.common.components.toolbar.AppToolbar
 import dev.geanbrandao.minhasdespesas.common.components.FiltersButton
-import dev.geanbrandao.minhasdespesas.common.components.ItemDefaultDivider
-import dev.geanbrandao.minhasdespesas.common.components.ListFilters
+import dev.geanbrandao.minhasdespesas.common.components.dividers.ItemDefaultDivider
 import dev.geanbrandao.minhasdespesas.common.log.DebugLog
 import dev.geanbrandao.minhasdespesas.feature.filters.presentation.components.ItemCategory
 import dev.geanbrandao.minhasdespesas.feature.filters.utils.TypeFilterDate
-import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Screen
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.CardElevationLow
 import dev.geanbrandao.minhasdespesas.ui.theme.CornersDefault
-import dev.geanbrandao.minhasdespesas.ui.theme.MarginLarge
+import dev.geanbrandao.minhasdespesas.ui.theme.MarginThree
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingHalf
 import dev.geanbrandao.minhasdespesas.ui.theme.RotationHalf
@@ -81,7 +79,7 @@ fun FiltersScreen(
             .fillMaxSize()
     ) {
         AppToolbar(
-            topBarTitle = stringResource(id = R.string.fragment_filters_title_toolbar),
+            stringId = R.string.fragment_filters_title_toolbar,
             navHostController = navHostController,
         )
         LazyColumn {
@@ -125,7 +123,7 @@ fun FiltersScreen(
                         }
                     )
                 }
-                Spacer(modifier = Modifier.size(size = MarginLarge))
+                Spacer(modifier = Modifier.size(size = MarginThree))
             }
         }
     }
