@@ -8,6 +8,8 @@
     <string name="nav_bar_item_content_description_profile">Ícone de perfil</string>
     <string name="nav_bar_item_content_description_charts">Ícone de gráficos</string>
     <string name="nav_bar_item_content_description_filters">Filtros</string>
+    <string name="content_description_item_category_item">Ícone da categoria</string>
+    <string name="content_description_icon_arrow_back">Ícone voltar</string>
 <!-- CONTENT DESCRIPTION -->
 
     <string name="nav_bar_item_label_expenses">Despesas</string>

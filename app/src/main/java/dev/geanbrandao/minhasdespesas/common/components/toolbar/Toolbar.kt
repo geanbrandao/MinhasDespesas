@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -23,11 +23,10 @@ import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerThree
 import dev.geanbrandao.minhasdespesas.common.components.texts.TextToolbar
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 
-@Preview("TopBar preview")
 @Composable
 fun AppToolbar(
     navHostController: NavHostController = rememberNavController(),
-    @StringRes stringId: Int = R.string.fragment_add_edit_expense_toolbar_title,
+    @StringRes stringId: Int,
     color: Color = MaterialTheme.colorScheme.secondaryContainer,
     onColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
 ) {
@@ -37,13 +36,14 @@ fun AppToolbar(
                 .fillMaxWidth()
                 .background(color = color)
                 .padding(all = PaddingDefault),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = CenterVertically
         ) {
             IconDefault(
-                onColor = onColor,
-                navHostController = navHostController,
-                modifier = Modifier.align(alignment = CenterVertically)
-            )
+                iconId = R.drawable.ic_arrow_back,
+                tint = onColor,
+                modifier = Modifier.align(alignment = CenterVertically),
+                contentDescription = stringResource(id = R.string.content_description_icon_arrow_back),
+            ) { navHostController.navigateUp() }
             SpacerThree()
             TextToolbar(
                 stringId = stringId,
@@ -52,4 +52,12 @@ fun AppToolbar(
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun AppToolbarPreview() {
+    AppToolbar(
+        stringId = R.string.fragment_add_edit_expense_toolbar_title,
+    )
 }

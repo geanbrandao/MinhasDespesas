@@ -24,6 +24,7 @@ val HeightButton = 55.dp
 fun ButtonDefault(
     @StringRes stringId: Int,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
     buttonColor: Color = MaterialTheme.colorScheme.primary,
 ) {
     Button(
@@ -32,7 +33,7 @@ fun ButtonDefault(
             .fillMaxWidth()
             .height(height = HeightButton),
         onClick = {
-
+            onClick()
         }
     ) {
         TextButtonDefault(stringId = stringId)

@@ -2,9 +2,7 @@ package dev.geanbrandao.minhasdespesas.feature.add.presentation.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -13,18 +11,17 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.ListFilters
+import dev.geanbrandao.minhasdespesas.common.components.icons.IconDefault
 import dev.geanbrandao.minhasdespesas.common.components.icons.IconInput
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerFill
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
 import dev.geanbrandao.minhasdespesas.common.utils.extensions.toStringDateFormatted
-import dev.geanbrandao.minhasdespesas.ui.theme.MarginTwo
-import dev.geanbrandao.minhasdespesas.ui.theme.SizeIconDefault
-import dev.geanbrandao.minhasdespesas.ui.theme.SizeIconLarge
+import dev.geanbrandao.minhasdespesas.feature.categories.presentation.components.ListCategoriesItemSmall
 import io.github.boguszpawlowski.composecalendar.CalendarState
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
@@ -37,26 +34,26 @@ fun ViewCalendarDate(
     Row(modifier = Modifier.fillMaxWidth()) {
         IconInput(
             iconId = R.drawable.ic_calendar,
-            iconSize = SizeIconLarge,
-            contentDescription = null
+            contentDescription = null,
+            modifier = Modifier.align(alignment = CenterVertically)
         )
         SpacerFill(modifier = Modifier.weight(weight = 1f))
         Text(
             text = calendarState.selectionState.selection.firstOrNull()?.toStringDateFormatted()
                 .orEmpty(),
             modifier = Modifier
-                .align(alignment = Alignment.CenterVertically)
+                .align(alignment = CenterVertically)
                 .clickable {
                     isDataPickerVisible.value = true
                 },
             color = MaterialTheme.colorScheme.secondary
         )
         SpacerTwo()
-        IconInput(
+        IconDefault(
             iconId = R.drawable.ic_arrow_right,
-            iconSize = SizeIconDefault,
             contentDescription = null,
-            modifier = Modifier.align(alignment = Alignment.CenterVertically)
+            tint = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.align(alignment = CenterVertically)
         )
     }
 }
@@ -88,24 +85,24 @@ fun ViewCategoriesListPreview() {
 @Composable
 fun ViewCategoriesList(
     data: SnapshotStateList<String>,
-    onClickItemFilter: (index: Int) -> Unit,
+    onClick: () -> Unit,
 ) {
-
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .clickable { onClick() }) {
         IconInput(
             iconId = R.drawable.ic_tag_default,
-            iconSize = SizeIconLarge,
             contentDescription = null,
-            modifier = Modifier.align(alignment = Alignment.CenterVertically)
+            modifier = Modifier.align(alignment = CenterVertically)
         )
         SpacerTwo()
-        ListFilters(data = data, modifier = Modifier.weight(1f), onClickItemFilter = {})
+        ListCategoriesItemSmall(data = data, modifier = Modifier.weight(weight = 1f))
         SpacerTwo()
-        IconInput(
+        IconDefault(
             iconId = R.drawable.ic_arrow_right,
-            iconSize = SizeIconDefault,
             contentDescription = null,
-            modifier = Modifier.align(alignment = Alignment.CenterVertically)
+            tint = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.align(alignment = CenterVertically)
         )
     }
 }

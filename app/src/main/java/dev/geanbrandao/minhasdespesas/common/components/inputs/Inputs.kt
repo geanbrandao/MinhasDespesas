@@ -19,6 +19,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.dividers.DividerInput
 import dev.geanbrandao.minhasdespesas.common.components.icons.IconInput
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
@@ -36,13 +37,12 @@ val InputMultilineHeight = 64.dp
 fun InputMoney(
     inputValue: MutableState<TextFieldValue>,
     @StringRes stringId: Int,
-    @DrawableRes iconId: Int? = null,
     focusRequester: FocusRequester = FocusRequester()
 ) {
     InputBasic(
         inputValue = inputValue,
         stringId = stringId,
-        iconId = iconId,
+        iconId = R.drawable.ic_money,
         focusRequester = focusRequester,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         onValueChange = { handleInputMonetaryValue(it) }
@@ -53,13 +53,12 @@ fun InputMoney(
 fun InputTextSingleLine(
     inputValue: MutableState<TextFieldValue>,
     @StringRes stringId: Int,
-    @DrawableRes iconId: Int? = null,
     focusRequester: FocusRequester = FocusRequester()
 ) {
     InputBasic(
         inputValue = inputValue,
         stringId = stringId,
-        iconId = iconId,
+        iconId = R.drawable.ic_text,
         focusRequester = focusRequester,
         onValueChange = { handleInputTextValue(it) }
     )
@@ -121,7 +120,7 @@ fun InputBasic(
             }
             iconId?.let {
                 SpacerTwo()
-                IconInput(iconId = it, iconSize = SizeIconLarge, null)
+                IconInput(iconId = it, contentDescription = null)
             }
         }
     }

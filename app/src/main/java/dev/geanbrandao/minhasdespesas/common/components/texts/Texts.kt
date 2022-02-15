@@ -9,9 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.toUpperCase
+import androidx.compose.ui.text.style.TextOverflow
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
-import java.util.*
 
 @Composable
 fun TextLabelScreen(
@@ -61,5 +60,53 @@ fun TextButtonDefault(
         text = stringResource(id = stringId).uppercase(),
         style = AppTypography.bodyMedium,
         color = textColor,
+    )
+}
+
+@Composable
+fun TextDateDay(text: String) {
+    Text(text = text)
+}
+
+@Composable
+fun TextItemCategory(categoryName: String, modifier: Modifier, color: Color) {
+    Text(
+        text = categoryName,
+        style = AppTypography.titleMedium,
+        fontWeight = FontWeight.Light,
+        color = color,
+        modifier = modifier,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1,
+    )
+}
+
+@Composable
+fun TextDefault(
+    text: String,
+    textColor: Color,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = text,
+        style = AppTypography.bodyLarge,
+        fontWeight = FontWeight.Normal,
+        color = textColor,
+        modifier = modifier,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1,
+    )
+}
+
+// item expense
+@Composable
+fun TextItemExpenseDate(
+    text: String,
+) {
+    Text(
+        text = "05",
+        style = AppTypography.titleLarge,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.onBackground,
     )
 }

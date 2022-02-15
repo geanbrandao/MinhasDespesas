@@ -1,6 +1,7 @@
 package dev.geanbrandao.minhasdespesas.feature.navigation.utils
 
 import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Routes.ROUTE_ADD
+import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Routes.ROUTE_CATEGORIES
 import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Routes.ROUTE_CHARTS
 import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Routes.ROUTE_EXPENSES
 import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Routes.ROUTE_FILTERS
@@ -14,4 +15,5 @@ sealed class Screen(val route: String) {
     object Profile : Screen(ROUTE_PROFILE)
     object Filters : Screen(ROUTE_FILTERS)
     object Charts : Screen(ROUTE_CHARTS)
+    object Categories : Screen(ROUTE_CATEGORIES)
 }

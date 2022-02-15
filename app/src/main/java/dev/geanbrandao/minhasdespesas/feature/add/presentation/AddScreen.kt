@@ -44,11 +44,14 @@ import dev.geanbrandao.minhasdespesas.common.components.inputs.InputTextSingleLi
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerFill
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerFour
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
+import dev.geanbrandao.minhasdespesas.common.components.texts.TextDateDay
+import dev.geanbrandao.minhasdespesas.common.components.texts.TextLabelInput
 import dev.geanbrandao.minhasdespesas.common.components.texts.TextLabelScreen
 import dev.geanbrandao.minhasdespesas.common.components.toolbar.AppToolbar
 import dev.geanbrandao.minhasdespesas.common.utils.InputHandle.formatValueAsMoney
 import dev.geanbrandao.minhasdespesas.feature.add.presentation.components.ViewCalendarDate
 import dev.geanbrandao.minhasdespesas.feature.add.presentation.components.ViewCategoriesList
+import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Screen
 import dev.geanbrandao.minhasdespesas.ui.theme.CornersDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginThree
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginTwo
@@ -98,7 +101,7 @@ fun AddScreen(
     )
 
     val list = remember {
-        mutableStateListOf("filtro 1", "filtro 2", "filtro 3", "filtro 4", "filtro 5")
+        mutableStateListOf("Restaurante", "Carro", "Lazer", "Familia")
     }
 
     val scrollState = rememberScrollState()
@@ -121,17 +124,15 @@ fun AddScreen(
             InputMoney(
                 inputValue = inputValue,
                 stringId = R.string.fragment_add_edit_expense_label_input_value,
-                iconId = R.drawable.ic_money,
                 focusRequester = focusRequester
             )
             SpacerFour()
             InputTextSingleLine(
                 inputValue = inputName,
                 stringId = R.string.fragment_add_edit_expense_label_input_name,
-                iconId = R.drawable.ic_text,
             )
             SpacerFour()
-            TextLabelScreen(stringId = R.string.fragment_add_edit_expense_label_calendar)
+            TextLabelInput(stringId = R.string.fragment_add_edit_expense_label_calendar)
             SpacerTwo()
             ViewCalendarDate(calendarState, isDataPickerVisible)
             SpacerFour()
@@ -141,10 +142,14 @@ fun AddScreen(
                 modifier = Modifier.height(height = InputMultilineHeight)
             )
             SpacerFour()
-            ViewCategoriesList(data = list, onClickItemFilter = {})
+            ViewCategoriesList(data = list, onClick = {
+                navHostController.navigate(Screen.Categories.route)
+            })
             SpacerFour()
             SpacerFill(modifier = Modifier.weight(1f))
-            ButtonDefault(stringId = R.string.button_default_text_save)
+            ButtonDefault(stringId = R.string.button_default_text_save, onClick = {
+                navHostController.navigate(Screen.Categories.route)
+            })
             if (isDataPickerVisible.value) {
                 DatePicker(calendarState) {
                     isDataPickerVisible.value = false
@@ -158,6 +163,7 @@ fun AddScreen(
     }
 }
 
+// todo extract to a different location
 @Composable
 fun DatePicker(
     calendarState: CalendarState<DynamicSelectionState>,
@@ -181,6 +187,7 @@ fun DatePicker(
     }
 }
 
+// todo extract to a different location
 @Composable
 fun <T : SelectionState> CustomDay(
     state: DayState<T>,
@@ -213,7 +220,7 @@ fun <T : SelectionState> CustomDay(
             },
             contentAlignment = Alignment.Center,
         ) {
-            Text(text = date.dayOfMonth.toString())
+            TextDateDay(text = date.dayOfMonth.toString())
         }
     }
 }

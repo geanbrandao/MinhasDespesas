@@ -19,6 +19,7 @@ val MarginFour = 24.dp
 // corners
 val ItemFilterCorners = 8.dp
 val CornersDefault = 8.dp
+val CornersItemCategorySmall = 4.dp
 
 // elevation
 val ItemFilterElevation = 8.dp

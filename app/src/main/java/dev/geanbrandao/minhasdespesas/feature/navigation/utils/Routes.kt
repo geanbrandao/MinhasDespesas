@@ -7,4 +7,5 @@ object Routes {
     const val ROUTE_PROFILE = "profile"
     const val ROUTE_FILTERS = "filters"
     const val ROUTE_CHARTS = "charts"
+    const val ROUTE_CATEGORIES = "categories"
 }
