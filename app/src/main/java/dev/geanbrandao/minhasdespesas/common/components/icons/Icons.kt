@@ -2,10 +2,12 @@ package dev.geanbrandao.minhasdespesas.common.components.icons
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -35,7 +37,7 @@ fun IconDefault(
     tint: Color,
     modifier: Modifier = Modifier,
     contentDescription: String?,
-    onIconClick: () -> Unit = {},
+    onIconClick: (() -> Unit)? = {},
 ) {
     Icon(
         painter = painterResource(id = iconId),
@@ -43,8 +45,10 @@ fun IconDefault(
         tint = tint,
         modifier = modifier
             .size(24.dp)
-            .clickable {
-                onIconClick()
+            .run {
+                onIconClick?.let {
+                    clickable {it.invoke() }
+                } ?: this
             }
     )
 }

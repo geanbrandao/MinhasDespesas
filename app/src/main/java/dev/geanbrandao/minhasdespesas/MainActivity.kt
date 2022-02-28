@@ -20,9 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import dev.geanbrandao.minhasdespesas.feature.navigation.presentation.components.NavBar
-import dev.geanbrandao.minhasdespesas.feature.navigation.presentation.components.NavGraph
-import dev.geanbrandao.minhasdespesas.feature.navigation.utils.Screen
+import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.components.NavBar
+import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.components.NavGraph
+import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTheme
 
 @ExperimentalAnimationApi

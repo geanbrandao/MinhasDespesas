@@ -9,7 +9,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.geanbrandao.minhasdespesas.core.database.AppDatabase
 import dev.geanbrandao.minhasdespesas.core.database.AppDatabase.Companion.DB_NAME
-import dev.geanbrandao.minhasdespesas.core.database.DatabaseDao
 import javax.inject.Singleton
 
 @Module
@@ -26,8 +25,8 @@ object DatabaseModule {
         ).build()
     }
 
-    @Provides
-    fun provideDatabaseDao(appDatabase: AppDatabase): DatabaseDao {
-        return appDatabase.databaseDao
-    }
+//    @Provides
+//    fun provideDatabaseDao(appDatabase: AppDatabase): DatabaseDao {
+//        return appDatabase.databaseDao
+//    }
 }

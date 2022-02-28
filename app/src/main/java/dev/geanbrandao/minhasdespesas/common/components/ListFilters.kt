@@ -3,9 +3,7 @@ package dev.geanbrandao.minhasdespesas.common.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Icon
@@ -24,9 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
-import dev.geanbrandao.minhasdespesas.feature.core.expenses.presentation.components.ItemFilter
+import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.components.ItemFilter
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
-import dev.geanbrandao.minhasdespesas.ui.theme.MarginTwo
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 
 @Composable
