@@ -66,9 +66,7 @@ fun InputTextSingleLine(
         ),
         focusRequester = focusRequester,
         onValueChange = {
-            val a = handleInputTextValue(it)
-            inputValue.value = a
-            a
+            handleInputTextValue(it)
         }
     )
 }
