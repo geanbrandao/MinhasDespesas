@@ -24,9 +24,10 @@ object InputHandle {
     }
 
     fun handleInputTextValue(text: String): TextFieldValue {
+        val newText = if (text.length <= MAX_SINGLE_LINE_LENGTH) text else text.substring(0, MAX_SINGLE_LINE_LENGTH)
         return TextFieldValue(
-            text = if (text.length <= MAX_SINGLE_LINE_LENGTH) text else text.substring(0, MAX_SINGLE_LINE_LENGTH),
-            selection = TextRange(0)
+            text = newText,
+            selection = TextRange(newText.length)
         )
     }
 
