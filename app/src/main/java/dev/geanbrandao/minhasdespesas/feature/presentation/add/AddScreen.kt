@@ -78,7 +78,12 @@ fun AddScreen(
     }
 
     val inputName = remember {
-        mutableStateOf(TextFieldValue(text = ""))
+        mutableStateOf(
+            TextFieldValue(
+                text = "",
+                selection = TextRange(0)
+            )
+        )
     }
 
     val inputDescription = remember {

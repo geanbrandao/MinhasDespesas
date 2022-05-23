@@ -24,24 +24,33 @@ import androidx.compose.ui.tooling.preview.Preview
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.dividers.ItemDefaultDivider
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
+import dev.geanbrandao.minhasdespesas.common.components.texts.TextBodyMediumSingleLine
+import dev.geanbrandao.minhasdespesas.common.components.texts.TextLabelMedium
+import dev.geanbrandao.minhasdespesas.common.components.texts.TextTitleLarge
+import dev.geanbrandao.minhasdespesas.common.utils.extensions.getDayNumber
+import dev.geanbrandao.minhasdespesas.common.utils.extensions.getMonth3LettersName
+import dev.geanbrandao.minhasdespesas.core.database.db.ExpenseDb
 import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.util.TestTags.ITEM_EXPENSE_ROOT
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingHalf
+import java.time.LocalDate
+import java.time.OffsetDateTime
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ItemExpenseWithSwipe(
+    expenseDb: ExpenseDb,
     isLastItem: Boolean,
-    onSwipeToDelete: () -> Unit,
-    onSwipeToEdit: () -> Unit,
+    onSwipeToDelete: (id: Long) -> Unit,
+    onSwipeToEdit: (id: Long) -> Unit,
 ) {
     val swipeState = rememberDismissState(
-        confirmStateChange = {
-            if (it == DismissValue.DismissedToEnd) {
-                onSwipeToDelete()
-            } else if (it == DismissValue.DismissedToStart) {
-                onSwipeToEdit()
+        confirmStateChange = { dismissValue ->
+            if (dismissValue == DismissValue.DismissedToEnd) {
+                onSwipeToDelete(expenseDb.expenseId)
+            } else if (dismissValue == DismissValue.DismissedToStart) {
+                onSwipeToEdit(expenseDb.expenseId)
             }
             true
         }
@@ -64,7 +73,7 @@ fun ItemExpenseWithSwipe(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.background)
         ) {
-            ItemExpense()
+            ItemExpense(expenseDb)
             SpacerTwo()
             ItemDefaultDivider(
                 color = MaterialTheme.colorScheme.onBackground,
@@ -75,13 +84,11 @@ fun ItemExpenseWithSwipe(
     }
 }
 
-@Preview("Item expense")
 @Composable
-private fun ItemExpense() {
+private fun ItemExpense(expenseDb: ExpenseDb) {
     Column(
         modifier = Modifier
             .testTag(tag = ITEM_EXPENSE_ROOT)
-//            .background(color = Color.Red)
             .padding(
                 start = PaddingDefault,
                 end = PaddingDefault,
@@ -93,44 +100,58 @@ private fun ItemExpense() {
             modifier = Modifier.fillMaxWidth()
         ) {
             Column {
-                Text(
-                    text = "05",
-                    style = AppTypography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground,
+                TextTitleLarge(
+                    expenseDb.selectedDate.getDayNumber()
                 )
-                Text(
-                    text = "OUT".uppercase(),
-                    style = AppTypography.labelMedium,
-                    fontWeight = FontWeight.Light,
-                    color = MaterialTheme.colorScheme.onBackground,
+                TextLabelMedium(
+                    text = expenseDb.selectedDate.getMonth3LettersName()
                 )
             }
             SpacerTwo()
-            Text(
-                text = "Aquele lanche maroto ahdaudhaudhaudhaudhaud",
-                style = AppTypography.bodyMedium,
-                fontWeight = FontWeight.Light,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.weight(1f),
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
+            TextBodyMediumSingleLine(
+                text = expenseDb.name,
+                modifier = Modifier.weight(weight = 1f)
             )
             SpacerTwo()
-            Text(
-                text = stringResource(id = R.string.text_default_value_cipher, 25.6f),
-                style = AppTypography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground,
+            TextTitleLarge(
+                text = stringResource(
+                    id = R.string.text_default_value_cipher,
+                    expenseDb.amount
+                )
             )
         }
     }
 }
 
-@Preview("ItemExpenseWithSwipe preview")
+@Preview
 @Composable
 fun ItemExpensePreview() {
+    val expenseDb = ExpenseDb(
+        expenseId = 1L,
+        name = "Expense",
+        amount = 9.99f,
+        description = "One expense of this week",
+        selectedDate = OffsetDateTime.now(),
+        createdAt = OffsetDateTime.now(),
+        updatedAt = OffsetDateTime.now(),
+    )
+    ItemExpense(expenseDb = expenseDb)
+}
+
+@Preview("ItemExpenseWithSwipe preview")
+@Composable
+fun ItemExpenseWithSwipePreview() {
+    val expenseDb = ExpenseDb(
+        expenseId = 1L,
+        name = "Expense",
+        amount = 9.99f,
+        description = "One expense of this week",
+        selectedDate = OffsetDateTime.now(),
+        createdAt = OffsetDateTime.now(),
+        updatedAt = OffsetDateTime.now(),
+    )
     ItemExpenseWithSwipe(
+        expenseDb = expenseDb,
         isLastItem = false,
         onSwipeToDelete = { },
         onSwipeToEdit = { },

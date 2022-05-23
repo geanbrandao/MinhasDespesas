@@ -22,7 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
-import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.components.ItemFilter
+import dev.geanbrandao.minhasdespesas.feature.presentation.filters.components.ItemFilter
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 

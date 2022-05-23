@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -59,8 +60,16 @@ fun InputTextSingleLine(
         inputValue = inputValue,
         stringId = stringId,
         iconId = R.drawable.ic_text,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            capitalization = KeyboardCapitalization.Words
+        ),
         focusRequester = focusRequester,
-        onValueChange = { handleInputTextValue(it) }
+        onValueChange = {
+            val a = handleInputTextValue(it)
+            inputValue.value = a
+            a
+        }
     )
 }
 
@@ -74,6 +83,10 @@ fun InputMultiLine(
         inputValue = inputValue,
         stringId = stringId,
         singleLine = false,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            capitalization = KeyboardCapitalization.Sentences
+        ),
         onValueChange = {
             handleInputMultiline(it)
         },
@@ -87,8 +100,8 @@ fun InputBasic(
     @StringRes stringId: Int,
     modifier: Modifier = Modifier,
     @DrawableRes iconId: Int? = null,
-    onValueChange: (text: String) -> TextFieldValue = { handleInputTextValue(it) },
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    onValueChange: (text: String) -> TextFieldValue,
+    keyboardOptions: KeyboardOptions,
     focusRequester: FocusRequester = FocusRequester(),
     singleLine: Boolean = true
 ) {
@@ -96,9 +109,10 @@ fun InputBasic(
         TextLabelInput(stringId = stringId)
         SpacerTwo()
         Row {
-            Column(modifier = Modifier
-                .align(alignment = Alignment.CenterVertically)
-                .weight(1f)
+            Column(
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterVertically)
+                    .weight(1f)
             ) {
                 BasicTextField(
                     value = inputValue.value,

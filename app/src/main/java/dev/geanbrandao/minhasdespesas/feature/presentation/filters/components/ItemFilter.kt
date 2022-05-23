@@ -1,4 +1,4 @@
-package dev.geanbrandao.minhasdespesas.feature.presentation.expenses.components
+package dev.geanbrandao.minhasdespesas.feature.presentation.filters.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -15,7 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
+import dev.geanbrandao.minhasdespesas.R
+import dev.geanbrandao.minhasdespesas.common.components.icons.IconDefault
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerOne
+import dev.geanbrandao.minhasdespesas.common.components.texts.TextDefault
 import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.util.TestTags.ITEM_FILTER_ICON_CLOSE
 import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.util.TestTags.ITEM_FILTER_ROOT
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
@@ -46,15 +49,14 @@ fun ItemFilter(
                 ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
+            TextDefault(
                 text = item,
-                style = AppTypography.labelMedium,
-                color = MaterialTheme.colorScheme.onSecondary,
+                textColor = MaterialTheme.colorScheme.onSecondary,
             )
             SpacerOne()
-            Icon(
-                imageVector = Icons.Rounded.Close,
-                contentDescription = "Close icon",
+            IconDefault(
+                R.drawable.ic_close,
+                contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSecondary,
                 modifier = Modifier
                     .testTag(ITEM_FILTER_ICON_CLOSE)

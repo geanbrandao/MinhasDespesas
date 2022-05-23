@@ -1,4 +1,4 @@
-package dev.geanbrandao.minhasdespesas.feature.presentation.filters.utils
+package dev.geanbrandao.minhasdespesas.feature.domain.model
 
 enum class TypeFilterDate {
     ALL,

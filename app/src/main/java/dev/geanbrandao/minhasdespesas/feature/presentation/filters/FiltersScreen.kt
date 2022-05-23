@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -22,7 +23,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -33,20 +33,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.geanbrandao.minhasdespesas.R
-import dev.geanbrandao.minhasdespesas.common.components.toolbar.AppToolbar
-import dev.geanbrandao.minhasdespesas.common.components.FiltersButton
 import dev.geanbrandao.minhasdespesas.common.components.dividers.ItemDefaultDivider
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerThree
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
+import dev.geanbrandao.minhasdespesas.common.components.toolbar.AppToolbar
 import dev.geanbrandao.minhasdespesas.common.log.DebugLog
-import dev.geanbrandao.minhasdespesas.feature.presentation.filters.components.ItemCategory
-import dev.geanbrandao.minhasdespesas.feature.presentation.filters.utils.TypeFilterDate
+import dev.geanbrandao.minhasdespesas.feature.domain.model.TypeFilterDate
+import dev.geanbrandao.minhasdespesas.feature.presentation.filters.components.ListCategoryOptions
+import dev.geanbrandao.minhasdespesas.feature.presentation.filters.components.ListSelectedFilters
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.CardElevationLow
 import dev.geanbrandao.minhasdespesas.ui.theme.CornersDefault
+import dev.geanbrandao.minhasdespesas.ui.theme.MarginThree
+import dev.geanbrandao.minhasdespesas.ui.theme.MarginTwo
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.RotationHalf
 
@@ -56,17 +59,13 @@ private val log: DebugLog = DebugLog("FiltersScreen")
 @Composable
 fun FiltersScreen(
     navHostController: NavHostController,
+    viewModel: FiltersViewModel = hiltViewModel()
 ) {
+    val filtersState = viewModel.state
 
-    val listFilters = remember {
-        mutableStateListOf(
-            "Últimos 7 dias",
-            "Qualquer",
-            "auhduahduad",
-            "aidaijdaijdaidja",
-            "15118515151"
-        )
-    }
+    val activeFilters = viewModel.stateActiveFilters
+
+
     val color = MaterialTheme.colorScheme.secondaryContainer
     val onColor = MaterialTheme.colorScheme.onSecondaryContainer
 
@@ -81,10 +80,13 @@ fun FiltersScreen(
         )
         LazyColumn {
             item {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    FiltersButton(
-                        activeFiltersSize = listFilters.size,
-                        modifier = Modifier.align(alignment = Alignment.CenterEnd)
+                Box(modifier = Modifier.fillMaxWidth().padding(all = MarginThree)) {
+                    ListSelectedFilters(
+                        dataList = activeFilters.value,
+                        modifier = Modifier.align(alignment = Alignment.CenterStart),
+                        onRemoveFilter = { atIndex: Int ->
+
+                        }
                     )
                 }
             }
@@ -107,17 +109,12 @@ fun FiltersScreen(
                     onColor = onColor,
                     onClickTopic = {}
                 ) {
-                    OptionsFilterByCategory(
-                        listOf("Lanche", "Débito", "Pet", "Supermercado aduahudhaduhadua audhada"),
-                        onColor = onColor,
-                        onCheckedChange = { item: String, isChecked: Boolean ->
-                            log.debug("Item $item isChecked $isChecked")
-                            if (isChecked) {
-                                listFilters.add(item)
-                            } else {
-                                listFilters.remove(item)
-                            }
-                        }
+                    ListCategoryOptions(
+                        state = filtersState.value,
+                        onCheckedChangeListener = { isChecked, categoryDb ->
+                            viewModel.onCategoryCheckChange(isChecked = isChecked, categoryDb = categoryDb)
+                        },
+                        modifier = Modifier.wrapContentHeight()
                     )
                 }
                 SpacerThree()
@@ -261,30 +258,6 @@ fun TopicRowSpacer(visible: Boolean) {
     AnimatedVisibility(visible = visible) {
         SpacerTwo()
     }
-}
-
-@Composable
-fun OptionsFilterByCategory(
-    categories: List<String>,
-    onColor: Color,
-    onCheckedChange: (item: String, isChecked: Boolean) -> Unit,
-) {
-    Column {
-        categories.forEachIndexed { index, item ->
-            ItemCategory(color = onColor, item = item, onCheckChange = { isChecked ->
-                onCheckedChange(
-                    item,
-                    isChecked
-                )
-            })
-            ItemDefaultDivider(
-                color = onColor,
-                shouldShow = categories.lastIndex != index,
-                modifier = Modifier.padding(horizontal = PaddingDefault),
-            )
-        }
-    }
-
 }
 
 @Composable

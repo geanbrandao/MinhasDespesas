@@ -110,3 +110,40 @@ fun TextItemExpenseDate(
         color = MaterialTheme.colorScheme.onBackground,
     )
 }
+
+@Composable
+fun TextTitleLarge(text: String, color: Color = MaterialTheme.colorScheme.onBackground) {
+    Text(
+        text = text,
+        style = AppTypography.titleLarge,
+        fontWeight = FontWeight.Bold,
+        color = color,
+    )
+}
+
+@Composable
+fun TextLabelMedium(text: String, color: Color = MaterialTheme.colorScheme.onBackground) {
+    Text(
+        text = text,
+        style = AppTypography.labelMedium,
+        fontWeight = FontWeight.Light,
+        color = color,
+    )
+}
+
+@Composable
+fun TextBodyMediumSingleLine(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.onBackground
+) {
+    Text(
+        text = text,
+        style = AppTypography.bodyMedium,
+        fontWeight = FontWeight.Light,
+        color = color,
+        modifier = modifier,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1,
+    )
+}

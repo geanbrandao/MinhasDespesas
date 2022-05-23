@@ -19,7 +19,7 @@ class CategoryViewModel @Inject constructor(
     private val expenseUseCases: ExpenseUseCases
 ) : ViewModel() {
     private val _state = mutableStateOf(CategoryState())
-    private val _stateSelectCategories = mutableStateOf(emptyList<CategoryDb>())
+    private val _stateSelectedCategories = mutableStateOf(emptyList<CategoryDb>())
 
     val state: State<CategoryState> = _state
 
@@ -33,20 +33,18 @@ class CategoryViewModel @Inject constructor(
         getCategoriesJob?.cancel()
         getCategoriesJob = expenseUseCases.getCategories()
             .onEach { list ->
-                _state.value = _state.value.copy(categories = list)
+                _state.value = _state.value.copy(dataList = list)
             }.catch {
                 // error
                 Log.d("HELOO", "")
             }.launchIn(viewModelScope)
     }
 
-
-
     fun onCategoryCheckChange(isChecked: Boolean, categoryDb: CategoryDb) {
         if (isChecked) {
-            _stateSelectCategories.value = _stateSelectCategories.value.plus(element = categoryDb)
+            _stateSelectedCategories.value = _stateSelectedCategories.value.plus(element = categoryDb)
         } else {
-            _stateSelectCategories.value = _stateSelectCategories.value.filter {
+            _stateSelectedCategories.value = _stateSelectedCategories.value.filter {
                 it.categoryId != categoryDb.categoryId
             }
         }

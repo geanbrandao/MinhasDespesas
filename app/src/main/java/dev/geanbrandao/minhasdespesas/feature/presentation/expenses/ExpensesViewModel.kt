@@ -18,8 +18,8 @@ class ExpensesViewModel @Inject constructor(
     private val expensesUseCases: ExpenseUseCases,
 ): ViewModel() {
 
-    private val _state = mutableStateOf(ExpensesState())
-    val state: State<ExpensesState> = _state
+    private val _stateExpenses = mutableStateOf(ExpensesState())
+    val stateExpenses: State<ExpensesState> = _stateExpenses
 
     private var getExpensesJob: Job? = null
 
@@ -31,7 +31,7 @@ class ExpensesViewModel @Inject constructor(
         getExpensesJob?.cancel()
         getExpensesJob = expensesUseCases.getExpenses()
             .onEach { list: List<ExpenseWithCategoriesDb> ->
-                _state.value = state.value.copy(expenses = list)
+                _stateExpenses.value = stateExpenses.value.copy(expenses = list)
             }.catch {
                 // do something
             }.launchIn(viewModelScope)

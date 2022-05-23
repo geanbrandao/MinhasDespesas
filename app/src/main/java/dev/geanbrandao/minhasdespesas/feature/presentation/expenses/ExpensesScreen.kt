@@ -21,17 +21,18 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.FiltersButton
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
+import dev.geanbrandao.minhasdespesas.core.database.db.ExpenseWithCategoriesDb
 import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.components.ScreenWarningWithTitleMessage
 import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.components.ItemExpenseWithSwipe
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
@@ -46,13 +47,16 @@ import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 fun ExpensesScreen(
     modifier: Modifier,
     navHostController: NavHostController,
+    viewModel: ExpensesViewModel = hiltViewModel(),
 ) {
+    val stateExpenses = viewModel.stateExpenses.value
     val listFilters = remember {
-        mutableStateListOf("Filtro 1", "Filtro 2", "Filtro 3", "Filtro 4", "Filtro 5")
+//        mutableStateListOf("Filtro 1", "Filtro 2", "Filtro 3", "Filtro 4", "Filtro 5")
+        mutableStateListOf<String>()
     }
-    val itemExpenseList = remember {
-        mutableStateListOf("Expense 1", "Expense 2", "Expense 3")
-    }
+//    val itemExpenseList = remember {
+//        mutableStateListOf("Expense 1", "Expense 2", "Expense 3")
+//    }
 
     val amountExpense = remember {
         mutableStateOf(25.97f)
@@ -76,29 +80,21 @@ fun ExpensesScreen(
                 ) { navHostController.navigate(Screen.Filters.route) }
             }
             Box(modifier = Modifier.fillMaxSize()) {
-                ListExpenses(itemExpenseList, navHostController)
-                if (itemExpenseList.isEmpty() and listFilters.isEmpty()) {
-                    ScreenWarningWithTitleMessage(
-                        modifier = Modifier.align(alignment = Alignment.BottomCenter),
-                        emptyWarningTitle = stringResource(
-                            id = R.string.fragment_expenses_warning_title_no_expenses
-                        ),
-                        emptyWarningMessage = stringResource(
-                            id = R.string.fragment_expenses_warning_message_no_expenses
-                        )
-                    )
-                }
-                if (itemExpenseList.isEmpty() and listFilters.isNotEmpty()) {
-                    ScreenWarningWithTitleMessage(
-                        modifier = Modifier.align(alignment = Alignment.BottomCenter),
-                        emptyWarningTitle = stringResource(
-                            id = R.string.fragment_expenses_warning_title_no_expenses_when_filter_selected
-                        ),
-                        emptyWarningMessage = stringResource(
-                            id = R.string.fragment_expenses_warning_message_no_expenses_when_filter_selected
-                        )
-                    )
-                }
+                ListExpenses(
+                    itemExpenseList = stateExpenses.expenses,
+                    navHostController = navHostController,
+                    onSwipeToDelete = { expenseId ->
+
+                    },
+                    onSwipeToEdit = { expenseId ->
+
+                    }
+                )
+                HandleDisplayWarningMessage(
+                    modifier =  Modifier.align(alignment = Alignment.Center),
+                    listExpensesIsEmpty = stateExpenses.expenses.isEmpty(),
+                    listFiltersIsEmpty = listFilters.isEmpty()
+                )
                 FloatingActionButton(
                     backgroundColor = MaterialTheme.colorScheme.secondary,
                     onClick = {
@@ -120,27 +116,54 @@ fun ExpensesScreen(
 }
 
 @Composable
+private fun HandleDisplayWarningMessage(
+    listExpensesIsEmpty: Boolean,
+    listFiltersIsEmpty: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    if (listExpensesIsEmpty and listFiltersIsEmpty) {
+        ScreenWarningWithTitleMessage(
+            modifier = modifier,
+            emptyWarningTitle = stringResource(
+                id = R.string.fragment_expenses_warning_title_no_expenses
+            ),
+            emptyWarningMessage = stringResource(
+                id = R.string.fragment_expenses_warning_message_no_expenses
+            )
+        )
+    }
+    if (listExpensesIsEmpty and listFiltersIsEmpty.not()) {
+        ScreenWarningWithTitleMessage(
+            modifier = modifier,
+            emptyWarningTitle = stringResource(
+                id = R.string.fragment_expenses_warning_title_no_expenses_when_filter_selected
+            ),
+            emptyWarningMessage = stringResource(
+                id = R.string.fragment_expenses_warning_message_no_expenses_when_filter_selected
+            )
+        )
+    }
+}
+
+@Composable
 private fun ListExpenses(
-    itemExpenseList: SnapshotStateList<String>,
-    navHostController: NavHostController
+    itemExpenseList: List<ExpenseWithCategoriesDb>,
+    navHostController: NavHostController,
+    onSwipeToDelete: (id: Long) -> Unit,
+    onSwipeToEdit: (id: Long) -> Unit,
 ) {
     LazyColumn {
         itemsIndexed(
             items = itemExpenseList,
-            key = { _: Int, item: String ->
+            key = { _: Int, item: ExpenseWithCategoriesDb ->
                 item.hashCode()
             }
         ) { index, item ->
             ItemExpenseWithSwipe(
+                expenseDb = item.expenseDb,
                 isLastItem = itemExpenseList.lastIndex == index,
-                onSwipeToDelete = {
-                    itemExpenseList.remove(item)
-                },
-                onSwipeToEdit = {
-                    navHostController.navigateForNavBar(Screen.Add.route)
-                    itemExpenseList.remove(item)
-                    itemExpenseList.add(index, item)
-                },
+                onSwipeToDelete = onSwipeToDelete,
+                onSwipeToEdit = onSwipeToEdit,
             )
         }
     }

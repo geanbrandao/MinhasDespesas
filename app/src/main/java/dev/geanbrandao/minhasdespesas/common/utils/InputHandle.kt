@@ -26,7 +26,7 @@ object InputHandle {
     fun handleInputTextValue(text: String): TextFieldValue {
         return TextFieldValue(
             text = if (text.length <= MAX_SINGLE_LINE_LENGTH) text else text.substring(0, MAX_SINGLE_LINE_LENGTH),
-            selection = TextRange(text.length)
+            selection = TextRange(0)
         )
     }
 
