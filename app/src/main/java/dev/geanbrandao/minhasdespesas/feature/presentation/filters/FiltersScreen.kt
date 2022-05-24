@@ -66,7 +66,6 @@ fun FiltersScreen(
 
     val activeFilters = viewModel.stateActiveFilters
 
-
     val color = MaterialTheme.colorScheme.secondaryContainer
     val onColor = MaterialTheme.colorScheme.onSecondaryContainer
 
@@ -86,7 +85,6 @@ fun FiltersScreen(
                         dataList = activeFilters.value,
                         modifier = Modifier.align(alignment = Alignment.CenterStart),
                         onRemoveFilter = { atIndex: Int ->
-
                         }
                     )
                 }

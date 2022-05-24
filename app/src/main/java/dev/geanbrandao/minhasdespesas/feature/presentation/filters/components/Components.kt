@@ -7,20 +7,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.texts.TextDefault
 import dev.geanbrandao.minhasdespesas.common.utils.isLastItem
 import dev.geanbrandao.minhasdespesas.core.database.db.CategoryDb
-import dev.geanbrandao.minhasdespesas.feature.domain.model.ActiveFiltersModel
 import dev.geanbrandao.minhasdespesas.feature.domain.model.ActiveFiltersSimpleModel
 import dev.geanbrandao.minhasdespesas.feature.presentation.categories.components.CategoryItem
 import dev.geanbrandao.minhasdespesas.feature.presentation.filters.states.FiltersState
-import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginOne
 
 @Composable
@@ -32,7 +29,7 @@ fun ListSelectedFilters(
     Box(modifier = modifier) {
         if (dataList.isEmpty()) {
             TextDefault(
-                text = "Nenhum filtro selecionado",
+                text = stringResource(id = R.string.warnig_message_select_some_filter_here),
                 textColor = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.align(alignment = Alignment.Center),
             )
@@ -46,9 +43,7 @@ fun ListSelectedFilters(
                     }
                 }
             }
-
         }
-
     }
 }
 
@@ -72,4 +67,3 @@ fun ListCategoryOptions(
         }
     }
 }
-

@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import dev.geanbrandao.minhasdespesas.R
@@ -75,7 +76,7 @@ fun FiltersButton(
 ) {
     if (activeFiltersSize < 1) {
         TextDefault(
-            text = "Nenhum filtro selecionado",
+            text = stringResource(id = R.string.warnig_message_select_some_filter_here),
             textColor = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .padding(all = PaddingDefault)
