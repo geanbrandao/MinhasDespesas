@@ -2,7 +2,6 @@ package dev.geanbrandao.minhasdespesas.feature.presentation.splashscreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +20,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.utils.extensions.createDefaultCategories
+import dev.geanbrandao.minhasdespesas.common.utils.extensions.clickableRoundedEffect
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
 import dev.geanbrandao.minhasdespesas.feature.presentation.splashscreen.util.navigateAndRemoveFromBackStack
 import dev.geanbrandao.minhasdespesas.ui.theme.SplashscreenLogoHomeSize
@@ -47,7 +47,7 @@ fun Splashscreen(
             painter = painterResource(id = R.drawable.ic_home),
             contentDescription = stringResource(id = R.string.splashscreen_content_description_ic_home),
             modifier = Modifier.size(size = SplashscreenLogoHomeSize)
-                .clickable {
+                .clickableRoundedEffect {
                     navHostController.navigateAndRemoveFromBackStack(
                         destinationRoute = Screen.Expenses.route,
                         currentRoute = Screen.Splashscreen.route

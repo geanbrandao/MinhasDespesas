@@ -34,6 +34,7 @@ import dev.geanbrandao.minhasdespesas.common.components.dividers.DividerInput
 import dev.geanbrandao.minhasdespesas.common.components.icons.IconDefault
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerOne
 import dev.geanbrandao.minhasdespesas.common.components.texts.TextDefault
+import dev.geanbrandao.minhasdespesas.common.utils.extensions.clickableRoundedEffect
 import dev.geanbrandao.minhasdespesas.common.utils.extensions.getIconIdFromString
 import dev.geanbrandao.minhasdespesas.common.utils.isLastItem
 import dev.geanbrandao.minhasdespesas.core.database.db.CategoryDb
@@ -56,10 +57,7 @@ fun CategoryItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() }
-            ) { }
+            .clickableRoundedEffect{ }
     ) {
         Row(
             modifier = Modifier.padding(horizontal = PaddingHalf, vertical = PaddingHalf)

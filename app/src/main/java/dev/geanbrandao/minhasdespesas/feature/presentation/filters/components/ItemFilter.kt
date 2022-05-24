@@ -19,6 +19,7 @@ import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.icons.IconDefault
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerOne
 import dev.geanbrandao.minhasdespesas.common.components.texts.TextDefault
+import dev.geanbrandao.minhasdespesas.common.utils.extensions.clickableRoundedEffect
 import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.util.TestTags.ITEM_FILTER_ICON_CLOSE
 import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.util.TestTags.ITEM_FILTER_ROOT
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
@@ -61,7 +62,7 @@ fun ItemFilter(
                 modifier = Modifier
                     .testTag(ITEM_FILTER_ICON_CLOSE)
                     .align(alignment = Alignment.CenterVertically)
-                    .clickable {
+                    .clickableRoundedEffect {
                         onClickItemFilter()
                     }
             )

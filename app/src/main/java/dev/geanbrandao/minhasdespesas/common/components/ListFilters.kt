@@ -1,6 +1,5 @@
 package dev.geanbrandao.minhasdespesas.common.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -22,6 +21,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
+import dev.geanbrandao.minhasdespesas.common.components.texts.TextDefault
+import dev.geanbrandao.minhasdespesas.common.utils.extensions.clickableRoundedEffect
 import dev.geanbrandao.minhasdespesas.feature.presentation.filters.components.ItemFilter
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
@@ -62,9 +63,7 @@ fun ListFilters(
                     }
                 }
             }
-
         }
-
     }
 }
 
@@ -75,19 +74,18 @@ fun FiltersButton(
     onClick: () -> Unit = {},
 ) {
     if (activeFiltersSize < 1) {
-        Text(
+        TextDefault(
             text = "Nenhum filtro selecionado",
-            style = AppTypography.labelLarge,
-            color = MaterialTheme.colorScheme.onBackground,
+            textColor = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .padding(all = PaddingDefault)
-                .clickable { onClick() },
+                .clickableRoundedEffect { onClick() },
         )
     } else {
         Row(
             modifier = modifier
                 .padding(all = PaddingDefault)
-                .clickable { onClick() },
+                .clickableRoundedEffect { onClick() },
         ) {
             Icon(
                 painterResource(id = R.drawable.ic_filters),

@@ -42,6 +42,7 @@ import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerThree
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
 import dev.geanbrandao.minhasdespesas.common.components.toolbar.AppToolbar
 import dev.geanbrandao.minhasdespesas.common.log.DebugLog
+import dev.geanbrandao.minhasdespesas.common.utils.extensions.clickableRoundedEffect
 import dev.geanbrandao.minhasdespesas.feature.domain.model.TypeFilterDate
 import dev.geanbrandao.minhasdespesas.feature.presentation.filters.components.ListCategoryOptions
 import dev.geanbrandao.minhasdespesas.feature.presentation.filters.components.ListSelectedFilters
@@ -269,7 +270,7 @@ fun TextFilterByDate(
     onClickFilterDate: (typeFilterDate: TypeFilterDate) -> Unit,
 ) {
     Column(
-        Modifier.clickable {
+        Modifier.clickableRoundedEffect {
             onClickFilterDate(TypeFilterDate.PICKED_DATE)
         },
     ) {

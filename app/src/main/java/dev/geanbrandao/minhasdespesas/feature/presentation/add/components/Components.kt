@@ -19,6 +19,7 @@ import dev.geanbrandao.minhasdespesas.common.components.icons.IconDefault
 import dev.geanbrandao.minhasdespesas.common.components.icons.IconInput
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerFill
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
+import dev.geanbrandao.minhasdespesas.common.utils.extensions.clickableRoundedEffect
 import dev.geanbrandao.minhasdespesas.common.utils.extensions.toStringDateFormatted
 import dev.geanbrandao.minhasdespesas.feature.presentation.categories.components.ListCategoriesItemSmall
 import io.github.boguszpawlowski.composecalendar.CalendarState
@@ -42,7 +43,7 @@ fun ViewCalendarDate(
                 .orEmpty(),
             modifier = Modifier
                 .align(alignment = CenterVertically)
-                .clickable {
+                .clickableRoundedEffect {
                     isDataPickerVisible.value = true
                 },
             color = MaterialTheme.colorScheme.secondary
@@ -88,7 +89,7 @@ fun ViewCategoriesList(
 ) {
     Row(modifier = Modifier
         .fillMaxWidth()
-        .clickable { onClick() }) {
+        .clickableRoundedEffect { onClick() }) {
         IconInput(
             iconId = R.drawable.ic_tag_default,
             contentDescription = null,

@@ -3,7 +3,6 @@ package dev.geanbrandao.minhasdespesas.feature.presentation.add
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -30,7 +29,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.buttons.ButtonDefault
@@ -45,6 +43,7 @@ import dev.geanbrandao.minhasdespesas.common.components.texts.TextDateDay
 import dev.geanbrandao.minhasdespesas.common.components.texts.TextLabelInput
 import dev.geanbrandao.minhasdespesas.common.components.toolbar.AppToolbar
 import dev.geanbrandao.minhasdespesas.common.utils.InputHandle.formatValueAsMoney
+import dev.geanbrandao.minhasdespesas.common.utils.extensions.clickableRoundedEffect
 import dev.geanbrandao.minhasdespesas.feature.domain.model.SelectedCategoriesArg
 import dev.geanbrandao.minhasdespesas.feature.presentation.add.components.ViewCalendarDate
 import dev.geanbrandao.minhasdespesas.feature.presentation.add.components.ViewCategoriesList
@@ -222,7 +221,7 @@ fun <T : SelectionState> CustomDay(
         contentColor = if (isSelected) selectionColor else MaterialTheme.colorScheme.onSurface
     ) {
         Box(
-            modifier = Modifier.clickable {
+            modifier = Modifier.clickableRoundedEffect {
                 onClick(date)
                 selectionState.onDateSelected(date)
             },

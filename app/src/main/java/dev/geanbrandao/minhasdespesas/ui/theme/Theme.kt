@@ -80,14 +80,14 @@ fun AppTheme(
 //        }
 //    }
 //        else {
-    val colorScheme = if (useDarkTheme) {
-        DarkThemeColors
-    } else {
-        LightThemeColors
-    }
+//    val colorScheme = if (useDarkTheme) {
+//        DarkThemeColors
+//    } else {
+//        LightThemeColors
+//    }
 //    }
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = if (useDarkTheme) DarkThemeColors else LightThemeColors,
         typography = AppTypography,
         content = content
     )
