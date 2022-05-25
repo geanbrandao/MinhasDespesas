@@ -1,6 +1,6 @@
-package dev.geanbrandao.minhasdespesas.feature.domain.model
+package dev.geanbrandao.minhasdespesas.feature.domain.hekko
 
-enum class TypeFilterDate {
+enum class TypeFilterDateEnum {
     ALL,
     WEEK,
     CURRENT_MONTH,

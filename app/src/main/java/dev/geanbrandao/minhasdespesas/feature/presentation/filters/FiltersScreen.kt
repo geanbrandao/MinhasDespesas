@@ -6,7 +6,6 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,14 +42,13 @@ import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
 import dev.geanbrandao.minhasdespesas.common.components.toolbar.AppToolbar
 import dev.geanbrandao.minhasdespesas.common.log.DebugLog
 import dev.geanbrandao.minhasdespesas.common.utils.extensions.clickableRoundedEffect
-import dev.geanbrandao.minhasdespesas.feature.domain.model.TypeFilterDate
+import dev.geanbrandao.minhasdespesas.feature.domain.hekko.TypeFilterDateEnum
 import dev.geanbrandao.minhasdespesas.feature.presentation.filters.components.ListCategoryOptions
 import dev.geanbrandao.minhasdespesas.feature.presentation.filters.components.ListSelectedFilters
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.CardElevationLow
 import dev.geanbrandao.minhasdespesas.ui.theme.CornersDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginThree
-import dev.geanbrandao.minhasdespesas.ui.theme.MarginTwo
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.RotationHalf
 
@@ -85,6 +83,7 @@ fun FiltersScreen(
                         dataList = activeFilters.value,
                         modifier = Modifier.align(alignment = Alignment.CenterStart),
                         onRemoveFilter = { atIndex: Int ->
+
                         }
                     )
                 }
@@ -96,8 +95,9 @@ fun FiltersScreen(
                     onColor = onColor,
                     onClickTopic = {}
                 ) {
-                    OptionsFiltersByDate(onColor = onColor) { value: TypeFilterDate ->
+                    OptionsFiltersByDate(onColor = onColor) { value: TypeFilterDateEnum ->
                         log.debug("typeFilter - $value")
+                        viewModel.setActiveFilterByDate(value)
                     }
                 }
             }
@@ -192,7 +192,7 @@ fun TopicFilter(
 @Composable
 fun OptionsFiltersByDate(
     onColor: Color,
-    onClickFilterDate: (typeFilterDate: TypeFilterDate) -> Unit,
+    onClickFilterDate: (typeFilterDate: TypeFilterDateEnum) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -204,7 +204,7 @@ fun OptionsFiltersByDate(
             onColor = onColor,
             isLastItem = false,
             onClickFilterDate = {
-                onClickFilterDate(TypeFilterDate.WEEK)
+                onClickFilterDate(TypeFilterDateEnum.WEEK)
             },
         )
         TextFilterByDate(
@@ -212,7 +212,7 @@ fun OptionsFiltersByDate(
             onColor = onColor,
             isLastItem = false,
             onClickFilterDate = {
-                onClickFilterDate(TypeFilterDate.MONTH)
+                onClickFilterDate(TypeFilterDateEnum.MONTH)
             },
         )
         TextFilterByDate(
@@ -220,7 +220,7 @@ fun OptionsFiltersByDate(
             onColor = onColor,
             isLastItem = false,
             onClickFilterDate = {
-                onClickFilterDate(TypeFilterDate.CURRENT_MONTH)
+                onClickFilterDate(TypeFilterDateEnum.CURRENT_MONTH)
             },
         )
         TextFilterByDate(
@@ -228,7 +228,7 @@ fun OptionsFiltersByDate(
             onColor = onColor,
             isLastItem = false,
             onClickFilterDate = {
-                onClickFilterDate(TypeFilterDate.YEAR)
+                onClickFilterDate(TypeFilterDateEnum.YEAR)
             },
         )
         TextFilterByDate(
@@ -236,7 +236,7 @@ fun OptionsFiltersByDate(
             onColor = onColor,
             isLastItem = false,
             onClickFilterDate = {
-                onClickFilterDate(TypeFilterDate.PICKED_DATE)
+                onClickFilterDate(TypeFilterDateEnum.PICKED_DATE)
             },
         )
         TextFilterByDate(
@@ -245,7 +245,7 @@ fun OptionsFiltersByDate(
             modifier = Modifier,
             isLastItem = true,
             onClickFilterDate = {
-                onClickFilterDate(TypeFilterDate.RANGE_DATE)
+                onClickFilterDate(TypeFilterDateEnum.RANGE_DATE)
             },
         )
     }
@@ -265,11 +265,11 @@ fun TextFilterByDate(
     filterName: String = "Últimos 7 dias",
     onColor: Color,
     isLastItem: Boolean,
-    onClickFilterDate: (typeFilterDate: TypeFilterDate) -> Unit,
+    onClickFilterDate: (typeFilterDate: TypeFilterDateEnum) -> Unit,
 ) {
     Column(
         Modifier.clickableRoundedEffect {
-            onClickFilterDate(TypeFilterDate.PICKED_DATE)
+            onClickFilterDate(TypeFilterDateEnum.PICKED_DATE)
         },
     ) {
         Text(

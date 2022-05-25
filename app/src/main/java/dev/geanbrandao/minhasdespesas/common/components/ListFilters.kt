@@ -57,10 +57,10 @@ fun ListFilters(
                             item.hashCode()
                         },
                     ) { _, item ->
-                        ItemFilter(item = item) {
-                            onClickItemFilter(1)
-                            data.remove(item)
-                        }
+//                        ItemFilter(item = item) {
+//                            onClickItemFilter(1)
+//                            data.remove(item)
+//                        }
                     }
                 }
             }
@@ -76,7 +76,7 @@ fun FiltersButton(
 ) {
     if (activeFiltersSize < 1) {
         TextDefault(
-            text = stringResource(id = R.string.warnig_message_select_some_filter_here),
+            text = stringResource(id = R.string.warning_message_select_some_filter_here),
             textColor = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .padding(all = PaddingDefault)

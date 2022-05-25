@@ -167,13 +167,14 @@
 
     <!-- COMPONENTS -->
     <!-- COMPONENTS HEADER FILTERS -->
-    <string name="componet_header_filters_text_title">Filtros ativos</string>
+    <string name="component_header_filters_text_title">Filtros ativos</string>
     <string name="component_header_filters_text_warnign_filter_by_date">Nenhum filtro por data selecionado</string>
     <string name="component_header_filters_text_warnign_filter_by_categories">Nenhum filtro por categoria selecionado</string>
     <!-- COMPONENTS -->
 
     <!--    -->
-    <string name="warnig_message_select_some_filter_here">Selecione um filtro aqui</string>
+    <string name="warning_message_select_some_filter_here">Selecione um filtro aqui</string>
+    <string name="warning_message_no_filter_selected">Nenhum filtro selecionado</string>
     <!---->
     <!-- PREFERENCES THEME -->
     <string name="preferences_theme_label">Temas</string>

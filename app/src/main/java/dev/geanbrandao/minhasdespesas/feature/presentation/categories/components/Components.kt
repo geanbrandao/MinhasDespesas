@@ -2,13 +2,10 @@ package dev.geanbrandao.minhasdespesas.feature.presentation.categories.component
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,7 +16,6 @@ import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,12 +30,11 @@ import dev.geanbrandao.minhasdespesas.common.components.dividers.DividerInput
 import dev.geanbrandao.minhasdespesas.common.components.icons.IconDefault
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerOne
 import dev.geanbrandao.minhasdespesas.common.components.texts.TextDefault
-import dev.geanbrandao.minhasdespesas.common.utils.extensions.clickableRoundedEffect
+import dev.geanbrandao.minhasdespesas.common.utils.extensions.clickableNoRippleEffect
 import dev.geanbrandao.minhasdespesas.common.utils.extensions.getIconIdFromString
 import dev.geanbrandao.minhasdespesas.common.utils.isLastItem
 import dev.geanbrandao.minhasdespesas.core.database.db.CategoryDb
 import dev.geanbrandao.minhasdespesas.feature.presentation.categories.CategoryState
-import dev.geanbrandao.minhasdespesas.feature.presentation.common.DefaultState
 import dev.geanbrandao.minhasdespesas.ui.theme.CornersItemCategorySmall
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginFour
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginOne
@@ -57,7 +52,9 @@ fun CategoryItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clickableRoundedEffect{ }
+            .clickableNoRippleEffect{
+                // call the callback
+            }
     ) {
         Row(
             modifier = Modifier.padding(horizontal = PaddingHalf, vertical = PaddingHalf)

@@ -1,7 +1,9 @@
 package dev.geanbrandao.minhasdespesas.common.utils.extensions
 
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.time.temporal.TemporalAdjusters
 import java.util.*
 
 fun OffsetDateTime.toStringDateFormatted(): String {
@@ -31,3 +33,37 @@ fun OffsetDateTime.getDayName(): String =
 
 fun OffsetDateTime.getDayName3LettersName(): String =
     DateTimeFormatter.ofPattern("EEE", Locale.getDefault()).format(this)
+
+fun OffsetDateTime.startOfDay(): OffsetDateTime {
+    return OffsetDateTime.of(
+        this.year,
+        this.monthValue,
+        this.dayOfMonth,
+        0,
+        0,
+        0,
+        0,
+        ZoneOffset.UTC
+    )
+}
+
+fun OffsetDateTime.endOfDay(): OffsetDateTime {
+    return OffsetDateTime.of(
+        this.year,
+        this.monthValue,
+        this.dayOfMonth,
+        23,
+        59,
+        59,
+        0,
+        ZoneOffset.UTC
+    )
+}
+
+fun OffsetDateTime.startOfMonth(): OffsetDateTime {
+    return this.with(month).with(TemporalAdjusters.firstDayOfMonth())
+}
+
+fun OffsetDateTime.endOfMonth(): OffsetDateTime {
+    return this.with(month).with(TemporalAdjusters.lastDayOfMonth())
+}

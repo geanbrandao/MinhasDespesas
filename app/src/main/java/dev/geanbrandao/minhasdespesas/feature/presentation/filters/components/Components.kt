@@ -18,7 +18,7 @@ import dev.geanbrandao.minhasdespesas.core.database.db.CategoryDb
 import dev.geanbrandao.minhasdespesas.feature.domain.model.ActiveFiltersSimpleModel
 import dev.geanbrandao.minhasdespesas.feature.presentation.categories.components.CategoryItem
 import dev.geanbrandao.minhasdespesas.feature.presentation.filters.states.FiltersState
-import dev.geanbrandao.minhasdespesas.ui.theme.MarginOne
+import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 
 @Composable
 fun ListSelectedFilters(
@@ -29,15 +29,15 @@ fun ListSelectedFilters(
     Box(modifier = modifier) {
         if (dataList.isEmpty()) {
             TextDefault(
-                text = stringResource(id = R.string.warnig_message_select_some_filter_here),
+                text = stringResource(id = R.string.warning_message_no_filter_selected),
                 textColor = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.align(alignment = Alignment.Center),
             )
         } else {
             Row {
                 LazyRow {
-                    itemsIndexed(dataList) { index: Int, item ->
-                        ItemFilter(item = item.name) {
+                    itemsIndexed(dataList) { index: Int, item: ActiveFiltersSimpleModel ->
+                        ItemFilter(item = item) {
                             onRemoveFilter(index)
                         }
                     }
@@ -55,7 +55,7 @@ fun ListCategoryOptions(
 ) {
     val dataList = state.dataList
     Column(
-        modifier = modifier.padding(horizontal = MarginOne)
+        modifier = modifier.padding(horizontal = PaddingDefault)
     ) {
         dataList.forEachIndexed { index, item ->
             CategoryItem(
