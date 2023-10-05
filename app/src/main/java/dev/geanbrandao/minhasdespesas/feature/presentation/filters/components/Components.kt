@@ -14,10 +14,10 @@ import androidx.compose.ui.res.stringResource
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.texts.TextDefault
 import dev.geanbrandao.minhasdespesas.common.utils.isLastItem
-import dev.geanbrandao.minhasdespesas.core.database.db.CategoryDb
+//import dev.geanbrandao.minhasdespesas.core.database.db.CategoryDb
 import dev.geanbrandao.minhasdespesas.feature.domain.model.ActiveFiltersSimpleModel
-import dev.geanbrandao.minhasdespesas.feature.presentation.categories.components.CategoryItem
-import dev.geanbrandao.minhasdespesas.feature.presentation.filters.states.FiltersState
+//import dev.geanbrandao.minhasdespesas.feature.presentation.categories.components.CategoryItem
+//import dev.geanbrandao.minhasdespesas.feature.presentation.filters.states.FiltersState
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 
 @Composable
@@ -47,23 +47,23 @@ fun ListSelectedFilters(
     }
 }
 
-@Composable
-fun ListCategoryOptions(
-    state: FiltersState,
-    onCheckedChangeListener: (isChecked: Boolean, categoryDb: CategoryDb) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val dataList = state.dataList
-    Column(
-        modifier = modifier.padding(horizontal = PaddingDefault)
-    ) {
-        dataList.forEachIndexed { index, item ->
-            CategoryItem(
-                item = item,
-                isLastItem = dataList.isLastItem(index = index)
-            ) { isChecked: Boolean ->
-                onCheckedChangeListener.invoke(isChecked, item)
-            }
-        }
-    }
-}
+//@Composable
+//fun ListCategoryOptions(
+//    state: FiltersState,
+//    onCheckedChangeListener: (isChecked: Boolean, categoryDb: CategoryDb) -> Unit,
+//    modifier: Modifier = Modifier,
+//) {
+//    val dataList = state.dataList
+//    Column(
+//        modifier = modifier.padding(horizontal = PaddingDefault)
+//    ) {
+//        dataList.forEachIndexed { index, item ->
+//            CategoryItem(
+//                item = item,
+//                isLastItem = dataList.isLastItem(index = index)
+//            ) { isChecked: Boolean ->
+//                onCheckedChangeListener.invoke(isChecked, item)
+//            }
+//        }
+//    }
+//}

@@ -37,4 +37,11 @@ sealed class NavBarItem(
         contentDescriptionId = R.string.nav_bar_item_content_description_charts,
         route = Screen.Charts.route,
     )
+
+    object SplitBill : NavBarItem(
+        labelId = R.string.nav_bar_item_label_split_bill,
+        iconId = R.drawable.ic_home,
+        contentDescriptionId = R.string.nav_bar_item_content_description_expenses,
+        route = Screen.SplitBill.route,
+    )
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Expenses Compose</string>
+    <string name="app_name">Minhas Despesas</string>
 
 <!-- CONTENT DESCRIPTION -->
     <string name="splashscreen_content_description_ic_home">Logo do app</string>
@@ -16,6 +16,7 @@
     <string name="nav_bar_item_label_add">Adicionar</string>
     <string name="nav_bar_item_label_profile">Perfil</string>
     <string name="nav_bar_item_label_charts">Gráficos</string>
+    <string name="nav_bar_item_label_split_bill">Conta</string>
 
     <string name="bottom_navigation_button_label_expenses">Despesas</string>
     <string name="bottom_navigation_button_labal_add_expense">Adicionar</string>
@@ -55,7 +56,10 @@
 
     <!-- DEFAULT VALUES | BUTTON -->
     <string name="button_default_text_save">Salvar</string>
+    <string name="button_default_text_add">Adicionar</string>
+    <string name="button_default_text_select">Selecionar</string>
     <string name="button_default_text_ok">O.k.</string>
+    <string name="button_default_text_ok2">Ok</string>
     <string name="button_text_default_cancel">Cancelar</string>
     <string name="button_text_default_apply">Aplicar</string>
     <string name="button_text_default_clean">Limpar</string>
@@ -134,6 +138,7 @@
     <!-- DIALOGS PICKER DATE -->
     <string name="dialog_picker_range_date_title_initial_date">Data inicial</string>
     <string name="dialog_picker_range_date_title_final_date">Data final</string>
+    <string name="dialog_picker_select_a_date">Selecione uma data</string>
     <string name="dialog_filter_pick_categories_text_title">Selecione as categorias</string>
 
     <!-- DIALOGS CONFIRMATION -->

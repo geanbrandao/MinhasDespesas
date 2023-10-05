@@ -3,7 +3,7 @@ package dev.geanbrandao.minhasdespesas.feature.presentation.filters.components
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,16 +29,16 @@ fun ItemFilter(
     item: ActiveFiltersSimpleModel,
     onClickItemFilter: () -> Unit,
 ) {
-    val categoryName = when (item.typeFilter) {
-        TypeFilterEnum.DATE -> item.date.orEmpty()
-        TypeFilterEnum.CATEGORY -> item.categoryDb?.name.orEmpty()
-    }
+//    val categoryName = when (item.typeFilter) {
+//        TypeFilterEnum.DATE -> item.date.orEmpty()
+//        TypeFilterEnum.CATEGORY -> item.categoryDb?.name.orEmpty()
+//    }
     Card(
         shape = RoundedCornerShape(size = ItemFilterCorners),
         modifier = Modifier
             .testTag(ITEM_FILTER_ROOT)
             .padding(end = MarginTwo),
-        backgroundColor = MaterialTheme.colorScheme.secondary,
+//        backgroundColor = MaterialTheme.colorScheme.secondary,
     ) {
         Row(
             modifier = Modifier
@@ -50,10 +50,10 @@ fun ItemFilter(
                 ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            TextDefault(
-                text = categoryName,
-                textColor = MaterialTheme.colorScheme.onSecondary,
-            )
+//            TextDefault(
+//                text = categoryName,
+//                textColor = MaterialTheme.colorScheme.onSecondary,
+//            )
             SpacerOne()
             IconDefault(
                 R.drawable.ic_close,
@@ -70,14 +70,14 @@ fun ItemFilter(
     }
 }
 
-@Preview("Item Filter")
-@Composable
-fun Preview() {
-    ItemFilter(
-        ActiveFiltersSimpleModel(
-            TypeFilterEnum.DATE,
-            "Mês atual",
-            null
-        )
-    ) {}
-}
+//@Preview("Item Filter")
+//@Composable
+//fun Preview() {
+//    ItemFilter(
+//        ActiveFiltersSimpleModel(
+//            TypeFilterEnum.DATE,
+//            "Mês atual",
+//            null
+//        )
+//    ) {}
+//}

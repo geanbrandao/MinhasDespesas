@@ -13,7 +13,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,7 +29,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.buttons.ButtonDefault
@@ -44,7 +45,7 @@ import dev.geanbrandao.minhasdespesas.common.components.texts.TextLabelInput
 import dev.geanbrandao.minhasdespesas.common.components.toolbar.AppToolbar
 import dev.geanbrandao.minhasdespesas.common.utils.InputHandle.formatValueAsMoney
 import dev.geanbrandao.minhasdespesas.common.utils.extensions.clickableRoundedEffect
-import dev.geanbrandao.minhasdespesas.feature.domain.model.SelectedCategoriesArg
+//import dev.geanbrandao.minhasdespesas.feature.domain.model.SelectedCategoriesArg
 import dev.geanbrandao.minhasdespesas.feature.presentation.add.components.ViewCalendarDate
 import dev.geanbrandao.minhasdespesas.feature.presentation.add.components.ViewCategoriesList
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
@@ -59,11 +60,12 @@ import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionState
 import java.time.LocalDate
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AddScreen(
     navHostController: NavHostController,
-    viewModel: AddScreenViewModel = hiltViewModel()
+    viewModel: AddScreenViewModel = koinViewModel()
 ) {
     val initialMonetaryValue = formatValueAsMoney(0.toString())
 
@@ -145,11 +147,11 @@ fun AddScreen(
             )
             SpacerFour()
             ViewCategoriesList(data = list, onClick = {
-                navHostController.navigateWithArgument(
-                    Screen.Categories.route,
-                    keyArg = "SELECTED_CATEGORIES",
-                    SelectedCategoriesArg(viewModel.getSelectedCategories())
-                )
+//                navHostController.navigateWithArgument(
+//                    Screen.Categories.route,
+//                    keyArg = "SELECTED_CATEGORIES",
+//                    SelectedCategoriesArg(viewModel.getSelectedCategories())
+//                )
             })
             list.toCollection(arrayListOf())
             SpacerFour()
@@ -214,11 +216,12 @@ fun <T : SelectionState> CustomDay(
         modifier = modifier
             .aspectRatio(1f)
             .padding(2.dp),
-        elevation = if (state.isFromCurrentMonth) 4.dp else 0.dp,
-        backgroundColor = MaterialTheme.colorScheme.surface,
+        elevation = CardDefaults.cardElevation(),
+//        if (state.isFromCurrentMonth) CardDefaults.cardElevation() else 0.dp,
+//        backgroundColor = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(cornerSize.value),
         border = if (state.isCurrentDay) BorderStroke(1.5.dp, currentDayColor) else null,
-        contentColor = if (isSelected) selectionColor else MaterialTheme.colorScheme.onSurface
+//        contentColor = if (isSelected) selectionColor else MaterialTheme.colorScheme.onSurface
     ) {
         Box(
             modifier = Modifier.clickableRoundedEffect {

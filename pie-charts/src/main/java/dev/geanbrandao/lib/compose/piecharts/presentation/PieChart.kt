@@ -3,7 +3,6 @@ package dev.geanbrandao.lib.compose.piecharts.presentation
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember

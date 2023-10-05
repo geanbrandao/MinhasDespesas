@@ -20,6 +20,7 @@ import dev.geanbrandao.minhasdespesas.ui.theme.NavBarHeightSize
 val items = listOf(
     NavBarItem.Expenses,
     NavBarItem.Charts,
+    NavBarItem.SplitBill,
     NavBarItem.Profile,
 )
 

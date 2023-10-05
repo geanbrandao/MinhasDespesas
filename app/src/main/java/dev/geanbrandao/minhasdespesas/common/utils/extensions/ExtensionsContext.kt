@@ -2,110 +2,109 @@ package dev.geanbrandao.minhasdespesas.common.utils.extensions
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import dev.geanbrandao.minhasdespesas.R
-import dev.geanbrandao.minhasdespesas.core.database.db.CategoryDb
+import dev.geanbrandao.minhasdespesas.data.entity.CategoryEntity
 
 fun Context.createDefaultCategories() = listOf(
-    CategoryDb(
+    CategoryEntity(
         0,
         getString(R.string.text_default_category_home),
         "ic_house",
         false,
     ),
-    CategoryDb(
-        1,
+    CategoryEntity(
+        0,
         getString(R.string.text_default_category_education),
         "ic_education",
         false,
     ),
-    CategoryDb(
-        2,
+    CategoryEntity(
+        0,
         getString(R.string.text_default_category_eletronics),
         "ic_computer",
         false,
     ),
-    CategoryDb(
-        3,
+    CategoryEntity(
+        0,
         getString(R.string.text_default_category_others),
         "ic_others",
         false,
     ),
-    CategoryDb(
-        4,
+    CategoryEntity(
+        0,
         getString(R.string.text_default_category_restaurant),
         "ic_restaurant",
         false,
     ),
-    CategoryDb(
-        5,
+    CategoryEntity(
+        0,
         getString(R.string.text_default_category_health),
         "ic_healing",
         false,
     ),
-    CategoryDb(
-        6,
+    CategoryEntity(
+        0,
         getString(R.string.text_default_category_services),
         "ic_service",
         false,
     ),
-    CategoryDb(
-        7,
+    CategoryEntity(
+        0,
         getString(R.string.text_default_category_supermarket),
         "ic_supermarket",
         false,
     ),
-    CategoryDb(
-        8,
+    CategoryEntity(
+        0,
         getString(R.string.text_default_category_transport),
         "ic_bus",
         false,
     ),
-    CategoryDb(
-        9,
+    CategoryEntity(
+        0,
         getString(R.string.text_default_category_clothing),
         "ic_store",
         false,
     ),
-    CategoryDb(
-        10,
+    CategoryEntity(
+        0,
         getString(R.string.text_default_category_travel),
         "ic_plane",
         false,
     ),
-    CategoryDb(
-        11,
+    CategoryEntity(
+        0,
         getString(R.string.text_default_category_credit),
         "ic_credit_card",
         false,
     ),
-    CategoryDb(
-        12,
+    CategoryEntity(
+        0,
         getString(R.string.text_default_category_debit),
         "ic_debit_card",
         false,
     ),
-    CategoryDb(
-        13,
+    CategoryEntity(
+        0,
         getString(R.string.text_default_category_money),
         "ic_money",
         false,
     ),
-    CategoryDb(
-        14,
+    CategoryEntity(
+        0,
         getString(R.string.text_default_category_recreation),
         "ic_recreation",
         false,
     ),
-    CategoryDb(
-        15,
+    CategoryEntity(
+        0,
         getString(R.string.text_default_category_church),
         "ic_church",
         false,
     ),
-    CategoryDb(
-        16,
+    CategoryEntity(
+        0,
         getString(R.string.text_default_category_gym),
         "ic_gym",
         false,
@@ -132,3 +131,4 @@ fun Context.getIcon(iconId: Int, colorId: Int): Drawable? {
         return null
     }
 }
+

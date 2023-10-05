@@ -3,6 +3,9 @@ const val kotlinVersion = "1.6.10"
 const val junitVersion = "4.13.2"
 const val hiltVersion = "2.41"
 const val calendarCompose = "0.3.0"
+const val minSdk = 21
+const val targetSdk = 33
+const val compileSdk = 34
 
 object Androidx {
     const val core = "1.7.0"

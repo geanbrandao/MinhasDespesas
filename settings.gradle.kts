@@ -9,3 +9,6 @@ dependencyResolutionManagement {
 rootProject.name = "My Expenses Compose"
 include (":app")
 include(":pie-charts")
+include(":feature-split-bill")
+include(":common")
+include(":local-preferences")

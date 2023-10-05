@@ -4,11 +4,10 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 21
-        targetSdk = 31
+        minSdk = libs.versions.minSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -37,30 +36,34 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = composeVersion
-        kotlinCompilerVersion = kotlinVersion
+        kotlinCompilerExtensionVersion = libs.versions.composeVersion.get()
     }
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    namespace = "dev.geanbrandao.lib.compose.piecharts"
 }
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:${Androidx.core}")
-    implementation("androidx.appcompat:appcompat:${Androidx.appcompat}")
-    implementation("com.google.android.material:material:${Google.material}")
+    implementation(libs.core.ktx)
+    implementation(libs.appcompat)
+//    implementation("com.google.android.material:material:${Google.material}")
 
     // compose
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    implementation("androidx.activity:activity-compose:${Androidx.activityCompose}")
-    implementation("androidx.compose.material:material:$composeVersion")
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.animation.core.android)
+    implementation(libs.androidx.foundation)
+//    implementation("androidx.compose.material:material:$composeVersion")
 
-    testImplementation("junit:junit:$junitVersion")
-    androidTestImplementation("androidx.test.ext:junit:${Androidx.Test.junit}")
-    androidTestImplementation("androidx.test.espresso:espresso-core:${Androidx.Test.espresso}")
-    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
+    // Compose preview
+    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling)
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
 }
