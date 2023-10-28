@@ -45,7 +45,7 @@ fun TextAction(
     modifier: Modifier = Modifier,
 ) {
     Text(
-        text = text.uppercase(),
+        text = text,
         style = AppTypography.bodyMedium,
         color = color,
         fontWeight = FontWeight.Bold,
@@ -96,12 +96,12 @@ fun TextToolbar(
 @Composable
 fun TextButtonDefault(
     text: String,
-    textColor: Color = MaterialTheme.colorScheme.onPrimary
+    color: Color = MaterialTheme.colorScheme.onPrimary
 ) {
     Text(
-        text = text.uppercase(),
+        text = text,
         style = AppTypography.bodyMedium,
-//        color = textColor,
+        color = color,
     )
 }
 

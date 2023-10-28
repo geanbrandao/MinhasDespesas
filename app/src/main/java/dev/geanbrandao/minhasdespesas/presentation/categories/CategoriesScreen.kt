@@ -43,13 +43,17 @@ import br.dev.geanbrandao.common.presentation.resources.PaddingThree
 import br.dev.geanbrandao.common.presentation.resources.PaddingTwo
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.domain.model.Category
+import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.arguments.SelectedCategoriesArg
+import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Key
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CategoriesScreen(
     navHostController: NavHostController,
+    onNavigateBackToAddExpense: (argument: String?) -> Unit,
     viewModel: CategoriesViewModel = koinViewModel()
 ) {
+
     val categories = viewModel.categories.collectAsState()
 
     CategoriesScreenView(
@@ -63,6 +67,17 @@ fun CategoriesScreen(
         },
         onCategoryEdit = { id: Long ->
 
+        },
+        onCheckChangeListener = { isChecked: Boolean, item: Category ->
+            viewModel.updateSelectedCategories(categoryId = item.categoryId, isChecked = isChecked)
+        },
+        onNavigateBackToAddExpense = {
+            val argument: String? = categories.value // "1,2" ou null
+                .filter { it.isChecked }
+                .map { it.categoryId }
+                .takeIf { it.isNotEmpty() }
+                ?.joinToString(",")
+            onNavigateBackToAddExpense(argument)
         }
     )
 }
@@ -74,6 +89,8 @@ private fun CategoriesScreenView(
     createNewCategory: (categoryName: String) -> Unit,
     onCategoryRemoved: (categoryId: Long) -> Unit,
     onCategoryEdit: (categoryId: Long) -> Unit,
+    onCheckChangeListener: (isChecked: Boolean, item: Category) -> Unit,
+    onNavigateBackToAddExpense: () -> Unit,
 ) {
     BaseScreen(
         modifier = Modifier
@@ -87,13 +104,14 @@ private fun CategoriesScreenView(
         },
         content = {
             CreateCategoryView(createNewCategory)
-            ListCategoryView(
+            ListCategoryDefaultView(
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = PaddingTwo),
-                listCategoryType = ListCategoryType.Default(categories),
+                list = categories,
                 onDeleteClicked = onCategoryRemoved,
-                onEditClicked = onCategoryEdit
+                onEditClicked = onCategoryEdit,
+                onCheckChangeListener = onCheckChangeListener
             )
         },
         footer = {
@@ -104,9 +122,7 @@ private fun CategoriesScreenView(
                     end = PaddingTwo,
                     bottom = PaddingThree
                 ),
-                onClick = {
-
-                }
+                onClick = onNavigateBackToAddExpense
             )
         }
     )
@@ -230,6 +246,12 @@ fun CategoriesScreenViewPreview() {
 
         },
         onCategoryEdit = {
+
+        },
+        onCheckChangeListener = { isChecked: Boolean, item: Category ->
+
+        },
+        onNavigateBackToAddExpense = {
 
         }
     )

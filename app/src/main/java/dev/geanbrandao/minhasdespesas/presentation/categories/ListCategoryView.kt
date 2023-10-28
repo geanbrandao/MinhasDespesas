@@ -49,36 +49,36 @@ sealed class ListCategoryType(val type: ListCategoryEnum) {
     data class Default(val list: List<Category>) : ListCategoryType(DEFAULT)
 }
 
+//@Composable
+//fun ListCategoryView(
+//    listCategoryType: ListCategoryType,
+//    modifier: Modifier = Modifier,
+//    onClick: () -> Unit = {},
+//    onDeleteClicked: (id: Long) -> Unit = {},
+//    onEditClicked: (id: Long) -> Unit = {},
+//) {
+//    when (listCategoryType) {
+//        is ListCategoryType.Default -> {
+//            ListCategoryDefault(
+//                list = listCategoryType.list,
+//                modifier = modifier,
+//                onDeleteClicked = onDeleteClicked,
+//                onEditClicked = onEditClicked,
+//            )
+//        }
+//
+//        is ListCategoryType.Small -> {
+//            ListCategorySmall(
+//                list = listCategoryType.list,
+//                modifier = modifier
+//            )
+//        }
+//    }
+//
+//}
+
 @Composable
-fun ListCategoryView(
-    listCategoryType: ListCategoryType,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit = {},
-    onDeleteClicked: (id: Long) -> Unit = {},
-    onEditClicked: (id: Long) -> Unit = {},
-) {
-    when (listCategoryType) {
-        is ListCategoryType.Default -> {
-            ListCategoryDefault(
-                list = listCategoryType.list,
-                modifier = modifier,
-                onDeleteClicked = onDeleteClicked,
-                onEditClicked = onEditClicked,
-            )
-        }
-
-        is ListCategoryType.Small -> {
-            ListCategorySmall(
-                list = listCategoryType.list,
-                modifier = modifier
-            )
-        }
-    }
-
-}
-
-@Composable
-private fun ListCategorySmall(
+fun ListCategorySmallView(
     list: List<Category>,
     modifier: Modifier = Modifier,
 ) {
@@ -92,38 +92,45 @@ private fun ListCategorySmall(
                 item.hashCode()
             }
         ) { _: Int, item ->
-            ItemCategoryView(item = item, itemCategoryType = ItemCategoryType.Small)
+            ItemCategorySmallView(item = item)
         }
     }
 }
 
 @Composable
-private fun ListCategoryDefault(
+fun ListCategoryDefaultView(
     list: List<Category>,
     onDeleteClicked: (id: Long) -> Unit,
     onEditClicked: (id: Long) -> Unit,
+    onCheckChangeListener: (isChecked: Boolean, item: Category) -> Unit,
     modifier: Modifier = Modifier,
+    isSwipeEnabled: Boolean = true,
 ) {
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(bottom = MarginFour),
     ) {
         item {
-            SpacerThree()
+            if (isSwipeEnabled) {
+                SpacerThree()
+            }
         }
         itemsIndexed(list) { index, item ->
-            if (item.canRemove) {
+            if (item.canRemove && isSwipeEnabled) {
                 SwipeTo(
                     isLastItem = index == list.lastIndex,
                     item = item,
                     onDeleteClicked = onDeleteClicked,
                     onEditClicked = onEditClicked,
+                    onCheckChangeListener = onCheckChangeListener,
                 )
             } else {
-                ItemCategoryView(
+                ItemCategoryDefaultView(
                     item = item,
                     isLastItem = index == list.lastIndex,
-                    itemCategoryType = ItemCategoryType.Default,
+                    onCheckChangeListener = { isChecked: Boolean ->
+                        onCheckChangeListener(isChecked, item)
+                    }
                 )
             }
         }
@@ -137,6 +144,7 @@ private fun SwipeTo(
     isLastItem: Boolean,
     onDeleteClicked: (id: Long) -> Unit,
     onEditClicked: (id: Long) -> Unit,
+    onCheckChangeListener: (isChecked: Boolean, item: Category) -> Unit,
 ) {
 
     val density = LocalDensity.current
@@ -164,10 +172,12 @@ private fun SwipeTo(
             }
         },
         dismissContent = {
-            ItemCategoryView(
+            ItemCategoryDefaultView(
                 item = item,
                 isLastItem = isLastItem,
-                itemCategoryType = ItemCategoryType.Default,
+                onCheckChangeListener = { isChecked: Boolean ->
+                    onCheckChangeListener(isChecked, item)
+                }
             )
         },
         modifier = Modifier.fillMaxWidth(),
@@ -181,10 +191,21 @@ private fun ListCategoryViewPreview() {
     val list = createCategoryHelper()
 
     Column {
-        ListCategoryView(
-            listCategoryType = ListCategoryType.Small(list)
+        ListCategorySmallView(
+            list = list
         )
-        ListCategoryView(listCategoryType = ListCategoryType.Default(list))
+        ListCategoryDefaultView(
+            list = list,
+            onDeleteClicked = {
+
+            },
+            onEditClicked = {
+
+            },
+            onCheckChangeListener = { isChecked: Boolean, item: Category ->
+                
+            }
+        )
     }
 }
 

@@ -35,4 +35,17 @@ class HomeViewModel(
                 }
         }
     }
+
+    fun removeExpense(expenseId: Long) {
+        viewModelScope.launch {
+            useCases.removeExpense(expenseId = expenseId)
+                .catch {
+                    throw Exception(it)
+                }.collect { isRemoved ->
+                    if (isRemoved) {
+                        getExpenses()
+                    }
+                }
+        }
+    }
 }

@@ -113,6 +113,8 @@
     <string name="fragment_filters_title_toolbar">Escolher filtros</string>
     <string name="fragment_filters_text_label_filter_by_date">Filtrar por data</string>
     <string name="fragment_filters_text_label_filter_by_categories">Filtrar por categorias</string>
+    <string name="fragment_filters_button_apply_filters">Aplicar filtros</string>
+    <string name="fragment_filters_button_cancel">Cancelar</string>
 
     <!-- SETTINGS FRAGMENT -->
     <string name="fragment_settings_title_toolbar">Configurações</string>

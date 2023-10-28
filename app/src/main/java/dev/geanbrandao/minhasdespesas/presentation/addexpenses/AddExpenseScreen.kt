@@ -18,6 +18,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import br.dev.geanbrandao.common.domain.getCurrentTimeInMillis
 import br.dev.geanbrandao.common.presentation.BaseScreen
 import br.dev.geanbrandao.common.presentation.components.RowFieldView
 import br.dev.geanbrandao.common.presentation.components.button.ButtonType
@@ -54,72 +56,76 @@ import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerFill
 import dev.geanbrandao.minhasdespesas.common.utils.extensions.toStringDateFormatted
 import dev.geanbrandao.minhasdespesas.domain.model.Category
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
-import dev.geanbrandao.minhasdespesas.presentation.categories.CategoryItem
-import dev.geanbrandao.minhasdespesas.presentation.categories.ListCategoryType
-import dev.geanbrandao.minhasdespesas.presentation.categories.ListCategoryView
+import dev.geanbrandao.minhasdespesas.feature.presentation.splashscreen.util.navigateAndRemoveFromBackStack
+import dev.geanbrandao.minhasdespesas.presentation.categories.ListCategorySmallView
 import java.time.Instant
 import java.time.ZoneId
+import java.util.Locale
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AddExpenseScreen(
     navHostController: NavHostController,
+    argument: String?,
+    onNavigateToCategories: (selectedCategories: String?) -> Unit,
     viewModel: AddExpenseViewModel = koinViewModel(),
 ) {
-    // aqui vao ficar os dados da viewModel
-    val categories = viewModel.categories.collectAsState()
+//    LaunchedEffect(Unit) {
+//        viewModel.getCategories()
+//    }
+    println("MEULOG - $viewModel")
+    val uiState = viewModel.uiState.collectAsState()
+
+    val insertOperationState = viewModel.insertOperationState.collectAsState()
+
+    when(insertOperationState.value) {
+        is OperationState.Error -> {
+
+        }
+        is OperationState.Loading -> {
+
+        }
+        is OperationState.Success -> {
+            navHostController.navigateAndRemoveFromBackStack(
+                destinationRoute = Screen.Expenses.route,
+                currentRoute = Screen.Add.route
+            )
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.updateSelectedCategories(argument)
+    }
+
     AddExpenseScreenView(
         navHostController = navHostController,
-        selectedCategories = categories.value,
+        uiState = uiState.value,
+        onUiStateIsUpdated = {
+            viewModel.updateUiState(it)
+        },
+        onAddClick = {
+            viewModel.addExpense()
+        },
+        onNavigateToCategories = {
+            val arg = uiState.value.selectedCategories
+                .map { it.categoryId }
+                .takeIf { it.isNotEmpty() }
+                ?.joinToString(",")
+            onNavigateToCategories(arg) // todo subir essa lógica de navegação para o navGraph
+        },
     )
 }
-
-
-@Composable
-fun createCategoryHelper() = listOf(
-    CategoryItem(
-        0,
-        "Casa",
-        painterResource(id = R.drawable.ic_house),
-        false,
-    ),
-    CategoryItem(
-        1,
-        "Educação",
-        painterResource(id = R.drawable.ic_education),
-        false,
-    ),
-    CategoryItem(
-        2,
-        "Eletrônicos",
-        painterResource(id = R.drawable.ic_computer),
-        false,
-    ),
-    CategoryItem(
-        3,
-        "Outros",
-        painterResource(id = R.drawable.ic_others),
-        false,
-    ),
-    CategoryItem(
-        4,
-        "Restaurante",
-        painterResource(id = R.drawable.ic_restaurant),
-        false,
-    ),
-)
 
 @Composable
 private fun AddExpenseScreenView(
     navHostController: NavHostController,
-    selectedCategories: List<Category> = emptyList(),
+    uiState: AddExpenseScreenState,
+    onUiStateIsUpdated: (uiState: AddExpenseScreenState) -> Unit,
+    onAddClick: () -> Unit,
+    onNavigateToCategories: ()-> Unit,
 ) {
-    val context = LocalContext.current
-
-//    val selectedCategories = createCategoryHelper() // todo viewModel responsibility
-//    val selectedCategories = listOf<CategoryItem>() // todo viewModel responsibility
-    val isAddEnabled = remember { mutableStateOf(true) } // todo viewModel responsibility
     val scrollState = rememberScrollState()
+
     BaseScreen(
         header = {
             ToolbarView(
@@ -136,30 +142,45 @@ private fun AddExpenseScreenView(
                     .verticalScroll(scrollState)
             ) {
                 SpacerThree()
-                ExpenseValueField()
+                ExpenseValueField(
+                    amount = uiState.amount,
+                    onTextChange = { text: String ->
+                        onUiStateIsUpdated(uiState.copy(amount = text))
+                    }
+                )
                 SpacerTwo()
-                ExpenseNameField()
+                ExpenseNameField(
+                    name = uiState.name,
+                    onTextChange = { text: String ->
+                        onUiStateIsUpdated(uiState.copy(name = text))
+                    }
+                )
                 SpacerFour()
                 ExpenseDateField(
-                    // todo não existe data padrão ainda.
-                    onSelectedDate = { dateMillis ->
-
+                    selectedDate = uiState.selectedDate,
+                    onSelectDate = { dateMillis ->
+                        dateMillis?.let {
+                            onUiStateIsUpdated(uiState.copy(selectedDate = dateMillis))
+                        }
                     },
                 )
                 SpacerFour()
-                ExpenseDescriptionField()
-                SpacerFour()
-                ExpenseCategoriesField(
-                    selectedCategories = selectedCategories,
-                    openCategoryScreens = {
-                        navHostController.navigate(Screen.Categories.route)
+                ExpenseDescriptionField(
+                    description = uiState.description,
+                    onTextChange = { text: String ->
+                        onUiStateIsUpdated(uiState.copy(description = text))
                     }
                 )
-                SpacerFill(modifier = Modifier.weight(1f))
+                SpacerFour()
+                ExpenseCategoriesField(
+                    selectedCategories = uiState.selectedCategories,
+                    openCategoryScreens = onNavigateToCategories
+                )
+                SpacerFill(modifier = Modifier.weight(weight = 1f))
                 ButtonView(
                     text = stringResource(id = R.string.button_default_text_add),
-                    isEnabled = isAddEnabled.value,
-                    onClick = {},
+                    isEnabled = uiState.isNextButtonEnabled,
+                    onClick = onAddClick,
                     modifier = Modifier.padding(top = PaddingThree)
                 )
                 SpacerFour()
@@ -169,10 +190,15 @@ private fun AddExpenseScreenView(
 }
 
 @Composable
-fun ExpenseValueField() {
+fun ExpenseValueField(
+    amount: String,
+    onTextChange: (text: String) -> Unit,
+) {
     val inputState = InputViewState(
         textLabel = stringResource(id = R.string.fragment_add_edit_expense_label_input_value),
-        textInput = "0,00",
+        textInput = amount,
+//        selection = amount.length,
+        onTextChange = onTextChange,
     )
     val inputData = InputViewData(
         leadingIcon = painterResource(id = R.drawable.ic_money),
@@ -187,9 +213,15 @@ fun ExpenseValueField() {
 }
 
 @Composable
-fun ExpenseNameField() {
+fun ExpenseNameField(
+    name: String,
+    onTextChange: (text: String) -> Unit,
+) {
     val inputState = InputViewState(
         textLabel = stringResource(id = R.string.fragment_add_edit_expense_label_input_name),
+        textInput = name,
+//        selection = name.length,
+        onTextChange = onTextChange,
     )
     val inputData = InputViewData(
         leadingIcon = painterResource(id = R.drawable.ic_text),
@@ -204,9 +236,15 @@ fun ExpenseNameField() {
 }
 
 @Composable
-fun ExpenseDescriptionField() {
+fun ExpenseDescriptionField(
+    description: String,
+    onTextChange: (text: String) -> Unit = {},
+) {
     val inputState = InputViewState(
         textLabel = stringResource(id = R.string.fragment_add_edit_expense_label_input_description),
+        textInput = description,
+//        selection = description.length,
+        onTextChange = onTextChange,
     )
     val inputData = InputViewData()
     InputView(
@@ -220,7 +258,8 @@ fun ExpenseDescriptionField() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpenseDateField(
-    onSelectedDate: (timeMillis: Long?) -> Unit,
+    selectedDate: Long,
+    onSelectDate: (timeMillis: Long?) -> Unit,
 ) {
     val defaultLocale = LocalConfiguration.current.locales[0]
     val isPickerVisible = remember { mutableStateOf(false) }
@@ -230,7 +269,13 @@ fun ExpenseDateField(
     val selectDateText = stringResource(id = R.string.dialog_picker_select_a_date)
     val dateVerbose: MutableState<String?> = remember { mutableStateOf(selectDateText) }
 
-
+    // seleciona a data atual
+    datePickerState.selectedDateMillis = selectedDate
+    dateVerbose.value = formatVerboseDateMillis(
+        dateFormatter = dateFormatter,
+        defaultLocale = defaultLocale,
+        dateMillis = selectedDate,
+    )
 
     val color = MaterialTheme.colorScheme.onBackground
     RowFieldView(
@@ -268,13 +313,13 @@ fun ExpenseDateField(
         onDismiss = {
             isPickerVisible.value = false
         },
-        onSelectedDate = {
+        onSelectDate = {
             dateVerbose.value = formatVerboseDateMillis(
                 dateFormatter = dateFormatter,
                 defaultLocale = defaultLocale,
                 dateMillis = it
             )
-            onSelectedDate(it)
+            onSelectDate(it)
         }
     )
 }
@@ -291,12 +336,11 @@ fun ExpenseCategoriesField(
         },
         content = {
             if (selectedCategories.isNotEmpty()) { // selected categories
-                ListCategoryView(
-                    listCategoryType = ListCategoryType.Small(list = selectedCategories),
+                ListCategorySmallView(
+                    list = selectedCategories,
                     modifier = Modifier
                         .weight(1f)
                         .padding(horizontal = PaddingOne),
-                    onClick = openCategoryScreens
                 )
             } else { // label
                 TextDefault(
@@ -320,8 +364,8 @@ fun ExpenseCategoriesField(
 
 @OptIn(ExperimentalMaterial3Api::class)
 private fun formatVerboseDateMillis(
-    dateFormatter: DatePickerFormatter,
-    defaultLocale: java.util.Locale,
+    dateFormatter: DatePickerFormatter, // precisa usar esse cara para pegar a data correta
+    defaultLocale: Locale,
     dateMillis: Long?,
 ) = dateFormatter.formatDate(
     dateMillis = dateMillis,
@@ -337,7 +381,7 @@ fun ExpenseDatePicker(
     datePickerState: DatePickerState,
     dateFormatter: DatePickerFormatter,
     onDismiss: () -> Unit,
-    onSelectedDate: (timeMillis: Long?) -> Unit,
+    onSelectDate: (timeMillis: Long?) -> Unit,
 ) {
     val context = LocalContext.current
     val toastMessage = stringResource(id = R.string.dialog_picker_select_a_date)
@@ -350,9 +394,10 @@ fun ExpenseDatePicker(
                     buttonType = ButtonType.Action
                 ) {
                     datePickerState.selectedDateMillis?.let {
-                        onSelectedDate(it)
+                        onSelectDate(it)
                         onDismiss()
                     } ?: run {
+//                        datePickerState.
                         Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -375,5 +420,27 @@ fun getFormattedDateFromMilli(date: Long): String {
 @Preview
 @Composable
 fun AddExpenseScreenViewPreview() {
-    AddExpenseScreenView(navHostController = rememberNavController())
+    AddExpenseScreenView(
+        navHostController = rememberNavController(),
+        uiState = AddExpenseScreenState(
+            amount = "32,55",
+            name = "Maça",
+            selectedDate = getCurrentTimeInMillis(),
+            description = "Aquele negocio lá",
+            selectedCategories = listOf(Category(
+                categoryId = 1,
+                name = "teste",
+                icon = "ic_tag",
+                canRemove = false,
+                isChecked = false
+            ))
+        ),
+        onUiStateIsUpdated = {
+
+        },
+        onAddClick = {
+
+        },
+        onNavigateToCategories = {}
+    )
 }

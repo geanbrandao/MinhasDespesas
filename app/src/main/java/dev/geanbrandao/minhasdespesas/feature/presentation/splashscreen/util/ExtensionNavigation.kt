@@ -3,7 +3,6 @@ package dev.geanbrandao.minhasdespesas.feature.presentation.splashscreen.util
 import android.os.Parcelable
 import androidx.navigation.NavHostController
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
-import java.io.Serializable
 
 fun NavHostController.navigateAndRemoveFromBackStack(destinationRoute: String, currentRoute: String) {
     navigate(route = destinationRoute) {
@@ -23,9 +22,14 @@ fun NavHostController.navigateForNavBar(destinationRoute: String) {
     }
 }
 
-fun NavHostController.navigateWithArgument(destinationRoute: String, keyArg: String, arg: Serializable) {
+fun NavHostController.navigateWithArgument(
+    destinationRoute: String,
+    keyArg: String,
+    arg: Parcelable
+) {
     currentBackStackEntry?.arguments?.apply {
-        putSerializable(keyArg, arg)
+        putParcelable(keyArg, arg)
     }
-    navigate(route = destinationRoute)
+    navigate(route = destinationRoute) // todo errado
 }
+

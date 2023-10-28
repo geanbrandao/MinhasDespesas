@@ -9,4 +9,5 @@ data class Category(
     val name: String,
     val icon: String,
     val canRemove: Boolean = false,
+    val isChecked: Boolean = false,
 ) : Parcelable

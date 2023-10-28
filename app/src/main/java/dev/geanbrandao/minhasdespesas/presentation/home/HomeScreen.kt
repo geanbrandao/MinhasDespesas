@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import br.dev.geanbrandao.common.domain.MoneyUtils.formatToBrl
@@ -47,6 +48,7 @@ import dev.geanbrandao.minhasdespesas.domain.model.Expense
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginFour
+import kotlin.math.exp
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -58,8 +60,8 @@ fun HomeScreen(
     HomeScreenView(
         navHostController = navHostController,
         expenses = expenses.value,
-        onDeleteClicked = {
-
+        onDeleteClicked = { expenseId: Long ->
+            viewModel.removeExpense(expenseId)
         },
         onEditClicked = {
 
@@ -92,7 +94,7 @@ private fun HomeScreenView(
                         Spacer(modifier = Modifier.size(size = PaddingOne))
                     }
                     itemsIndexed(
-                        expenses,
+                        items = expenses,
                         key = { _, item ->
                             item.expenseId
                         }

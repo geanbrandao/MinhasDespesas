@@ -24,6 +24,10 @@ class MyExpensesRepositoryImpl(
         return dao.getExpenses()
     }
 
+    override suspend fun getExpense(expenseId: Long): ExpensesWithCategories {
+        return dao.getExpense(id = expenseId)
+    }
+
     override suspend fun getCategories(): List<CategoryEntity> {
         return dao.getCategories()
     }
@@ -42,5 +46,9 @@ class MyExpensesRepositoryImpl(
 
     override suspend fun removeCategory(categoryId: Long) {
         dao.deleteCategory(id = categoryId)
+    }
+
+    override suspend fun removeExpense(expenseId: Long) {
+        dao.deleteExpense(id = expenseId)
     }
 }

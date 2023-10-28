@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.dev.geanbrandao.common.domain.getIconIdFromString
+import br.dev.geanbrandao.common.domain.clickableNoRippleEffect
 import br.dev.geanbrandao.common.presentation.components.RowFieldView
 import br.dev.geanbrandao.common.presentation.components.checkbox.CheckboxView
 import br.dev.geanbrandao.common.presentation.components.icon.IconType
@@ -30,8 +30,9 @@ import br.dev.geanbrandao.common.presentation.components.text.TextSupporting
 import br.dev.geanbrandao.common.presentation.resources.CornersSmall
 import br.dev.geanbrandao.common.presentation.resources.MarginOne
 import br.dev.geanbrandao.common.presentation.resources.PaddingOne
+import dev.geanbrandao.minhasdespesas.CategoryIconUtils
+import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.dividers.DividerInput
-//import dev.geanbrandao.minhasdespesas.core.database.db.CategoryDb
 import dev.geanbrandao.minhasdespesas.domain.model.Category
 import dev.geanbrandao.minhasdespesas.presentation.categories.ItemCategoryEnum.DEFAULT
 import dev.geanbrandao.minhasdespesas.presentation.categories.ItemCategoryEnum.SMALL
@@ -46,32 +47,56 @@ sealed class ItemCategoryType(itemCategoryType: ItemCategoryEnum) {
     data object Default : ItemCategoryType(DEFAULT)
 }
 
+//@Composable
+//fun ItemCategoryView(
+//    item: Category,
+//    isLastItem: Boolean = false,
+//    itemCategoryType: ItemCategoryType = ItemCategoryType.Default
+//) {
+//    val icon = getPainterIconFromString(item.icon)
+//    when (itemCategoryType) {
+//        ItemCategoryType.Default -> {
+//            ItemCategoryDefault(
+//                item = item,
+//                icon = icon,
+//                isLastItem = isLastItem
+//            )
+//        }
+//
+//        ItemCategoryType.Small -> {
+//            ItemCategorySmall(item = item.name, icon = icon)
+//        }
+//    }
+//}
+
 @Composable
-fun ItemCategoryView(
+fun ItemCategorySmallView(
     item: Category,
-    isLastItem: Boolean = false,
-    itemCategoryType: ItemCategoryType = ItemCategoryType.Default
 ) {
     val icon = getPainterIconFromString(item.icon)
-    when (itemCategoryType) {
-        ItemCategoryType.Default -> {
-            ItemCategoryDefault(
-                item = item,
-                icon = icon,
-                isLastItem = isLastItem
-            )
-        }
+    ItemCategorySmall(item = item.name, icon = icon)
+}
 
-        ItemCategoryType.Small -> {
-            ItemCategorySmall(item = item.name, icon = icon)
-        }
-    }
+@Composable
+fun ItemCategoryDefaultView(
+    item: Category,
+    onCheckChangeListener: (isChecked: Boolean) -> Unit,
+    isLastItem: Boolean = false,
+    modifier: Modifier = Modifier,
+) {
+    val icon = getPainterIconFromString(item.icon)
+    ItemCategoryDefault(
+        item = item,
+        icon = icon,
+        onCheckChangeListener = onCheckChangeListener,
+        isLastItem = isLastItem,
+        modifier = modifier
+    )
 }
 
 @Composable
 private fun getPainterIconFromString(iconIdName: String): Painter {
-    val context = LocalContext.current
-    val iconId = context.getIconIdFromString(iconIdName)
+    val iconId = CategoryIconUtils.getCategoryIcon(iconIdName)
     return painterResource(id = iconId)
 }
 
@@ -107,17 +132,17 @@ private fun ItemCategorySmall(
 private fun ItemCategoryDefault(
     item: Category,
     icon: Painter,
-    isLastItem: Boolean = false,
+    isLastItem: Boolean,
+    onCheckChangeListener: (isChecked: Boolean) -> Unit,
+    modifier: Modifier = Modifier,
     backgroundColor: Color = MaterialTheme.colorScheme.background,
 ) {
     val color = MaterialTheme.colorScheme.secondary
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .background(color = backgroundColor)
-//            .anchoredDraggable()
-//            .clickableNoRippleEffect { }
+            .background(color = backgroundColor),
     ) {
         RowFieldView(
             start = {
@@ -136,9 +161,13 @@ private fun ItemCategoryDefault(
                 )
             },
             end = {
-                CheckboxView {
-
-                }
+                CheckboxView(
+                    isChecked = item.isChecked,
+                    onCheckChangeListener = onCheckChangeListener
+                )
+            },
+            onClick = {
+                onCheckChangeListener(item.isChecked.not())
             }
         )
         if (isLastItem.not()) {
@@ -151,8 +180,24 @@ private fun ItemCategoryDefault(
 @Composable
 private fun ItemCategoryViewPreview() {
     val item = Category(categoryId = 0, name = "Restaurante", icon = "ic_tag")
+    val item2 = Category(categoryId = 0, name = "Restaurante", icon = "ic_tag", isChecked = true)
     Column {
-        ItemCategoryView(item = item, itemCategoryType = ItemCategoryType.Small)
-        ItemCategoryView(item = item, itemCategoryType = ItemCategoryType.Default)
+        ItemCategorySmall(item = "Restaurante", painterResource(id = R.drawable.ic_tag_default))
+        ItemCategoryDefault(
+            item = item,
+            icon = painterResource(id = R.drawable.ic_tag_default),
+            isLastItem = false,
+            onCheckChangeListener = { isChecked: Boolean ->
+
+            }
+        )
+        ItemCategoryDefault(
+            item = item2,
+            icon = painterResource(id = R.drawable.ic_tag_default),
+            isLastItem = true,
+            onCheckChangeListener = { isChecked: Boolean ->
+
+            }
+        )
     }
 }

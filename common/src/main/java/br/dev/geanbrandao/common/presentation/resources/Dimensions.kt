@@ -7,6 +7,7 @@ val SplashscreenLogoHomeSize = 250.dp
 val NavBarHeightSize = 80.dp
 
 // padings
+val PaddingHalf = 4.dp
 val PaddingOne = 8.dp
 val PaddingTwo = 16.dp
 val PaddingThree = 24.dp

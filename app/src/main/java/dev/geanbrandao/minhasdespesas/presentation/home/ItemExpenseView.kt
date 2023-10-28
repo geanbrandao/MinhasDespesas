@@ -16,9 +16,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.dev.geanbrandao.common.domain.MoneyUtils.formatToBrl
+import br.dev.geanbrandao.common.domain.PATTERN_DAY
+import br.dev.geanbrandao.common.domain.PATTERN_MONTH_THREE
 import br.dev.geanbrandao.common.domain.getCurrentTimeInMillis
 import br.dev.geanbrandao.common.domain.getDayNumber
 import br.dev.geanbrandao.common.domain.getMonth3LettersName
+import br.dev.geanbrandao.common.domain.toBrazilianDateFormat
 import br.dev.geanbrandao.common.presentation.resources.MarginTwo
 import br.dev.geanbrandao.common.presentation.resources.PaddingOne
 import br.dev.geanbrandao.common.presentation.resources.PaddingTwo
@@ -67,12 +70,14 @@ fun ItemExpenseView(
 private fun DateExpenseView(selectedDate: Long) {
     Column {
         Text(
-            text = selectedDate.getDayNumber(),
+            text = selectedDate.toBrazilianDateFormat(PATTERN_DAY),
             style = AppTypography.headlineSmall,
             fontWeight = FontWeight.Bold,
         )
         Text(
-            text = selectedDate.getMonth3LettersName().uppercase(Locale.getDefault()),
+            text = selectedDate.toBrazilianDateFormat(PATTERN_MONTH_THREE)
+                .replace(".", "")
+                .uppercase(Locale.getDefault()),
             style = AppTypography.titleSmall,
             fontWeight = FontWeight.Light,
         )

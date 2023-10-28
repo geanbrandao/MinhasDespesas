@@ -34,6 +34,10 @@ interface MyExpensesDao {
     @Query("SELECT * FROM ExpenseEntity")
     suspend fun getExpenses(): List<ExpensesWithCategories>
 
+    @Transaction
+    @Query("SELECT * FROM ExpenseEntity WHERE expenseId = :id")
+    suspend fun getExpense(id: Long): ExpensesWithCategories
+
     @Query("SELECT * FROM CategoryEntity")
     suspend fun getCategories(): List<CategoryEntity>
 
@@ -71,4 +75,7 @@ interface MyExpensesDao {
 
     @Query("DELETE FROM CategoryEntity WHERE categoryId = :id")
     suspend fun deleteCategory(id: Long)
+
+    @Query("DELETE FROM ExpenseEntity WHERE expenseId = :id")
+    suspend fun deleteExpense(id: Long)
 }

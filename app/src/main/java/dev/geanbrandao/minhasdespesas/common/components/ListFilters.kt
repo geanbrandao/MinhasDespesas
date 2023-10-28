@@ -76,7 +76,7 @@ fun FiltersButton(
     if (activeFiltersSize < 1) {
         TextDefault(
             text = stringResource(id = R.string.warning_message_select_some_filter_here),
-            textColor = MaterialTheme.colorScheme.onBackground,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .padding(all = PaddingDefault)
                 .clickableRoundedEffect { onClick() },

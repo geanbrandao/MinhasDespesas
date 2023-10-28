@@ -1,6 +1,7 @@
 package br.dev.geanbrandao.common.presentation.components.button
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -83,34 +84,79 @@ fun ButtonView(
 }
 
 @Composable
-private fun ButtonPrimary(
+fun ButtonPrimary(
     text: String,
     isEnabled: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-    Button(
-        onClick = { onClick() },
-        enabled = isEnabled,
-        shape = ShapePrimaryButton,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(height = ButtonPrimaryHeight),
+    Box(
+        modifier.background(color = Color.White, shape = ShapePrimaryButton)
     ) {
-        TextButtonDefault(text = text)
+        Button(
+            onClick = { onClick() },
+            enabled = isEnabled,
+            shape = ShapePrimaryButton,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(height = ButtonPrimaryHeight),
+        ) {
+            val textColor = if (isEnabled) {
+                MaterialTheme.colorScheme.onPrimary
+            } else {
+                MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
+            }
+            TextButtonDefault(
+                text = text,
+                color = textColor,
+            )
+        }
     }
 }
 
+//@Composable
+//fun ButtonSecondary (
+//    text: String,
+//    isEnabled: Boolean,
+//    modifier: Modifier = Modifier,
+//    onClick: () -> Unit,
+//) {
+//    Box(
+//        modifier.background(color = Color.White, shape = ShapePrimaryButton)
+//    ) {
+//        Button(
+//            onClick = { onClick() },
+//            enabled = isEnabled,
+//            shape = ShapePrimaryButton,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(height = ButtonPrimaryHeight),
+//        ) {
+//            val textColor = if (isEnabled) {
+//                MaterialTheme.colorScheme.onPrimary
+//            } else {
+//                MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
+//            }
+//            TextButtonDefault(
+//                text = text,
+//                color = textColor,
+//            )
+//        }
+//    }
+//}
+
 @Composable
-private fun ButtonAction(
+fun ButtonAction(
     text: String,
     isEnabled: Boolean,
     modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.primary,
     onClick: () -> Unit,
 ) {
     TextButton(
         onClick = { onClick() },
         enabled = isEnabled,
+        shape = ShapePrimaryButton,
         modifier = modifier
             .height(height = ButtonPrimaryHeight),
     ) {
@@ -143,10 +189,18 @@ private fun ButtonDialog(
 @Preview
 @Composable
 private fun ButtonViewPreview() {
-    Column(modifier = Modifier.background(Color.White)) {
+    Column(modifier = Modifier.background(Color.Yellow)) {
         ButtonView(text = "Botão", isEnabled = true, buttonType = ButtonType.Primary) {
 
         }
+        SpacerThree()
+        ButtonPrimary(text = "Primary", isEnabled = false) {
+
+        }
+        SpacerThree()
+//        ButtonSecondary(text = "Secondary", isEnabled = true) {
+//
+//        }
         SpacerThree()
         ButtonView(
             text = "Botão",

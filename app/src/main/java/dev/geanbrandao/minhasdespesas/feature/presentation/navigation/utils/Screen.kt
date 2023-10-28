@@ -1,5 +1,7 @@
 package dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils
 
+import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Argument.OPTIONAL_SELECTED_CATEGORIES
+import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Key.SELECTED_CATEGORIES
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Routes.ROUTE_ADD
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Routes.ROUTE_CATEGORIES
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Routes.ROUTE_CHARTS
@@ -20,4 +22,24 @@ sealed class Screen(val route: String) {
     data object Categories : Screen(ROUTE_CATEGORIES)
     data object SplitBill : Screen(ROUTE_SPLIT_BILL)
     data object Preferences : Screen(ROUTE_PREFERENCES)
+}
+
+object Routes {
+    const val ROUTE_SPLASHSCREEN = "splashscreen"
+    const val ROUTE_EXPENSES = "expenses"
+    const val ROUTE_ADD = "add"
+    const val ROUTE_PROFILE = "profile"
+    const val ROUTE_FILTERS = "filters"
+    const val ROUTE_CHARTS = "charts"
+    const val ROUTE_CATEGORIES = "categories$OPTIONAL_SELECTED_CATEGORIES"
+    const val ROUTE_SPLIT_BILL = "splitBill"
+    const val ROUTE_PREFERENCES = "preferences"
+}
+
+object Argument {
+    const val OPTIONAL_SELECTED_CATEGORIES = "?selectedCategories={$SELECTED_CATEGORIES}"
+}
+
+object Key {
+    const val SELECTED_CATEGORIES = "selectedCategories"
 }

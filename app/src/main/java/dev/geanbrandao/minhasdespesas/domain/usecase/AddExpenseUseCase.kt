@@ -1,7 +1,6 @@
 package dev.geanbrandao.minhasdespesas.domain.usecase
 
 import dev.geanbrandao.minhasdespesas.domain.convertTo
-import dev.geanbrandao.minhasdespesas.domain.model.Category
 import dev.geanbrandao.minhasdespesas.domain.model.Expense
 import dev.geanbrandao.minhasdespesas.domain.repository.MyExpensesRepository
 import kotlinx.coroutines.flow.Flow
@@ -15,12 +14,11 @@ class AddExpenseUseCase(
 
     operator fun invoke(
         expense: Expense,
-        selectedCategories: List<Category>
     ): Flow<Long> = flow {
 
         val expenseId = repository.addExpenses(
             expense = expense.convertTo(),
-            categories = selectedCategories.map { it.convertTo() }
+            categories = expense.categories.map { it.convertTo() }
         )
         emit(expenseId)
     }

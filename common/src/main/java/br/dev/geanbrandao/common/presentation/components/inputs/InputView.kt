@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -51,11 +52,18 @@ sealed class InputType(val inputType: InputTypeEnum, val maxLength: Int) {
     data object Large : InputType(LARGE, MAX_LENGTH_LARGE)
 }
 
-class InputViewState(val textLabel: String, textInput: String = "") {
-    val textInput = mutableStateOf(TextFieldValue(textInput))
+class InputViewState(
+    val textLabel: String,
+    textInput: String = "",
+    val onTextChange: (text: String) -> Unit = {},
+) {
+    val textInput = mutableStateOf(
+        TextFieldValue(text = textInput, selection = TextRange(textInput.length))
+    )
 
-    fun updateInput(text: TextFieldValue) {
-        textInput.value = text
+    fun updateInput(textFieldValue: TextFieldValue) {
+        textInput.value = textFieldValue
+        onTextChange(textFieldValue.text)
     }
 }
 
@@ -160,9 +168,10 @@ fun InputMoney(
         maxLength = maxLength,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
         modifier = modifier,
-    ) {
-        onTextChange(MoneyUtils.handleInputMonetaryValue(it.text))
-    }
+        onTextChange = {
+            onTextChange(MoneyUtils.handleInputMonetaryValue(it.text))
+        }
+    )
 }
 
 @Composable
