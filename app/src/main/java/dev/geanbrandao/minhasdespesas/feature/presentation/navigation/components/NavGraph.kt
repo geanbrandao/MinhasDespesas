@@ -1,28 +1,25 @@
 package dev.geanbrandao.minhasdespesas.feature.presentation.navigation.components
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import dev.geanbrandao.minhasdespesas.localpreferences.presentation.PreferencesScreen
 import dev.geanbrandao.minhasdespesas.feature.presentation.charts.ChartsScreen
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Argument
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Key
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
 import dev.geanbrandao.minhasdespesas.feature.presentation.splashscreen.Splashscreen
+import dev.geanbrandao.minhasdespesas.localpreferences.presentation.PreferencesScreen
 import dev.geanbrandao.minhasdespesas.presentation.addexpenses.AddExpenseScreen
 import dev.geanbrandao.minhasdespesas.presentation.categories.CategoriesScreen
 import dev.geanbrandao.minhasdespesas.presentation.filters.FiltersScreen
 import dev.geanbrandao.minhasdespesas.presentation.home.HomeScreen
 import dev.geanbrandao.minhasdespesas.presentation.profile.ProfileScreen
 import dev.geanbrandao.minhasdespesas.splitbill.presentation.SplitBillScreen
-import dev.geanbrandao.minhasdespesas.ui.theme.NavBarHeightSize
 
 @ExperimentalAnimationApi
 @Composable
@@ -38,13 +35,23 @@ fun NavGraph(navHostController: NavHostController) {
             )
         }
         composable(route = Screen.Expenses.route) {
-            HomeScreen(navHostController = navHostController)
+            HomeScreen(
+                navHostController = navHostController,
+                onNavigateToEditExpense = { expenseId: Long ->
+                    navHostController.navigate(
+                        Screen.Add.route
+                            .replace("{expenseId}", "$expenseId"),
+                    )
+                }
+            )
         }
         composable(route = Screen.Add.route) {
-            val argument = it.savedStateHandle.get<String?>(Key.SELECTED_CATEGORIES)
+            val selectedCategories = it.savedStateHandle.get<String?>(Key.SELECTED_CATEGORIES)
+            val expenseId = it.savedStateHandle.get<String?>(Key.EXPENSE_ID)
             AddExpenseScreen(
                 navHostController = navHostController,
-                argument = argument,
+                selectedCategories = selectedCategories,
+                expenseId = expenseId,
                 onNavigateToCategories = { selectedCategories: String? ->  // "1,2" esse formato
                     selectedCategories?.let {
                         navHostController.navigate(

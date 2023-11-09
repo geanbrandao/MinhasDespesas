@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.dev.geanbrandao.common.domain.MoneyUtils.toCommaString
 import br.dev.geanbrandao.common.domain.getCurrentTimeInMillis
 import br.dev.geanbrandao.common.domain.isValidDate
 import br.dev.geanbrandao.common.domain.toFloat
@@ -11,9 +12,9 @@ import dev.geanbrandao.minhasdespesas.domain.model.Category
 import dev.geanbrandao.minhasdespesas.domain.model.Expense
 import dev.geanbrandao.minhasdespesas.domain.usecase.MyExpensesUseCases
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Key
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import org.koin.android.annotation.KoinViewModel
@@ -37,8 +38,11 @@ class AddExpenseViewModel(
     private val selectedCategories = state.getStateFlow<List<Category>>(key = STATE_SELECTED_CATEGORIES, initialValue = emptyList())
     private val categories = state.getStateFlow<List<Category>>(key = STATE_CATEGORIES, initialValue = emptyList())
 
-    private val _insertOperationState = MutableStateFlow<OperationState<Boolean>>(OperationState.Loading(isLoading = false))
-    val insertOperationState = _insertOperationState.asStateFlow()
+//    private val _insertOperationState = MutableStateFlow<OperationState<Boolean>>(OperationState.Loading(isLoading = false))
+//    val insertOperationState = _insertOperationState.asStateFlow()
+
+    private val _insertedOrUpdated = Channel<Boolean>()
+    val insertedOrUpdated = _insertedOrUpdated.receiveAsFlow()
 
     val uiState = state.getStateFlow(
         key = STATE_UI_STATE,
@@ -48,11 +52,14 @@ class AddExpenseViewModel(
             selectedDate = getCurrentTimeInMillis(),
             description = "",
             selectedCategories = selectedCategories.value,
+            createdAt = getCurrentTimeInMillis(),
+            expenseId = 0,
         )
     )
 
     init {
         getCategories()
+        getExpense()
         println("MEULOG viewModel- ${state.get<String?>("selectedCategories")}")
     }
 
@@ -63,8 +70,42 @@ class AddExpenseViewModel(
                     throw Exception(it)
                 }.collect {
                     println("#### THIS IS MY EXPENSE ID $it")
-                    _insertOperationState.value = OperationState.Success(true)
+                    _insertedOrUpdated.send(true)
                 }
+        }
+    }
+
+    fun updateExpense() {
+        viewModelScope.launch {
+            useCases.updateExpense(createExpenseModel())
+                .catch {
+                    throw Exception(it)
+                }.collect {
+                    println("#### THIS IS MY EXPENSE ID $it")
+                    _insertedOrUpdated.send(true)
+                }
+        }
+    }
+
+    private fun getExpense() {
+        state.get<String?>(Key.EXPENSE_ID)?.let {
+            viewModelScope.launch {
+                useCases.getExpense(it.toLong())
+                    .catch {
+                        throw Exception(it)
+                    }.collect {
+                        state[STATE_UI_STATE] = AddExpenseScreenState(
+                            amount = it.amount.toCommaString(),
+                            name = it.name,
+                            selectedDate = it.selectedDate,
+                            description = it.description,
+                            selectedCategories = it.categories,
+                            createdAt = it.createdAt,
+                            isEdit = true,
+                            expenseId = it.expenseId
+                        )
+                    }
+            }
         }
     }
 
@@ -93,13 +134,13 @@ class AddExpenseViewModel(
     }
 
     private fun createExpenseModel() = Expense(
-        expenseId = 0,
+        expenseId = uiState.value.expenseId,
         name = uiState.value.name,
         amount = uiState.value.amount.toFloat(),
         selectedDate = uiState.value.selectedDate,
         description = uiState.value.description,
         categories = uiState.value.selectedCategories,
-        createdAt = getCurrentTimeInMillis(),
+        createdAt = uiState.value.createdAt,
         updatedAt = getCurrentTimeInMillis(),
     )
 
@@ -113,6 +154,9 @@ data class AddExpenseScreenState(
     val selectedDate: Long,
     val description: String,
     val selectedCategories: List<Category>,
+    val expenseId: Long,
+    val createdAt: Long,
+    val isEdit: Boolean = false,
 ) : Parcelable {
     val isNextButtonEnabled : Boolean
         get() = amount != "0,00" && name.isNotEmpty() && selectedDate.isValidDate()

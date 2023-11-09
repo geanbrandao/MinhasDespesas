@@ -1,6 +1,8 @@
 package dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils
 
+import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Argument.OPTIONAL_EXPENSE_ID
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Argument.OPTIONAL_SELECTED_CATEGORIES
+import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Key.EXPENSE_ID
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Key.SELECTED_CATEGORIES
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Routes.ROUTE_ADD
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Routes.ROUTE_CATEGORIES
@@ -27,7 +29,7 @@ sealed class Screen(val route: String) {
 object Routes {
     const val ROUTE_SPLASHSCREEN = "splashscreen"
     const val ROUTE_EXPENSES = "expenses"
-    const val ROUTE_ADD = "add"
+    const val ROUTE_ADD = "add$OPTIONAL_EXPENSE_ID"
     const val ROUTE_PROFILE = "profile"
     const val ROUTE_FILTERS = "filters"
     const val ROUTE_CHARTS = "charts"
@@ -38,8 +40,10 @@ object Routes {
 
 object Argument {
     const val OPTIONAL_SELECTED_CATEGORIES = "?selectedCategories={$SELECTED_CATEGORIES}"
+    const val OPTIONAL_EXPENSE_ID = "?expenseId={$EXPENSE_ID}"
 }
 
 object Key {
     const val SELECTED_CATEGORIES = "selectedCategories"
+    const val EXPENSE_ID = "expenseId"
 }

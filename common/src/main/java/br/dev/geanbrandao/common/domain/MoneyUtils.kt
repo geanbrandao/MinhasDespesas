@@ -3,7 +3,7 @@ package br.dev.geanbrandao.common.domain
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import java.text.DecimalFormat
-import java.util.*
+import java.util.Locale
 
 
 private const val MAX_MONETARY_LENGTH = 10
@@ -25,4 +25,6 @@ object MoneyUtils {
         val format = DecimalFormat.getCurrencyInstance(Locale("pt", "BR"))
         return format.format(this.toDouble())
     }
+
+    fun Float.toCommaString() = this.toString().replace(".", ",")
 }

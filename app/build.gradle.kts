@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
+    kotlin("plugin.serialization") version "1.9.0"
 }
 
 android {
@@ -115,6 +116,8 @@ dependencies {
     // coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation("junit:junit:$junitVersion")
     testImplementation(libs.mockk)

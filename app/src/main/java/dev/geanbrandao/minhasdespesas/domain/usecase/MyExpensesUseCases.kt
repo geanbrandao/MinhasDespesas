@@ -6,6 +6,9 @@ import org.koin.core.annotation.Single
 data class MyExpensesUseCases(
     val addExpense: AddExpenseUseCase,
     val getExpenses: GetExpensesUseCase,
+    val getFilterExpenses: GetExpensesBaseOnFiltersUseCase,
+    val getExpense: GetExpenseUseCase,
+    val updateExpense: UpdateExpenseUseCase,
     val removeExpense: RemoveExpenseUseCase,
     val getCategories: GetCategoriesUseCase,
     val addCategories: AddCategoriesUseCase,

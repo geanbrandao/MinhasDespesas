@@ -5,8 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.geanbrandao.minhasdespesas.domain.model.Category
 import dev.geanbrandao.minhasdespesas.domain.usecase.MyExpensesUseCases
+import dev.geanbrandao.minhasdespesas.domain.usecase.PreferencesUseCases
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -15,33 +18,40 @@ import org.koin.android.annotation.KoinViewModel
 
 private const val KEY_CATEGORIES = "category"
 private const val KEY_FILTER_DATE = "filterDate"
+private const val KEY_SELECTED_FILTERS = "selectedFilters"
 
 @KoinViewModel
 class FiltersViewModel(
     private val state: SavedStateHandle,
     private val useCases: MyExpensesUseCases,
+    private val preferencesUseCases: PreferencesUseCases,
 ) : ViewModel() {
 
-    val categories = state.getStateFlow<List<Category>>(key = KEY_CATEGORIES, initialValue = emptyList())
+    val categories =
+        state.getStateFlow<List<Category>>(key = KEY_CATEGORIES, initialValue = emptyList())
+    private val filterDate =
+        state.getStateFlow<FilterDate?>(key = KEY_FILTER_DATE, initialValue = null)
 
-    private val filterDate = state.getStateFlow<FilterDate?>(key = KEY_FILTER_DATE, initialValue = null)
 
-    val selectedFilters: Flow<List<SelectedFilter>> =
-        combine(categories, filterDate) { arg1: List<Category>, arg2: FilterDate? ->
-            val filtersWithOnlyCategories = arg1.filter { it.isChecked }.map {
-                SelectedFilter.CategoryType(it.name, it)
-            }
-            val filterWithOnlyDate = arg2?.let { SelectedFilter.DateType(label = it.label.orEmpty(), date = it) }
-            filterWithOnlyDate?.let {
-                listOf(it).plus(filtersWithOnlyCategories)
-            } ?: filtersWithOnlyCategories
-        }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList<SelectedFilter>())
+    private val _onFiltersApply = MutableStateFlow(false)
+    val onFiltersApply = _onFiltersApply.asStateFlow()
+
+    val selectedFilters: Flow<List<SelectedFilter>> = combine(categories, filterDate) { arg1: List<Category>, arg2: FilterDate? ->
+        val filtersWithOnlyCategories = arg1.filter { it.isChecked }.map {
+            SelectedFilter(category = it)
+        }
+        val filterWithOnlyDate = arg2?.let { SelectedFilter(date = it) }
+        filterWithOnlyDate?.let {
+            listOf(it).plus(filtersWithOnlyCategories)
+        } ?: filtersWithOnlyCategories
+    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList<SelectedFilter>())
 
     init {
         getCategories()
+
     }
 
-    fun getCategories() {
+    private fun getCategories() {
         viewModelScope.launch {
             useCases.getCategories()
                 .catch {
@@ -56,6 +66,7 @@ class FiltersViewModel(
 //                        }
 //                    }
                     state[KEY_CATEGORIES] = it
+                    getSelectedFilters()
                 }
         }
     }
@@ -64,14 +75,55 @@ class FiltersViewModel(
         state[KEY_FILTER_DATE] = filterDate
     }
 
+    fun setSelectedFilters(argument: List<SelectedFilter>) {
+        viewModelScope.launch {
+            preferencesUseCases.setSelectedFiltersUseCase(argument)
+            _onFiltersApply.value = true
+
+        }
+    }
+
+    fun setSelectedFilters() {
+        viewModelScope.launch {
+            preferencesUseCases.setSelectedFiltersUseCase(emptyList())
+            updateFilterDate(null)
+            removeSelectedCategories()
+        }
+    }
+
+    private fun getSelectedFilters() {
+        viewModelScope.launch {
+            preferencesUseCases.getSelectedFiltersUseCase()
+                .catch {
+                    throw Exception(it)
+                }.collect { result: List<SelectedFilter> ->
+                    result.forEach { selectedFilter: SelectedFilter ->
+                        selectedFilter.category?.let {
+                            updateSelectedCategories(it.categoryId, true)
+                        }
+                        selectedFilter.date?.let {
+                            updateFilterDate(it)
+                        }
+                    }
+                }
+
+        }
+    }
+
     fun updateSelectedCategories(categoryId: Long, isChecked: Boolean) {
         state[KEY_CATEGORIES] = categories.value.map { category ->
-            if(categoryId == category.categoryId ) {
+            if (categoryId == category.categoryId) {
                 category.copy(isChecked = isChecked)
             } else {
                 category
             }
         }
-//        state[KEY_FILTER_DATE] = categories.value.filter { it.isChecked }
     }
+
+    fun removeSelectedCategories() {
+        state[KEY_CATEGORIES] = categories.value.map { category ->
+            category.copy(isChecked = false)
+        }
+    }
+
 }

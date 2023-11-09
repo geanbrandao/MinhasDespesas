@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import dev.geanbrandao.minhasdespesas.data.entity.CategoryEntity
 import dev.geanbrandao.minhasdespesas.data.entity.ExpenseCategoryCrossRefEntity
 import dev.geanbrandao.minhasdespesas.data.entity.ExpenseEntity
@@ -37,6 +38,9 @@ interface MyExpensesDao {
     @Transaction
     @Query("SELECT * FROM ExpenseEntity WHERE expenseId = :id")
     suspend fun getExpense(id: Long): ExpensesWithCategories
+
+    @Update
+    suspend fun updateExpense(expense: ExpenseEntity)
 
     @Query("SELECT * FROM CategoryEntity")
     suspend fun getCategories(): List<CategoryEntity>

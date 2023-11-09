@@ -21,7 +21,7 @@ import java.util.TimeZone
 const val PATTERN_MONTH_THREE = "MMM"
 const val PATTERN_DAY = "dd"
 const val PATTERN_ISO = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
-
+const val PATTERN_SHORT_DATE = "dd MMMyyyy"
 fun Any?.isNotNull() = this != null
 fun Any?.isNull() = this == null
 

@@ -43,8 +43,6 @@ import br.dev.geanbrandao.common.presentation.resources.PaddingThree
 import br.dev.geanbrandao.common.presentation.resources.PaddingTwo
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.domain.model.Category
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.arguments.SelectedCategoriesArg
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Key
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

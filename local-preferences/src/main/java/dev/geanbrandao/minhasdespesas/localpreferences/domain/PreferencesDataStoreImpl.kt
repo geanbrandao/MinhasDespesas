@@ -6,6 +6,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import dev.geanbrandao.minhasdespesas.localpreferences.data.PreferencesDataStore
+import dev.geanbrandao.minhasdespesas.localpreferences.data.PreferencesKeys.KEY_SELECTED_FILTERS
+import dev.geanbrandao.minhasdespesas.localpreferences.data.PreferencesKeys.KEY_SWIPE_NAME
 import dev.geanbrandao.minhasdespesas.localpreferences.data.PreferencesKeys.KEY_THEME_NAME
 import java.io.IOException
 import kotlinx.coroutines.flow.Flow
@@ -51,6 +53,46 @@ class PreferencesDataStoreImpl(
         dataStore.edit { value: MutablePreferences ->
             value[KEY_THEME_NAME] = themeName
         }
+    }
+
+    override suspend fun getSwipe(): Flow<String> {
+        return dataStore.data
+            .catch { throwable: Throwable ->
+                if (throwable is IOException) {
+                    emit(emptyPreferences())
+                } else {
+                    throw throwable
+                }
+            }
+            .map { value: Preferences ->
+                value[KEY_SWIPE_NAME] ?: "both"
+            }
+    }
+
+    override suspend fun setSwipe(swipeName: String) {
+        dataStore.edit { value: MutablePreferences ->
+            value[KEY_SWIPE_NAME] = swipeName
+        }
+    }
+
+    override suspend fun setSelectedFilters(selectedFilters: String) {
+        dataStore.edit { value: MutablePreferences ->
+            value[KEY_SELECTED_FILTERS] = selectedFilters
+        }
+    }
+
+    override suspend fun getSelectedFilters(): Flow<String?> {
+        return dataStore.data
+            .catch { throwable: Throwable ->
+                if (throwable is IOException) {
+                    emit(emptyPreferences())
+                } else {
+                    throw throwable
+                }
+            }
+            .map { value: Preferences ->
+                value[KEY_SELECTED_FILTERS]
+            }
     }
 }
 

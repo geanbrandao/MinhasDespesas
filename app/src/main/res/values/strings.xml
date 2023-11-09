@@ -57,6 +57,7 @@
     <!-- DEFAULT VALUES | BUTTON -->
     <string name="button_default_text_save">Salvar</string>
     <string name="button_default_text_add">Adicionar</string>
+    <string name="button_default_text_update">Atualizar</string>
     <string name="button_default_text_select">Selecionar</string>
     <string name="button_default_text_ok">O.k.</string>
     <string name="button_default_text_ok2">Ok</string>
@@ -115,6 +116,7 @@
     <string name="fragment_filters_text_label_filter_by_categories">Filtrar por categorias</string>
     <string name="fragment_filters_button_apply_filters">Aplicar filtros</string>
     <string name="fragment_filters_button_cancel">Cancelar</string>
+    <string name="fragment_filters_button_clean">Limpar</string>
 
     <!-- SETTINGS FRAGMENT -->
     <string name="fragment_settings_title_toolbar">Configurações</string>

@@ -3,6 +3,7 @@ package dev.geanbrandao.minhasdespesas.presentation.addexpenses
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,9 +15,11 @@ import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DatePickerFormatter
 import androidx.compose.material3.DatePickerState
+import androidx.compose.material3.DateRangePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -26,13 +29,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import br.dev.geanbrandao.common.domain.getCurrentTimeInMillis
+import br.dev.geanbrandao.common.domain.isNotNull
 import br.dev.geanbrandao.common.presentation.BaseScreen
 import br.dev.geanbrandao.common.presentation.components.RowFieldView
 import br.dev.geanbrandao.common.presentation.components.button.ButtonType
@@ -61,12 +68,14 @@ import dev.geanbrandao.minhasdespesas.presentation.categories.ListCategorySmallV
 import java.time.Instant
 import java.time.ZoneId
 import java.util.Locale
+import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AddExpenseScreen(
     navHostController: NavHostController,
-    argument: String?,
+    selectedCategories: String?,
+    expenseId: String?,
     onNavigateToCategories: (selectedCategories: String?) -> Unit,
     viewModel: AddExpenseViewModel = koinViewModel(),
 ) {
@@ -76,25 +85,37 @@ fun AddExpenseScreen(
     println("MEULOG - $viewModel")
     val uiState = viewModel.uiState.collectAsState()
 
-    val insertOperationState = viewModel.insertOperationState.collectAsState()
-
-    when(insertOperationState.value) {
-        is OperationState.Error -> {
-
+    ObserveAsEvents(
+        flow = viewModel.insertedOrUpdated,
+        onEvent = {
+            if (it) {
+                navHostController.navigateAndRemoveFromBackStack(
+                    destinationRoute = Screen.Expenses.route,
+                    currentRoute = Screen.Add.route
+                )
+            }
         }
-        is OperationState.Loading -> {
+    )
 
-        }
-        is OperationState.Success -> {
-            navHostController.navigateAndRemoveFromBackStack(
-                destinationRoute = Screen.Expenses.route,
-                currentRoute = Screen.Add.route
-            )
-        }
-    }
+//    val insertOperationState = viewModel.insertOperationState.collectAsState()
+//    // todo refazer essa lógica
+//    when(insertOperationState.value) {
+//        is OperationState.Error -> {
+//
+//        }
+//        is OperationState.Loading -> {
+//
+//        }
+//        is OperationState.Success -> {
+//            navHostController.navigateAndRemoveFromBackStack(
+//                destinationRoute = Screen.Expenses.route,
+//                currentRoute = Screen.Add.route
+//            )
+//        }
+//    }
 
     LaunchedEffect(Unit) {
-        viewModel.updateSelectedCategories(argument)
+        viewModel.updateSelectedCategories(selectedCategories)
     }
 
     AddExpenseScreenView(
@@ -104,7 +125,11 @@ fun AddExpenseScreen(
             viewModel.updateUiState(it)
         },
         onAddClick = {
-            viewModel.addExpense()
+            if (uiState.value.isEdit) {
+                viewModel.updateExpense()
+            } else {
+                viewModel.addExpense()
+            }
         },
         onNavigateToCategories = {
             val arg = uiState.value.selectedCategories
@@ -114,6 +139,16 @@ fun AddExpenseScreen(
             onNavigateToCategories(arg) // todo subir essa lógica de navegação para o navGraph
         },
     )
+}
+
+@Composable
+fun <T> ObserveAsEvents(flow: Flow<T>, onEvent: (T) -> Unit) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(flow, lifecycleOwner.lifecycle) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            flow.collect(onEvent)
+        }
+    }
 }
 
 @Composable
@@ -178,7 +213,11 @@ private fun AddExpenseScreenView(
                 )
                 SpacerFill(modifier = Modifier.weight(weight = 1f))
                 ButtonView(
-                    text = stringResource(id = R.string.button_default_text_add),
+                    text = if (uiState.isEdit) {
+                        stringResource(id = R.string.button_default_text_update)
+                    } else {
+                        stringResource(id = R.string.button_default_text_add)
+                    },
                     isEnabled = uiState.isNextButtonEnabled,
                     onClick = onAddClick,
                     modifier = Modifier.padding(top = PaddingThree)
@@ -381,27 +420,16 @@ fun ExpenseDatePicker(
     datePickerState: DatePickerState,
     dateFormatter: DatePickerFormatter,
     onDismiss: () -> Unit,
-    onSelectDate: (timeMillis: Long?) -> Unit,
+    onSelectDate: (timeMillis: Long) -> Unit,
 ) {
-    val context = LocalContext.current
-    val toastMessage = stringResource(id = R.string.dialog_picker_select_a_date)
+
     if (datePickerIsVisible) {
-        DatePickerDialog(
-            onDismissRequest = onDismiss,
-            confirmButton = {
-                ButtonView(
-                    text = stringResource(id = R.string.button_default_text_ok2),
-                    buttonType = ButtonType.Action
-                ) {
-                    datePickerState.selectedDateMillis?.let {
-                        onSelectDate(it)
-                        onDismiss()
-                    } ?: run {
-//                        datePickerState.
-                        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
+        MyDataPickerDialog(
+            datePickerState = datePickerState,
+            datePickerRangeState = rememberDateRangePickerState(),
+            onDismiss = onDismiss,
+            onSelectDate = onSelectDate,
+            onSelectRangeDate = { _: Long, _: Long -> }
         ) {
             DatePicker(
                 state = datePickerState,
@@ -410,6 +438,43 @@ fun ExpenseDatePicker(
             ) // todo talvez tirar o toggle mode
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable // todo mover para um arquivo próprio
+fun MyDataPickerDialog(
+    datePickerState: DatePickerState,
+    datePickerRangeState: DateRangePickerState,
+    onDismiss: () -> Unit,
+    onSelectDate: (timeMillis: Long) -> Unit,
+    onSelectRangeDate: (startDate: Long, endDate: Long) -> Unit,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    val context = LocalContext.current
+    val toastMessage = stringResource(id = R.string.dialog_picker_select_a_date)
+    DatePickerDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            ButtonView(
+                text = stringResource(id = R.string.button_default_text_ok2),
+                buttonType = ButtonType.Action
+            ) {
+                datePickerState.selectedDateMillis?.let {
+                    onSelectDate(it)
+                    onDismiss()
+                } ?: run {
+                    val startDate = datePickerRangeState.selectedStartDateMillis
+                    val endDate = datePickerRangeState.selectedEndDateMillis
+                    if (startDate.isNotNull() and endDate.isNotNull()) {
+                        onSelectRangeDate(startDate!!, endDate!!)
+                    } else {
+                        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        },
+        content = content
+    )
 }
 
 fun getFormattedDateFromMilli(date: Long): String {
@@ -433,7 +498,9 @@ fun AddExpenseScreenViewPreview() {
                 icon = "ic_tag",
                 canRemove = false,
                 isChecked = false
-            ))
+            )),
+            createdAt = 0L,
+            expenseId = 0L,
         ),
         onUiStateIsUpdated = {
 

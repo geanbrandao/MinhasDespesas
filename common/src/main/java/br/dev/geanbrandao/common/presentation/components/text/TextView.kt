@@ -49,6 +49,7 @@ fun TextAction(
         style = AppTypography.bodyMedium,
         color = color,
         fontWeight = FontWeight.Bold,
+        modifier = modifier,
     )
 }
 
@@ -166,12 +167,17 @@ fun TextTitleLarge(text: String, color: Color = MaterialTheme.colorScheme.onBack
 }
 
 @Composable
-fun TextLabelMedium(text: String, color: Color = MaterialTheme.colorScheme.onBackground) {
+fun TextLabelMedium(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.onBackground
+) {
     Text(
         text = text,
         style = AppTypography.labelMedium,
         fontWeight = FontWeight.Light,
         color = color,
+        modifier = modifier,
     )
 }
 

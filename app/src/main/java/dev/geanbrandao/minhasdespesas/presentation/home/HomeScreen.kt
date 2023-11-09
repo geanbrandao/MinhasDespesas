@@ -12,24 +12,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import br.dev.geanbrandao.common.domain.MoneyUtils.formatToBrl
@@ -44,35 +42,48 @@ import br.dev.geanbrandao.common.presentation.components.swipetoreveal.SwipeToRe
 import br.dev.geanbrandao.common.presentation.resources.PaddingOne
 import br.dev.geanbrandao.common.presentation.resources.PaddingTwo
 import dev.geanbrandao.minhasdespesas.R
+import dev.geanbrandao.minhasdespesas.domain.model.Category
 import dev.geanbrandao.minhasdespesas.domain.model.Expense
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
+import dev.geanbrandao.minhasdespesas.presentation.filters.FilterByDateEnum
+import dev.geanbrandao.minhasdespesas.presentation.filters.FilterDate
+import dev.geanbrandao.minhasdespesas.presentation.filters.SelectedFilter
+import dev.geanbrandao.minhasdespesas.presentation.filters.SelectedFiltersView
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginFour
-import kotlin.math.exp
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
     navHostController: NavHostController,
+    onNavigateToEditExpense: (expenseId: Long) -> Unit,
     viewModel: HomeViewModel = koinViewModel()
 ) {
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getSelectedFilters()
+    }
     val expenses = viewModel.expenses.collectAsState()
+    val selectedFilters = viewModel.selectedFilters.collectAsState()
     HomeScreenView(
         navHostController = navHostController,
+        selectedFilters = selectedFilters.value,
         expenses = expenses.value,
+        onCleanFilters = {
+            viewModel.setSelectedFilter(emptyList())
+        },
         onDeleteClicked = { expenseId: Long ->
             viewModel.removeExpense(expenseId)
         },
-        onEditClicked = {
-
-        },
+        onEditClicked = onNavigateToEditExpense,
     )
 }
 
 @Composable
 private fun HomeScreenView(
     navHostController: NavHostController,
+    selectedFilters: List<SelectedFilter>,
     expenses: List<Expense>,
+    onCleanFilters: () -> Unit,
     onDeleteClicked: (id: Long) -> Unit,
     onEditClicked: (id: Long) -> Unit,
 ) {
@@ -86,6 +97,13 @@ private fun HomeScreenView(
                 )
             },
             content = {
+                if (selectedFilters.isNotEmpty()) {
+                    Spacer(modifier = Modifier.size(size = PaddingTwo))
+                    SelectedFiltersView(
+                        list = selectedFilters,
+                        onCleanFilters = onCleanFilters,
+                    )
+                }
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(bottom = MarginFour),
@@ -110,9 +128,9 @@ private fun HomeScreenView(
             }
         )
         ActionButtonView(
-            icon = rememberVectorPainter(image = Icons.Rounded.Add),
+            icon = painterResource(id = R.drawable.ic_filters),
             onClick = {
-                      navHostController.navigate(Screen.Add.route)
+                  navHostController.navigate(Screen.Filters.route)
             },
             modifier = Modifier.align(alignment = Alignment.BottomEnd)
         )
@@ -247,12 +265,25 @@ private fun HomeScreenViewPreview() {
             ),
         )
     }
+    val selectedFilters = listOf(
+        SelectedFilter(
+            category = null,
+            date = FilterDate(0L, null, "", FilterByDateEnum.ALL),
+        ),
+        SelectedFilter(
+            date = null,
+            category = Category(categoryId = 0, name = "Restaurante", icon = "ic_bus")
+        )
+    )
     HomeScreenView(
         navHostController = rememberNavController(),
+        selectedFilters = selectedFilters,
         expenses = list,
+        onCleanFilters = {},
         onDeleteClicked = { id ->
             list.removeIf { it.expenseId == id }
         },
+
         onEditClicked = {
 
         },

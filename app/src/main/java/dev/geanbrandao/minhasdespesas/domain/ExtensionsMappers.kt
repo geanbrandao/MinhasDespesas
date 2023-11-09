@@ -7,9 +7,6 @@ import dev.geanbrandao.minhasdespesas.data.entity.ExpenseEntity
 import dev.geanbrandao.minhasdespesas.data.entity.ExpensesWithCategories
 import dev.geanbrandao.minhasdespesas.domain.model.Category
 import dev.geanbrandao.minhasdespesas.domain.model.Expense
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
 
 fun Expense.convertTo() = ExpenseEntity(
     expenseId = expenseId,
@@ -27,6 +24,10 @@ fun Category.convertTo() = CategoryEntity(
     icon = icon,
     canRemove = canRemove,
 )
+
+fun List<Category>.convertTo() = this.map {
+    it.convertTo()
+}
 
 fun CategoryEntity.convertTo() = Category(
     categoryId = categoryId,

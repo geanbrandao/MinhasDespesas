@@ -11,6 +11,7 @@ datastorePreferences = "1.0.0"
 desugar_jdk_libs = "2.0.3"
 google-material = "1.9.0"
 gradle = "8.1.1"
+gson = "2.10.1"
 hiltLifecycleViewmodel = "1.0.0-alpha03"
 hiltNavigationCompose = "1.0.0"
 hiltVersion = "2.44"
@@ -23,6 +24,7 @@ koinKspCompiler = "1.2.0"
 kotlinVersion = "1.9.0"
 kotlinxCoroutinesAndroid = "1.7.1"
 kotlinxCoroutinesCore = "1.7.1"
+kotlinxSerializationJson = "1.5.1"
 lifecycleRuntimeKtx = "2.4.1"
 lifecycleViewmodelCompose = "2.6.1"
 material = "1.8.0"
@@ -53,6 +55,7 @@ androidx-animation-core-android = { group = "androidx.compose.animation", name =
 
 # koin
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koinAndroid" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinAndroid" }
 koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinKspCompiler" }
@@ -88,6 +91,7 @@ compose-preferences = { group = "com.github.Sh4dowSoul.ComposePreferences", name
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 [plugins]
