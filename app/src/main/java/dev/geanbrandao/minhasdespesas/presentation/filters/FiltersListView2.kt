@@ -54,28 +54,32 @@ fun FiltersListView2(
 
     val filterByDateList = listOf(
         FilterByDateItem(
+            label = stringResource(id = R.string.bottom_sheet_dialog_filter_option_1),
+            type = FilterByDateEnum.ALL,
+        ),
+        FilterByDateItem(
             label = stringResource(id = R.string.bottom_sheet_dialog_filter_option_2),
-            type = FilterByDateEnum.WEEK
+            type = FilterByDateEnum.WEEK,
         ),
         FilterByDateItem(
             label = stringResource(id = R.string.bottom_sheet_dialog_filter_option_3),
-            type = FilterByDateEnum.MONTH
+            type = FilterByDateEnum.MONTH,
         ),
         FilterByDateItem(
             label = stringResource(id = R.string.bottom_sheet_dialog_filter_option_8),
-            type = FilterByDateEnum.CURRENT_MONTH
+            type = FilterByDateEnum.CURRENT_MONTH,
         ),
         FilterByDateItem(
             label = stringResource(id = R.string.bottom_sheet_dialog_filter_option_4),
-            type = FilterByDateEnum.YEAR
+            type = FilterByDateEnum.YEAR,
         ),
         FilterByDateItem(
             label = stringResource(id = R.string.bottom_sheet_dialog_filter_option_5),
-            type = FilterByDateEnum.PICK_DATE
+            type = FilterByDateEnum.PICK_DATE,
         ),
         FilterByDateItem(
             label = stringResource(id = R.string.bottom_sheet_dialog_filter_option_6),
-            type = FilterByDateEnum.BETWEEN_DATES
+            type = FilterByDateEnum.BETWEEN_DATES,
         ),
     )
 

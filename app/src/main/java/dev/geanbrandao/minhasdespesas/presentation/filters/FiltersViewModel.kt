@@ -86,7 +86,14 @@ class FiltersViewModel(
     fun setSelectedFilters() {
         viewModelScope.launch {
             preferencesUseCases.setSelectedFiltersUseCase(emptyList())
-            updateFilterDate(null)
+            updateFilterDate(
+                filterDate = FilterDate(
+                    startDate = null,
+                    endDate = null,
+                    label = null,
+                    type = FilterByDateEnum.ALL
+                )
+            )
             removeSelectedCategories()
         }
     }

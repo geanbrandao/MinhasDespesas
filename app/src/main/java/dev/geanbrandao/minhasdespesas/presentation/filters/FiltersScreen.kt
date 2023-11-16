@@ -326,7 +326,8 @@ enum class FilterByDateEnum {
     CURRENT_MONTH,
     YEAR,
     PICK_DATE,
-    BETWEEN_DATES;
+    BETWEEN_DATES,
+    ALL;
 }
 
 fun FilterByDateEnum.toFilterDate(
@@ -337,6 +338,14 @@ fun FilterByDateEnum.toFilterDate(
     val date = getCurrentTimeInMillis().getOffsetDateTime()
 
     return when (this) {
+        FilterByDateEnum.ALL -> {
+            FilterDate(
+                startDate = null,
+                endDate = null,
+                label = context.getString(R.string.bottom_sheet_dialog_filter_option_1), // todo tem 2 lugares com essa mesma lógica de label
+                type = this,
+            )
+        }
         FilterByDateEnum.WEEK -> {
             val startDate = date.startOfDay().minusDays(7)
             val endDate = date.endOfDay()

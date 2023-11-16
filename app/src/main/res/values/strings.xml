@@ -153,7 +153,7 @@
 
 
     <!-- BOTTOM SHEET DIALOGS -->
-    <string name="bottom_sheet_dialog_filter_option_1">Todas as despesas</string>
+    <string name="bottom_sheet_dialog_filter_option_1">Todas as datas</string>
     <string name="bottom_sheet_dialog_filter_option_2">Últimos 7 dias</string>
     <string name="bottom_sheet_dialog_filter_option_3">Últimos 30 dias</string>
     <string name="bottom_sheet_dialog_filter_option_8">Mês atual</string>
