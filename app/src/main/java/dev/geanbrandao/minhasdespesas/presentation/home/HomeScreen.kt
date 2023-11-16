@@ -64,6 +64,9 @@ fun HomeScreen(
     }
     val expenses = viewModel.expenses.collectAsState()
     val selectedFilters = viewModel.selectedFilters.collectAsState()
+    LaunchedEffect(selectedFilters.value) {
+        viewModel.getExpenses()
+    }
     HomeScreenView(
         navHostController = navHostController,
         selectedFilters = selectedFilters.value,
@@ -268,7 +271,7 @@ private fun HomeScreenViewPreview() {
     val selectedFilters = listOf(
         SelectedFilter(
             category = null,
-            date = FilterDate(0L, null, "", FilterByDateEnum.ALL),
+            date = FilterDate(0L, null, "", FilterByDateEnum.YEAR),
         ),
         SelectedFilter(
             date = null,

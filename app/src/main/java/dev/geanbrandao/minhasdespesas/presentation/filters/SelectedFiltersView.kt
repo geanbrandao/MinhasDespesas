@@ -112,7 +112,7 @@ fun SelectedFiltersViewPreview() {
     SelectedFiltersView(
         listOf(
             SelectedFilter(
-                date = FilterDate(0L, null, "", FilterByDateEnum.ALL),
+                date = FilterDate(0L, null, "", FilterByDateEnum.YEAR),
                 null,
             ),
             SelectedFilter(

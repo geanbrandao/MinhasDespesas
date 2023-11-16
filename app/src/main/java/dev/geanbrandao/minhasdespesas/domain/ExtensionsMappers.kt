@@ -25,7 +25,7 @@ fun Category.convertTo() = CategoryEntity(
     canRemove = canRemove,
 )
 
-fun List<Category>.convertTo() = this.map {
+fun List<Category>.categoriesToCategoriesEntity() = this.map {
     it.convertTo()
 }
 
@@ -35,6 +35,10 @@ fun CategoryEntity.convertTo() = Category(
     icon = icon,
     canRemove = canRemove,
 )
+
+fun List<CategoryEntity>.categoriesEntityToCategories() = this.map {
+    it.convertTo()
+}
 
 fun ExpensesWithCategories.convertTo(categories: List<Category>) = Expense(
     expenseId = expense.expenseId,
@@ -46,3 +50,16 @@ fun ExpensesWithCategories.convertTo(categories: List<Category>) = Expense(
     createdAt = expense.createdAt.getLongTimeMillis(),
     updatedAt = expense.updatedAt.getLongTimeMillis(),
 )
+
+fun ExpensesWithCategories.convertTo() = Expense(
+    expenseId = expense.expenseId,
+    amount = expense.amount,
+    name = expense.name,
+    selectedDate = expense.selectedDate.getLongTimeMillis(),
+    description = expense.description,
+    categories = categories.categoriesEntityToCategories(),
+    createdAt = expense.createdAt.getLongTimeMillis(),
+    updatedAt = expense.updatedAt.getLongTimeMillis(),
+)
+
+fun List<ExpensesWithCategories>.expensesWithCategoriesEntityToExpenses() = this.map { it.convertTo() }

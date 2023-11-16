@@ -266,7 +266,7 @@ private fun FiltersScreenViewPreview() {
     val selectedFilters = listOf(
         SelectedFilter(
             category = null,
-            date = FilterDate(0L, null, "", FilterByDateEnum.ALL),
+            date = FilterDate(0L, null, "", FilterByDateEnum.YEAR),
         ),
         SelectedFilter(
             date = null,
@@ -326,22 +326,22 @@ enum class FilterByDateEnum {
     CURRENT_MONTH,
     YEAR,
     PICK_DATE,
-    BETWEEN_DATES,
-    ALL;
+    BETWEEN_DATES;
 }
 
 fun FilterByDateEnum.toFilterDate(
     context: Context,
     pickedStartDate: Long?,
     pickedEndDate: Long?
-): FilterDate? {
-    val dateMillis = getCurrentTimeInMillis()
-    val dateOffset = dateMillis.getOffsetDateTime()
+): FilterDate {
+    val date = getCurrentTimeInMillis().getOffsetDateTime()
+
     return when (this) {
         FilterByDateEnum.WEEK -> {
-            val endDate = dateOffset.minusDays(7)
+            val startDate = date.startOfDay().minusDays(7)
+            val endDate = date.endOfDay()
             FilterDate(
-                startDate = dateMillis,
+                startDate = startDate.getLongTimeMillis(),
                 endDate = endDate.getLongTimeMillis(),
                 label = context.getString(R.string.bottom_sheet_dialog_filter_option_2),
                 type = this,
@@ -349,9 +349,10 @@ fun FilterByDateEnum.toFilterDate(
         }
 
         FilterByDateEnum.MONTH -> {
-            val endDate = dateOffset.minusDays(30)
+            val startDate = date.startOfDay().minusDays(30)
+            val endDate = date.endOfDay()
             FilterDate(
-                startDate = dateMillis,
+                startDate = startDate.getLongTimeMillis(),
                 endDate = endDate.getLongTimeMillis(),
                 label = context.getString(R.string.bottom_sheet_dialog_filter_option_3),
                 type = this,
@@ -359,8 +360,8 @@ fun FilterByDateEnum.toFilterDate(
         }
 
         FilterByDateEnum.CURRENT_MONTH -> {
-            val startDate = dateOffset.startOfMonth()
-            val endDate = dateOffset.endOfMonth()
+            val startDate = date.startOfMonth()
+            val endDate = date.endOfMonth()
             FilterDate(
                 startDate = startDate.getLongTimeMillis(),
                 endDate = endDate.getLongTimeMillis(),
@@ -370,9 +371,10 @@ fun FilterByDateEnum.toFilterDate(
         }
 
         FilterByDateEnum.YEAR -> {
-            val endDate = dateOffset.minusMonths(12)
+            val startDate = date.startOfDay().minusMonths(12)
+            val endDate = date.endOfDay()
             FilterDate(
-                startDate = dateMillis,
+                startDate = startDate.getLongTimeMillis(),
                 endDate = endDate.getLongTimeMillis(),
                 label = context.getString(R.string.bottom_sheet_dialog_filter_option_4),
                 type = this,
@@ -409,13 +411,8 @@ fun FilterByDateEnum.toFilterDate(
                 type = this,
             )
         }
-
-        else -> {
-            null
-        }
     }
 }
-
 
 data class FilterByDateItem(
     val label: String,

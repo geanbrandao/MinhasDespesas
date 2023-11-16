@@ -52,6 +52,14 @@ fun ProfileScreenView(
                         navHostController.navigate(Screen.Filters.route)
                     }
                 )
+                Text(
+                    text = "Teste",
+                    modifier = Modifier
+                        .padding(all = PaddingTwo)
+                        .clickableNoRippleEffect {
+                        navHostController.navigate("teste")
+                    }
+                )
             }
         }
     )

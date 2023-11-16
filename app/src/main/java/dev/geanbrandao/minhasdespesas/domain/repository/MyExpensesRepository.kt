@@ -7,6 +7,7 @@ import dev.geanbrandao.minhasdespesas.data.entity.ExpensesWithCategories
 interface MyExpensesRepository {
     suspend fun addExpenses(expense: ExpenseEntity, categories: List<CategoryEntity>): Long
     suspend fun getExpenses(): List<ExpensesWithCategories>
+    suspend fun getExpenses(offset: Int): List<ExpensesWithCategories>
     suspend fun getExpense(expenseId: Long): ExpensesWithCategories
     suspend fun updateExpense(expense: ExpenseEntity)
     suspend fun getCategories(): List<CategoryEntity>

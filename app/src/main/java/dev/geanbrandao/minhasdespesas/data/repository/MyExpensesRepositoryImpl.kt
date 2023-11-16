@@ -9,6 +9,8 @@ import dev.geanbrandao.minhasdespesas.domain.repository.MyExpensesRepository
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 
+const val PAGE_SIZE = 40
+
 @Single
 class MyExpensesRepositoryImpl(
     @Named(QUALIFIER_EXPENSE_DB) private val dao: MyExpensesDao
@@ -22,6 +24,13 @@ class MyExpensesRepositoryImpl(
 
     override suspend fun getExpenses(): List<ExpensesWithCategories> {
         return dao.getExpenses()
+    }
+
+    override suspend fun getExpenses(offset: Int): List<ExpensesWithCategories> {
+        return dao.getExpenses(
+            limit = PAGE_SIZE,
+            offset = offset
+        )
     }
 
     override suspend fun getExpense(expenseId: Long): ExpensesWithCategories {

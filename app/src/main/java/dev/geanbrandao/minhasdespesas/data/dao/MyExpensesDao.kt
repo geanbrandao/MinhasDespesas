@@ -11,6 +11,7 @@ import dev.geanbrandao.minhasdespesas.data.entity.CategoryEntity
 import dev.geanbrandao.minhasdespesas.data.entity.ExpenseCategoryCrossRefEntity
 import dev.geanbrandao.minhasdespesas.data.entity.ExpenseEntity
 import dev.geanbrandao.minhasdespesas.data.entity.ExpensesWithCategories
+import dev.geanbrandao.minhasdespesas.data.repository.PAGE_SIZE
 
 @Dao
 interface MyExpensesDao {
@@ -34,6 +35,28 @@ interface MyExpensesDao {
     @Transaction
     @Query("SELECT * FROM ExpenseEntity")
     suspend fun getExpenses(): List<ExpensesWithCategories>
+
+    @Transaction
+    @Query("SELECT * FROM ExpenseEntity LIMIT :limit OFFSET :offset")
+    suspend fun getExpenses(
+        limit: Int = PAGE_SIZE,
+        offset: Int,
+    ): List<ExpensesWithCategories>
+
+//    @Transaction
+//    @Query(
+//        "SELECT * FROM ExpenseEntity WHERE (:startDate IS NULL OR selectedDate BETWEEN :startDate AND :endDate) " +
+//        "AND (expenseId IN " +
+//        "(SELECT expenseId FROM ExpenseCategoryCrossRefEntity WHERE categoryId IN (:selectedCategoriesIds))) " +
+//                "LIMIT :limit OFFSET :offset"
+//    )
+//    suspend fun getExpenses(
+//        startDate: OffsetDateTime?,
+//        endDate: OffsetDateTime?,
+//        selectedCategoriesIds: List<Long>,
+//        limit: Int = PAGE_SIZE,
+//        offset: Int,
+//    ): List<ExpensesWithCategories>
 
     @Transaction
     @Query("SELECT * FROM ExpenseEntity WHERE expenseId = :id")

@@ -192,3 +192,7 @@ inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
     SDK_INT >= 33 -> getParcelable(key, T::class.java)
     else -> @Suppress("DEPRECATION") getParcelable(key) as? T
 }
+
+fun OffsetDateTime.isBetweenDates(startDate: OffsetDateTime?, endDate: OffsetDateTime?) : Boolean {
+    return (this.isBefore(endDate) or this.isEqual(endDate)) and (this.isAfter(startDate) or this.isEqual(startDate))
+}

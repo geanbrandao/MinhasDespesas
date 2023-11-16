@@ -27,17 +27,29 @@ class HomeViewModel(
     val selectedFilters = state.getStateFlow<List<SelectedFilter>>(key = KEY_SELECTED_FILTERS, initialValue = emptyList())
 
     init {
-        getExpenses()
+//        getExpenses()
     }
+
+//    fun getExpenses() {
+//        viewModelScope.launch {
+//            useCases.getExpenses()
+//                .catch {
+//                    throw Exception(it)
+//                }
+//                .collect {
+//
+//                    state[KEY_EXPENSE] = it
+//                }
+//        }
+//    }
 
     fun getExpenses() {
         viewModelScope.launch {
-            useCases.getExpenses()
+            useCases.getExpensesBaseOnFilters(selectedFilters = selectedFilters.value, currentPage = 0)
                 .catch {
                     throw Exception(it)
                 }
                 .collect {
-
                     state[KEY_EXPENSE] = it
                 }
         }

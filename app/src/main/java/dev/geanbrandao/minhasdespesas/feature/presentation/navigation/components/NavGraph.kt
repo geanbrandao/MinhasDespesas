@@ -8,6 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import br.dev.geanbrandao.common.presentation.components.TestPaginationScreen
 import dev.geanbrandao.minhasdespesas.feature.presentation.charts.ChartsScreen
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Argument
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Key
@@ -105,6 +106,9 @@ fun NavGraph(navHostController: NavHostController) {
         }
         composable(route = Screen.Preferences.route) {
             PreferencesScreen(navHostController = navHostController)
+        }
+        composable(route = "teste") {
+            TestPaginationScreen()
         }
     }
 }

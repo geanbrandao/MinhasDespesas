@@ -6,11 +6,10 @@ import dev.geanbrandao.minhasdespesas.domain.repository.MyExpensesRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlin.test.assertEquals
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class GetCategoriesUseCaseTest {
 
@@ -50,7 +49,7 @@ class GetCategoriesUseCaseTest {
         coVerify { repository.getCategories() }
 
         // Assert the result matches the test data
-        assertEquals(categoriesResult, result)
+        assertEquals(expected = categoriesResult, actual = result)
     }
 
     @Test
