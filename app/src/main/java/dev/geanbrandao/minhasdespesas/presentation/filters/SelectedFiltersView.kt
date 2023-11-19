@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import br.dev.geanbrandao.common.domain.CategoryIconUtils
 import br.dev.geanbrandao.common.presentation.components.RowFieldView
 import br.dev.geanbrandao.common.presentation.components.icon.IconType
 import br.dev.geanbrandao.common.presentation.components.icon.IconView
@@ -27,7 +28,6 @@ import br.dev.geanbrandao.common.presentation.components.text.TextLabelSmall
 import br.dev.geanbrandao.common.presentation.resources.PaddingHalf
 import br.dev.geanbrandao.common.presentation.resources.PaddingOne
 import br.dev.geanbrandao.common.presentation.resources.PaddingTwo
-import dev.geanbrandao.minhasdespesas.CategoryIconUtils
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.domain.model.Category
 import kotlinx.parcelize.Parcelize

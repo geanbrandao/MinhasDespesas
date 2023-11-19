@@ -68,7 +68,7 @@ android {
 
 dependencies {
 
-    implementation(project(":pie-charts"))
+    implementation(project(":feature-charts"))
     implementation(project(":feature-split-bill"))
     implementation(project(":common"))
     implementation(project(":local-preferences"))

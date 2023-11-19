@@ -9,6 +9,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import java.text.Normalizer
 import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -195,4 +196,10 @@ inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
 
 fun OffsetDateTime.isBetweenDates(startDate: OffsetDateTime?, endDate: OffsetDateTime?) : Boolean {
     return (this.isBefore(endDate) or this.isEqual(endDate)) and (this.isAfter(startDate) or this.isEqual(startDate))
+}
+
+fun String.ignoreAccents(): String {
+    val normalizedString = Normalizer.normalize(this, Normalizer.Form.NFD)
+    val regex = "\\p{InCombiningDiacriticalMarks}+".toRegex()
+    return regex.replace(normalizedString, "")
 }

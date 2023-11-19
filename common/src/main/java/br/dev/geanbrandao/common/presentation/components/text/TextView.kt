@@ -170,14 +170,17 @@ fun TextTitleLarge(text: String, color: Color = MaterialTheme.colorScheme.onBack
 fun TextLabelMedium(
     text: String,
     modifier: Modifier = Modifier,
+    fontWeight: FontWeight = FontWeight.Light,
     color: Color = MaterialTheme.colorScheme.onBackground
 ) {
     Text(
         text = text,
         style = AppTypography.labelMedium,
-        fontWeight = FontWeight.Light,
+        fontWeight = fontWeight,
         color = color,
         modifier = modifier,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1,
     )
 }
 

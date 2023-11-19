@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.data.entity.CategoryEntity
 
+// todo put in the common package
 fun Context.createDefaultCategories() = listOf(
     CategoryEntity(
         0,
@@ -108,7 +109,55 @@ fun Context.createDefaultCategories() = listOf(
         getString(R.string.text_default_category_gym),
         "ic_gym",
         false,
-    )
+    ),
+    CategoryEntity(
+        0,
+        getString(R.string.text_default_category_car),
+        "ic_car",
+        false,
+    ),
+    CategoryEntity(
+        0,
+        getString(R.string.text_default_category_coffee),
+        "ic_coffee",
+        false,
+    ),
+    CategoryEntity(
+        0,
+        getString(R.string.text_default_category_electric),
+        "ic_electric",
+        false,
+    ),
+    CategoryEntity(
+        0,
+        getString(R.string.text_default_category_games),
+        "ic_game",
+        false,
+    ),
+    CategoryEntity(
+        0,
+        getString(R.string.text_default_category_internet),
+        "ic_internet",
+        false,
+    ),
+    CategoryEntity(
+        0,
+        getString(R.string.text_default_category_kids),
+        "ic_kids",
+        false,
+    ),
+    CategoryEntity(
+        0,
+        getString(R.string.text_default_category_pets),
+        "ic_pets",
+        false,
+    ),
+    CategoryEntity(
+        0,
+        getString(R.string.text_default_category_water),
+        "ic_water",
+        false,
+    ),
 )
 
 fun Context.getIconFromString(name: String, colorId: Int): Drawable? {

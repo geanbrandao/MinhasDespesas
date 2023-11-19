@@ -1,5 +1,6 @@
 package dev.geanbrandao.minhasdespesas.domain.usecase
 
+import br.dev.geanbrandao.common.domain.ignoreAccents
 import dev.geanbrandao.minhasdespesas.domain.convertTo
 import dev.geanbrandao.minhasdespesas.domain.model.Category
 import dev.geanbrandao.minhasdespesas.domain.repository.MyExpensesRepository
@@ -16,7 +17,7 @@ class GetCategoriesUseCase(
         val categories = repository.getCategories()
         val response =  categories.map {
             it.convertTo()
-        }.sortedBy { it.name }
+        }.sortedBy { it.name.ignoreAccents() }
         emit(response)
     }
 }

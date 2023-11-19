@@ -1,7 +1,6 @@
 package dev.geanbrandao.minhasdespesas.presentation.categories
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,17 +8,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.dev.geanbrandao.common.domain.clickableNoRippleEffect
+import br.dev.geanbrandao.common.domain.CategoryIconUtils
 import br.dev.geanbrandao.common.presentation.components.RowFieldView
 import br.dev.geanbrandao.common.presentation.components.checkbox.CheckboxView
 import br.dev.geanbrandao.common.presentation.components.icon.IconType
@@ -27,10 +26,10 @@ import br.dev.geanbrandao.common.presentation.components.icon.IconView
 import br.dev.geanbrandao.common.presentation.components.spacer.SpacerOne
 import br.dev.geanbrandao.common.presentation.components.text.TextDefault
 import br.dev.geanbrandao.common.presentation.components.text.TextSupporting
+import br.dev.geanbrandao.common.presentation.resources.CornersDefault
 import br.dev.geanbrandao.common.presentation.resources.CornersSmall
 import br.dev.geanbrandao.common.presentation.resources.MarginOne
 import br.dev.geanbrandao.common.presentation.resources.PaddingOne
-import dev.geanbrandao.minhasdespesas.CategoryIconUtils
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.dividers.DividerInput
 import dev.geanbrandao.minhasdespesas.domain.model.Category
@@ -94,10 +93,24 @@ fun ItemCategoryDefaultView(
     )
 }
 
+
+
 @Composable
-private fun getPainterIconFromString(iconIdName: String): Painter {
+fun getPainterIconFromString(iconIdName: String): Painter {
     val iconId = CategoryIconUtils.getCategoryIcon(iconIdName)
     return painterResource(id = iconId)
+}
+
+@Composable
+private fun CategoryIcon(
+    icon: Painter,
+    color: Color,
+) {
+    Icon(
+        painter = icon,
+        contentDescription = "Icon that represents the category",
+        Modifier.background(color = color, shape = RoundedCornerShape(CornersDefault))
+    )
 }
 
 @Composable

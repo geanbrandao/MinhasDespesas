@@ -9,7 +9,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import br.dev.geanbrandao.common.presentation.components.TestPaginationScreen
-import dev.geanbrandao.minhasdespesas.feature.presentation.charts.ChartsScreen
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Argument
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Key
 import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
@@ -17,6 +16,7 @@ import dev.geanbrandao.minhasdespesas.feature.presentation.splashscreen.Splashsc
 import dev.geanbrandao.minhasdespesas.localpreferences.presentation.PreferencesScreen
 import dev.geanbrandao.minhasdespesas.presentation.addexpenses.AddExpenseScreen
 import dev.geanbrandao.minhasdespesas.presentation.categories.CategoriesScreen
+import dev.geanbrandao.minhasdespesas.presentation.charts.ChartsScreen
 import dev.geanbrandao.minhasdespesas.presentation.filters.FiltersScreen
 import dev.geanbrandao.minhasdespesas.presentation.home.HomeScreen
 import dev.geanbrandao.minhasdespesas.presentation.profile.ProfileScreen

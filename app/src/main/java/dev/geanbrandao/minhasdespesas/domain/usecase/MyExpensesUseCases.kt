@@ -14,4 +14,5 @@ data class MyExpensesUseCases(
     val addCategories: AddCategoriesUseCase,
     val addCategory: AddCategoryUseCase,
     val removeCategory: RemoveCategoryUseCase,
+    val getCategoriesChartData: GetCategoriesChartDataUseCase,
 )
