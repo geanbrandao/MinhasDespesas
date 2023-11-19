@@ -2,10 +2,10 @@ package dev.geanbrandao.minhasdespesas.data.entity
 
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.Junction
 import androidx.room.PrimaryKey
 import androidx.room.Relation
-import br.dev.geanbrandao.common.domain.getCurrentTimeInMillis
 import java.time.OffsetDateTime
 
 @Entity
@@ -30,7 +30,21 @@ data class CategoryEntity(
 )
 
 @Entity(
-    primaryKeys = ["expenseId", "categoryId"]
+    primaryKeys = ["expenseId", "categoryId"],
+    foreignKeys = [
+        ForeignKey(
+            entity = ExpenseEntity::class,
+            parentColumns = ["expenseId"],
+            childColumns = ["expenseId"],
+            onDelete = ForeignKey.CASCADE,
+        ),
+        ForeignKey(
+            entity = CategoryEntity::class,
+            parentColumns = ["categoryId"],
+            childColumns = ["categoryId"],
+            onDelete = ForeignKey.CASCADE,
+        )
+    ]
 )
 data class ExpenseCategoryCrossRefEntity(
     val expenseId: Long,

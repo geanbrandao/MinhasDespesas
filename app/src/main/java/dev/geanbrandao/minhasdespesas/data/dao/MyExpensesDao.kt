@@ -105,4 +105,7 @@ interface MyExpensesDao {
 
     @Query("DELETE FROM ExpenseEntity WHERE expenseId = :id")
     suspend fun deleteExpense(id: Long)
+
+//    @Query("DELETE FROM ExpenseCategoryCrossRefEntity where expenseId = :id")
+//    suspend fun delete(id: Long)
 }

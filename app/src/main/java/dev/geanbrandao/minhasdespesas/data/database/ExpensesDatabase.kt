@@ -1,5 +1,6 @@
 package dev.geanbrandao.minhasdespesas.data.database
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -11,7 +12,7 @@ import dev.geanbrandao.minhasdespesas.data.entity.CategoryEntity
 import dev.geanbrandao.minhasdespesas.data.entity.ExpenseCategoryCrossRefEntity
 import dev.geanbrandao.minhasdespesas.data.entity.ExpenseEntity
 
-const val DB_VERSION = 4
+const val DB_VERSION = 5
 const val DB_NAME = "MyExpenses.db"
 
 @Database(
@@ -22,10 +23,11 @@ const val DB_NAME = "MyExpenses.db"
     ],
     version = DB_VERSION,
     exportSchema = true,
-//    autoMigrations = [
+    autoMigrations = [
 //        AutoMigration(1, 2),
 //        AutoMigration(2, 3),
-//    ]
+        AutoMigration(4, 5)
+    ]
 )
 @TypeConverters(MyExpensesConverters::class)
 abstract class ExpensesDatabase : RoomDatabase() {
