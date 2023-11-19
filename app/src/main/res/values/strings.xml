@@ -44,6 +44,16 @@
     <string name="text_default_category_recreation">Lazer</string>
     <string name="text_default_category_church">Igreja</string>
     <string name="text_default_category_gym">Academia</string>
+    <string name="text_default_category_car">Carro</string>
+    <string name="text_default_category_coffee">Café</string>
+    <string name="text_default_category_electric">Luz/Energia</string>
+    <string name="text_default_category_games">Jogos</string>
+    <string name="text_default_category_internet">Internet</string>
+    <string name="text_default_category_kids">Crianças/Filhos</string>
+    <string name="text_default_category_pets">Animais de estimação</string>
+    <string name="text_default_category_water">Água</string>
+
+
     <string name="text_default_period_monthly">mensal</string>
     <string name="text_default_period_weekly">semanal</string>
     <string name="text_default_spent_limit_above">Acima do limite</string>
