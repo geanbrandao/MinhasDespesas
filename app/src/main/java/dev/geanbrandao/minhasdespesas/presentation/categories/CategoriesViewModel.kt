@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.geanbrandao.minhasdespesas.domain.model.Category
 import dev.geanbrandao.minhasdespesas.domain.usecase.MyExpensesUseCases
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Key
+import dev.geanbrandao.minhasdespesas.navigation.domain.Key
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel

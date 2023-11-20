@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.Card
@@ -25,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.geanbrandao.minhasdespesas.R
@@ -34,7 +31,7 @@ import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
 //import dev.geanbrandao.minhasdespesas.core.database.db.ExpenseWithCategoriesDb
 //import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.components.ItemExpenseWithSwipe
 import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.components.ScreenWarningWithTitleMessage
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
+import dev.geanbrandao.minhasdespesas.navigation.domain.Screen
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 import org.koin.androidx.compose.koinViewModel

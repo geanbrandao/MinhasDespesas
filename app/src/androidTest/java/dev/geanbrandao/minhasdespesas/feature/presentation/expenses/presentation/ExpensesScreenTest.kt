@@ -30,7 +30,7 @@ import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.util.TestTag
 import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.util.TestTags.ITEM_EXPENSE_ROOT
 import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.util.TestTags.ITEM_FILTER_ICON_CLOSE
 import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.util.TestTags.ITEM_FILTER_ROOT
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
+import dev.geanbrandao.minhasdespesas.navigation.domain.Screen
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTheme
 import dev.geanbrandao.minhasdespesas.ui.theme.NavBarHeightSize
 import org.junit.Before

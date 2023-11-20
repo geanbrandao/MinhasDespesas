@@ -11,8 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import br.dev.geanbrandao.common.presentation.BaseScreen
 import br.dev.geanbrandao.common.presentation.components.button.ActionButtonView
 import br.dev.geanbrandao.common.presentation.components.button.ButtonView
@@ -23,11 +21,9 @@ import dev.geanbrandao.minhasdespesas.splitbill.domain.SplitBillItem
 
 @Composable
 fun SplitBillScreen(
-    navHostController: NavHostController,
 //    viewModel
 ) {
     SplitBillScreenView(
-        navHostController = navHostController,
         addBill = {
 
         }
@@ -36,7 +32,6 @@ fun SplitBillScreen(
 
 @Composable
 fun SplitBillScreenView(
-    navHostController: NavHostController,
     addBill: () -> Unit
 ) {
 
@@ -82,5 +77,5 @@ fun SplitBillScreenView(
 @Preview
 @Composable
 private fun SplitBillScreenPrev() {
-    SplitBillScreen(navHostController = rememberNavController())
+    SplitBillScreen()
 }

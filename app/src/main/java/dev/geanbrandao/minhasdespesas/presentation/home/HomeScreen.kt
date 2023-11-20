@@ -23,11 +23,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import br.dev.geanbrandao.common.domain.MoneyUtils.formatToBrl
 import br.dev.geanbrandao.common.domain.getCurrentTimeInMillis
 import br.dev.geanbrandao.common.presentation.BaseScreen
@@ -50,19 +53,31 @@ import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginFour
 import org.koin.androidx.compose.koinViewModel
 
+// todo fazer todas as telas que carregam dados usarem lauchedEffect com lifecycle
+// todo BUG - Não está atualizando as categorias ao tentar editar uma despesa
+// todo ver como estão sendo ordenas as despeas na home
+// todo depois de criar categoria não ta fecha o teclado
+// todo por algum motivo ta colocando caps na primera letra de todas as palavras na descrição e no nome da despesa
+// todo procurar se seria possivel o viewModel contralar os eventos de navegação
 @Composable
 fun HomeScreen(
-    onNavigateToEditExpense: (expenseId: Long) -> Unit,
-    onNavigateToFilters: () -> Unit,
+    openEditExpenseScreen: (expenseId: Long) -> Unit,
+    openFiltersScreen: () -> Unit,
     viewModel: HomeViewModel = koinViewModel()
 ) {
-    LaunchedEffect(key1 = Unit) {
-        viewModel.getSelectedFilters()
-    }
     val expenses = viewModel.expenses.collectAsState()
     val selectedFilters = viewModel.selectedFilters.collectAsState()
-    LaunchedEffect(selectedFilters.value) {
-        viewModel.getExpenses()
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(key1 = lifecycleOwner.lifecycle) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.getSelectedFilters()
+        }
+    }
+    LaunchedEffect(selectedFilters.value, lifecycleOwner.lifecycle) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.getExpenses()
+        }
     }
     HomeScreenView(
         selectedFilters = selectedFilters.value,
@@ -73,8 +88,8 @@ fun HomeScreen(
         onDeleteClicked = { expenseId: Long ->
             viewModel.removeExpense(expenseId)
         },
-        onEditClicked = onNavigateToEditExpense,
-        onFilterButtonClicked = onNavigateToFilters,
+        onEditClicked = openEditExpenseScreen,
+        onFilterButtonClicked = openFiltersScreen,
     )
 }
 

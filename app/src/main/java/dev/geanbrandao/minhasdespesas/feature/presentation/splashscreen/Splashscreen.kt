@@ -1,5 +1,6 @@
 package dev.geanbrandao.minhasdespesas.feature.presentation.splashscreen
 
+//import dev.geanbrandao.minhasdespesas.common.utils.extensions.createDefaultCategories
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,16 +17,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import br.dev.geanbrandao.common.domain.getCurrentTimeInMillis
 import dev.geanbrandao.minhasdespesas.R
-//import dev.geanbrandao.minhasdespesas.common.utils.extensions.createDefaultCategories
 import dev.geanbrandao.minhasdespesas.common.utils.extensions.clickableRoundedEffect
 import dev.geanbrandao.minhasdespesas.common.utils.extensions.createDefaultCategories
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
 import dev.geanbrandao.minhasdespesas.feature.presentation.splashscreen.util.navigateAndRemoveFromBackStack
+import dev.geanbrandao.minhasdespesas.navigation.domain.Screen
 import dev.geanbrandao.minhasdespesas.ui.theme.SplashscreenLogoHomeSize
 import java.time.Instant
 import java.time.OffsetDateTime

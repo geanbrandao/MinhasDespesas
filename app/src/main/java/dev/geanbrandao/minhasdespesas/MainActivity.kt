@@ -18,9 +18,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.components.NavBar
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.components.NavGraph
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
+import dev.geanbrandao.minhasdespesas.navigation.bottomnavigationbar.NavBar
+import dev.geanbrandao.minhasdespesas.navigation.domain.Screen
+import dev.geanbrandao.minhasdespesas.navigation.graph.NavGraph
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTheme
 
 @ExperimentalAnimationApi

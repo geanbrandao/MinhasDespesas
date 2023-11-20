@@ -1,4 +1,4 @@
-package dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils
+package dev.geanbrandao.minhasdespesas.navigation.domain
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

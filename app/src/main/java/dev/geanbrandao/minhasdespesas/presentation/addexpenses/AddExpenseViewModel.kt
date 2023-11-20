@@ -21,8 +21,6 @@ import org.koin.android.annotation.KoinViewModel
 private const val STATE_UI_STATE = "addExpenseScreenUiState"
 private const val STATE_CATEGORIES = "categoriesState"
 
-//private const val STATE_ARGUMENT = "argument"
-
 @KoinViewModel
 class AddExpenseViewModel(
     private val state: SavedStateHandle,
@@ -70,7 +68,10 @@ class AddExpenseViewModel(
     }
 
     fun getExpense(expenseId: String?) {
-        expenseId?.let {
+        expenseId
+            // prevent expense from being reloaded when already get loaded
+            .takeIf { uiState.value.expenseId == 0L }
+            ?.let {
             viewModelScope.launch {
                 useCases.getExpense(it.toLong())
                     .catch {

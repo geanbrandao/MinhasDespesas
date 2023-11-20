@@ -1,8 +1,7 @@
 package dev.geanbrandao.minhasdespesas.feature.presentation.splashscreen.util
 
-import android.os.Parcelable
 import androidx.navigation.NavHostController
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
+import dev.geanbrandao.minhasdespesas.navigation.domain.Screen
 
 fun NavHostController.navigateAndRemoveFromBackStack(destinationRoute: String, currentRoute: String) {
     navigate(route = destinationRoute) {
@@ -20,16 +19,5 @@ fun NavHostController.navigateForNavBar(destinationRoute: String) {
         launchSingleTop = true
         restoreState = true
     }
-}
-
-fun NavHostController.navigateWithArgument(
-    destinationRoute: String,
-    keyArg: String,
-    arg: Parcelable
-) {
-    currentBackStackEntry?.arguments?.apply {
-        putParcelable(keyArg, arg)
-    }
-    navigate(route = destinationRoute) // todo errado
 }
 

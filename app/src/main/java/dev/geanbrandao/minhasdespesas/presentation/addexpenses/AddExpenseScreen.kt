@@ -73,9 +73,8 @@ fun AddExpenseScreen(
     argSelectedCategories: String?,
     argExpenseId: String?,
     // navigation
-    onNavigateToCategories: (selectedCategories: String?) -> Unit,
-    onNavigateToExpensesRemovingAdd: () -> Unit,
-    onNavigateBack: () -> Unit,
+    openCategories: (selectedCategories: String?) -> Unit,
+    goBack: () -> Unit,
     // viewModel
     viewModel: AddExpenseViewModel = koinViewModel(),
 ) {
@@ -84,18 +83,9 @@ fun AddExpenseScreen(
     ObserveAsEvents(
         flow = viewModel.insertedOrUpdated,
         onEvent = {
-            if (it) { onNavigateToExpensesRemovingAdd() }
+            if (it) { goBack() }
         }
     )
-
-//    val lifecycleOwner = LocalLifecycleOwner.current
-//    LaunchedEffect(lifecycleOwner.lifecycle) {
-//        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//            viewModel.getCategories()
-//            viewModel.getExpense()
-//            viewModel.updateSelectedCategories(selectedCategories)
-//        }
-//    }
 
     LaunchedEffect(key1 = argSelectedCategories) {
         viewModel.updateSelectedCategories(argSelectedCategories)
@@ -123,9 +113,9 @@ fun AddExpenseScreen(
                 .takeIf { it.isNotEmpty() }
                 ?.joinToString(",")
 
-            onNavigateToCategories(argument) // todo subir essa lógica de navegação para o navGraph
+            openCategories(argument) // todo subir essa lógica de navegação para o navGraph
         },
-        onBackButtonClicked = onNavigateBack,
+        onBackButtonClicked = goBack,
     )
 }
 

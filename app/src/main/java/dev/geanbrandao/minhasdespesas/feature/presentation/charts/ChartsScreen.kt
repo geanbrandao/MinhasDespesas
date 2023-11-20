@@ -21,7 +21,7 @@ import dev.geanbrandao.lib.compose.piecharts.domain.model.PieChartModel
 import dev.geanbrandao.lib.compose.piecharts.presentation.PieChart
 import dev.geanbrandao.lib.compose.piecharts.presentation.renderer.SliceDrawer
 import dev.geanbrandao.minhasdespesas.common.components.FiltersButton
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
+import dev.geanbrandao.minhasdespesas.navigation.domain.Screen
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 
 @Composable

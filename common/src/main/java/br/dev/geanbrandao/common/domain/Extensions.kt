@@ -203,3 +203,5 @@ fun String.ignoreAccents(): String {
     val regex = "\\p{InCombiningDiacriticalMarks}+".toRegex()
     return regex.replace(normalizedString, "")
 }
+
+fun String.completeRoute(key: String, newValue: String) = this.replace("{$key}", newValue)

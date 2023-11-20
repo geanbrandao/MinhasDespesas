@@ -1,4 +1,4 @@
-package dev.geanbrandao.minhasdespesas.feature.presentation.navigation.components
+package dev.geanbrandao.minhasdespesas.navigation.bottomnavigationbar
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.NavBarItem
 import dev.geanbrandao.minhasdespesas.feature.presentation.splashscreen.util.navigateForNavBar
+import dev.geanbrandao.minhasdespesas.navigation.domain.NavBarItem
 import dev.geanbrandao.minhasdespesas.ui.theme.NavBarHeightSize
 
 val items = listOf(

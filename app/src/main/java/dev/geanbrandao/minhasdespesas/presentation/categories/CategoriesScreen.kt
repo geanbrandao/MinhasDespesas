@@ -49,7 +49,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CategoriesScreen(
-    onNavigateBackToAddExpense: (argument: String?) -> Unit,
+    popBackWithResult: (argument: String?) -> Unit,
     viewModel: CategoriesViewModel = koinViewModel()
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -75,15 +75,16 @@ fun CategoriesScreen(
         onCheckChangeListener = { isChecked: Boolean, item: Category ->
             viewModel.updateSelectedCategories(categoryId = item.categoryId, isChecked = isChecked)
         },
-        onNavigateBackToAddExpense = {
-            val argument: String? = categories.value // "1,2" ou null
-                .filter { it.isChecked }
-                .map { it.categoryId }
-                .takeIf { it.isNotEmpty() }
-                ?.joinToString(",")
-            onNavigateBackToAddExpense(argument)
-        }
+        onNavigateBackToAddExpense = { popBackWithResult(buildArgument(categories.value)) }
     )
+}
+
+private fun buildArgument(categories: List<Category>) : String? {
+    return categories // "1,2" ou null
+        .filter { it.isChecked }
+        .map { it.categoryId }
+        .takeIf { it.isNotEmpty() }
+        ?.joinToString(",")
 }
 
 @Composable

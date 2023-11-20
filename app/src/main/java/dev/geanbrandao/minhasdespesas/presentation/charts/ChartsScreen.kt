@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import br.dev.geanbrandao.common.presentation.BaseScreen
 import br.dev.geanbrandao.common.presentation.resources.PaddingTwo
 import dev.geanbrandao.lib.compose.piecharts.domain.ChartColors
@@ -27,7 +26,6 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ChartsScreen(
-    navHostController: NavHostController,
     viewModel: ChartsViewModel = koinViewModel()
 ) {
     val chartData = viewModel.chartData.collectAsState()

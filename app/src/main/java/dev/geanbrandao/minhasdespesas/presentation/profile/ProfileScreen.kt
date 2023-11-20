@@ -11,17 +11,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.dev.geanbrandao.common.domain.clickableNoRippleEffect
 import br.dev.geanbrandao.common.presentation.BaseScreen
 import br.dev.geanbrandao.common.presentation.resources.PaddingTwo
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.components.NavigationEvent
 
 @Composable
 fun ProfileScreen(
-    navigateTo: (NavigationEvent) -> Unit,
+    openCategoriesScreen: () -> Unit,
+    openPreferenceScreen: () -> Unit,
+    openFiltersScreen: () -> Unit,
+    openPlaygroundScreen: () -> Unit,
 ) {
     ProfileScreenView(
-        openCategoriesScreen = { navigateTo(NavigationEvent.NavigateToCategories) },
-        openPreferenceScreen = { navigateTo(NavigationEvent.NavigateToPreferences) },
-        openFiltersScreen = { navigateTo(NavigationEvent.NavigateToFilters) },
-        openPlaygroundScreen = { navigateTo(NavigationEvent.NavigateToPlayground) },
+        openCategoriesScreen = openCategoriesScreen,
+        openPreferenceScreen = openPreferenceScreen,
+        openFiltersScreen = openFiltersScreen,
+        openPlaygroundScreen = openPlaygroundScreen,
     )
 }
 

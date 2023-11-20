@@ -29,7 +29,6 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.buttons.ButtonDefault
@@ -48,8 +47,6 @@ import dev.geanbrandao.minhasdespesas.common.utils.extensions.clickableRoundedEf
 //import dev.geanbrandao.minhasdespesas.feature.domain.model.SelectedCategoriesArg
 import dev.geanbrandao.minhasdespesas.feature.presentation.add.components.ViewCalendarDate
 import dev.geanbrandao.minhasdespesas.feature.presentation.add.components.ViewCategoriesList
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
-import dev.geanbrandao.minhasdespesas.feature.presentation.splashscreen.util.navigateWithArgument
 import dev.geanbrandao.minhasdespesas.ui.theme.CornersDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginThree
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginTwo

@@ -29,8 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import br.dev.geanbrandao.common.domain.PATTERN_SHORT_DATE
 import br.dev.geanbrandao.common.domain.getCurrentTimeInMillis
 import br.dev.geanbrandao.common.domain.getLongTimeMillis
@@ -60,7 +58,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun FiltersScreen(
-    navHostController: NavHostController,
+    goBack: () -> Unit,
     viewModel: FiltersViewModel = koinViewModel(),
 ) {
     val categories = viewModel.categories.collectAsState()
@@ -68,10 +66,9 @@ fun FiltersScreen(
     val context = LocalContext.current
     val onFiltersApply = viewModel.onFiltersApply.collectAsState()
 
-    if (onFiltersApply.value) navHostController.navigateUp() //change this
+    if (onFiltersApply.value) goBack() //change this
 
     FiltersScreenView(
-        navHostController = navHostController,
         selectedFilters = selectedFilters.value,
         categories = categories.value,
         onCheckChangeListener = { isChecked: Boolean, item: Category ->
@@ -92,19 +89,20 @@ fun FiltersScreen(
         onApplyFilters = {
             viewModel.setSelectedFilters(selectedFilters.value)
         },
+        onCancelClicked = goBack,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FiltersScreenView(
-    navHostController: NavHostController,
     selectedFilters: List<SelectedFilter>,
     categories: List<Category>,
     onSelectedFilterDate: (FilterByDateEnum, Long?, Long?) -> Unit,
     onCheckChangeListener: (Boolean, Category) -> Unit,
     onCleanFilters: () -> Unit,
     onApplyFilters: () -> Unit,
+    onCancelClicked: () -> Unit,
 ) {
 
     val isDatePickerVisible = remember { mutableStateOf(false) }
@@ -164,7 +162,7 @@ private fun FiltersScreenView(
                     ButtonAction(
                         text = stringResource(id = R.string.fragment_filters_button_cancel),
                         isEnabled = true,
-                        onClick = { navHostController.navigateUp() },
+                        onClick = onCancelClicked,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = PaddingThree, top = PaddingOne)
@@ -275,7 +273,6 @@ private fun FiltersScreenViewPreview() {
     )
 //    val selectedFilters = listOf<SelectedFilter>()
     FiltersScreenView(
-        navHostController = rememberNavController(),
         selectedFilters = selectedFilters,
         categories = listOf(),
         onCleanFilters = {},
@@ -285,6 +282,7 @@ private fun FiltersScreenViewPreview() {
         onCheckChangeListener = { isChecked: Boolean, item: Category ->
         },
         onApplyFilters = {},
+        onCancelClicked = {}
     )
 }
 

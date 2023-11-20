@@ -27,8 +27,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import br.dev.geanbrandao.common.domain.clickableNoRippleEffect
 import br.dev.geanbrandao.common.domain.isNull
 import br.dev.geanbrandao.common.presentation.BaseScreen
@@ -44,7 +42,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PreferencesScreen(
-    navHostController: NavHostController,
+    goBack: () -> Unit,
     viewModel: PreferencesViewModel = koinViewModel()
 ) {
 
@@ -52,7 +50,6 @@ fun PreferencesScreen(
     val selectedSwipe = viewModel.selectedSwipe.collectAsState()
     
     PreferencesScreenView(
-        navHostController = navHostController,
         selectedTheme = selectedTheme.value,
         selectedSwipe = selectedSwipe.value,
         onSelectedThemeOption = {
@@ -60,23 +57,24 @@ fun PreferencesScreen(
         },
         onSelectedSwipeOption = {
             viewModel.updateSelectedSwipe(it)
-        }
+        },
+        onBackButtonClicked = goBack,
     )
 }
 
 @Composable
 private fun PreferencesScreenView(
-    navHostController: NavHostController,
     selectedTheme: String?,
     selectedSwipe: String?,
     onSelectedThemeOption: (option: String) -> Unit,
     onSelectedSwipeOption: (option: String) -> Unit,
+    onBackButtonClicked: () -> Unit,
 ) {
 
     BaseScreen(
         header = {
             ToolbarView(
-                onBackButtonClicked = {}, // todo adicionar voltar
+                onBackButtonClicked = onBackButtonClicked, // todo adicionar voltar
                 toolbarTitle = stringResource(R.string.preferences_screen_toolbar_title),
             )
         },
@@ -306,11 +304,11 @@ data class SettingOption(
 @Composable
 private fun PreferencesScreenViewPreview() {
     PreferencesScreenView(
-        navHostController = rememberNavController(),
         selectedTheme = "auto",
         selectedSwipe = "Ambos os lados",
         onSelectedThemeOption = {},
         onSelectedSwipeOption = {},
+        onBackButtonClicked = {}
     )
 }
 
