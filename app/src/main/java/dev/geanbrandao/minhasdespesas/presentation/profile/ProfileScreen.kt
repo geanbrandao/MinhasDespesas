@@ -8,57 +8,55 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import br.dev.geanbrandao.common.domain.clickableNoRippleEffect
 import br.dev.geanbrandao.common.presentation.BaseScreen
 import br.dev.geanbrandao.common.presentation.resources.PaddingTwo
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
+import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.components.NavigationEvent
 
 @Composable
 fun ProfileScreen(
-    navHostController: NavHostController,
+    navigateTo: (NavigationEvent) -> Unit,
 ) {
-    ProfileScreenView(navHostController = navHostController)
+    ProfileScreenView(
+        openCategoriesScreen = { navigateTo(NavigationEvent.NavigateToCategories) },
+        openPreferenceScreen = { navigateTo(NavigationEvent.NavigateToPreferences) },
+        openFiltersScreen = { navigateTo(NavigationEvent.NavigateToFilters) },
+        openPlaygroundScreen = { navigateTo(NavigationEvent.NavigateToPlayground) },
+    )
 }
 
 @Composable
 fun ProfileScreenView(
-    navHostController: NavHostController,
+    openCategoriesScreen: () -> Unit,
+    openPreferenceScreen: () -> Unit,
+    openFiltersScreen: () -> Unit,
+    openPlaygroundScreen: () -> Unit,
 ) {
     BaseScreen(
         content = {
             Column(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
                 Text(text = "Gerenciar Categorias",
                     modifier = Modifier
+                        .clickableNoRippleEffect { openCategoriesScreen() }
                         .padding(all = PaddingTwo)
-                        .clickableNoRippleEffect {
-                        navHostController.navigate(Screen.Categories.route)
-                    }
                 )
                 Text(
                     text = "Configurações",
                     modifier = Modifier
+                        .clickableNoRippleEffect { openPreferenceScreen() }
                         .padding(all = PaddingTwo)
-                        .clickableNoRippleEffect {
-                        navHostController.navigate(Screen.Preferences.route)
-                    }
                 )
                 Text(
                     text = "Filtros",
                     modifier = Modifier
+                        .clickableNoRippleEffect { openFiltersScreen() }
                         .padding(all = PaddingTwo)
-                        .clickableNoRippleEffect {
-                        navHostController.navigate(Screen.Filters.route)
-                    }
                 )
                 Text(
                     text = "Teste",
                     modifier = Modifier
+                        .clickableNoRippleEffect { openPlaygroundScreen() }
                         .padding(all = PaddingTwo)
-                        .clickableNoRippleEffect {
-                        navHostController.navigate("teste")
-                    }
                 )
             }
         }
@@ -70,6 +68,9 @@ fun ProfileScreenView(
 @Composable
 fun ProfileScreenViewPreview() {
     ProfileScreenView(
-        navHostController = rememberNavController(),
+        openCategoriesScreen = {},
+        openPreferenceScreen = {},
+        openFiltersScreen = {},
+        openPlaygroundScreen = {},
     )
 }

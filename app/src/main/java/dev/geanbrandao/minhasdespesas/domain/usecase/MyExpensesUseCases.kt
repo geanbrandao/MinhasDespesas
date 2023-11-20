@@ -11,6 +11,7 @@ data class MyExpensesUseCases(
     val updateExpense: UpdateExpenseUseCase,
     val removeExpense: RemoveExpenseUseCase,
     val getCategories: GetCategoriesUseCase,
+    val getCategoriesUsingId: GetCategoriesUsingIdUseCase,
     val addCategories: AddCategoriesUseCase,
     val addCategory: AddCategoryUseCase,
     val removeCategory: RemoveCategoryUseCase,

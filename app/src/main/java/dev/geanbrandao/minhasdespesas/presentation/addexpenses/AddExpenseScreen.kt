@@ -36,8 +36,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import br.dev.geanbrandao.common.domain.getCurrentTimeInMillis
 import br.dev.geanbrandao.common.domain.isNotNull
 import br.dev.geanbrandao.common.presentation.BaseScreen
@@ -62,8 +60,6 @@ import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerFill
 import dev.geanbrandao.minhasdespesas.common.utils.extensions.toStringDateFormatted
 import dev.geanbrandao.minhasdespesas.domain.model.Category
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
-import dev.geanbrandao.minhasdespesas.feature.presentation.splashscreen.util.navigateAndRemoveFromBackStack
 import dev.geanbrandao.minhasdespesas.presentation.categories.ListCategorySmallView
 import java.time.Instant
 import java.time.ZoneId
@@ -73,53 +69,43 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AddExpenseScreen(
-    navHostController: NavHostController,
-    selectedCategories: String?,
-    expenseId: String?,
+    // arguments
+    argSelectedCategories: String?,
+    argExpenseId: String?,
+    // navigation
     onNavigateToCategories: (selectedCategories: String?) -> Unit,
+    onNavigateToExpensesRemovingAdd: () -> Unit,
+    onNavigateBack: () -> Unit,
+    // viewModel
     viewModel: AddExpenseViewModel = koinViewModel(),
 ) {
-//    LaunchedEffect(Unit) {
-//        viewModel.getCategories()
-//    }
-    println("MEULOG - $viewModel")
     val uiState = viewModel.uiState.collectAsState()
 
     ObserveAsEvents(
         flow = viewModel.insertedOrUpdated,
         onEvent = {
-            if (it) {
-                navHostController.navigateAndRemoveFromBackStack(
-                    destinationRoute = Screen.Expenses.route,
-                    currentRoute = Screen.Add.route
-                )
-            }
+            if (it) { onNavigateToExpensesRemovingAdd() }
         }
     )
 
-//    val insertOperationState = viewModel.insertOperationState.collectAsState()
-//    // todo refazer essa lógica
-//    when(insertOperationState.value) {
-//        is OperationState.Error -> {
-//
-//        }
-//        is OperationState.Loading -> {
-//
-//        }
-//        is OperationState.Success -> {
-//            navHostController.navigateAndRemoveFromBackStack(
-//                destinationRoute = Screen.Expenses.route,
-//                currentRoute = Screen.Add.route
-//            )
+//    val lifecycleOwner = LocalLifecycleOwner.current
+//    LaunchedEffect(lifecycleOwner.lifecycle) {
+//        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//            viewModel.getCategories()
+//            viewModel.getExpense()
+//            viewModel.updateSelectedCategories(selectedCategories)
 //        }
 //    }
 
-    LaunchedEffect(Unit) {
-        viewModel.updateSelectedCategories(selectedCategories)
+    LaunchedEffect(key1 = argSelectedCategories) {
+        viewModel.updateSelectedCategories(argSelectedCategories)
     }
 
+    LaunchedEffect(key1 = argExpenseId, block = {
+        viewModel.getExpense(expenseId = argExpenseId)
+    })
+
     AddExpenseScreenView(
-        navHostController = navHostController,
         uiState = uiState.value,
         onUiStateIsUpdated = {
             viewModel.updateUiState(it)
@@ -131,13 +117,15 @@ fun AddExpenseScreen(
                 viewModel.addExpense()
             }
         },
-        onNavigateToCategories = {
-            val arg = uiState.value.selectedCategories
+        goToCategoryScreen = {
+            val argument = uiState.value.selectedCategories
                 .map { it.categoryId }
                 .takeIf { it.isNotEmpty() }
                 ?.joinToString(",")
-            onNavigateToCategories(arg) // todo subir essa lógica de navegação para o navGraph
+
+            onNavigateToCategories(argument) // todo subir essa lógica de navegação para o navGraph
         },
+        onBackButtonClicked = onNavigateBack,
     )
 }
 
@@ -153,19 +141,19 @@ fun <T> ObserveAsEvents(flow: Flow<T>, onEvent: (T) -> Unit) {
 
 @Composable
 private fun AddExpenseScreenView(
-    navHostController: NavHostController,
     uiState: AddExpenseScreenState,
     onUiStateIsUpdated: (uiState: AddExpenseScreenState) -> Unit,
     onAddClick: () -> Unit,
-    onNavigateToCategories: ()-> Unit,
+    onBackButtonClicked: () -> Unit,
+    goToCategoryScreen: ()-> Unit,
 ) {
     val scrollState = rememberScrollState()
 
     BaseScreen(
         header = {
             ToolbarView(
-                navHostController = navHostController,
-                toolbarTitle = stringResource(id = R.string.fragment_add_edit_expense_toolbar_title)
+                toolbarTitle = stringResource(id = R.string.fragment_add_edit_expense_toolbar_title),
+                onBackButtonClicked = onBackButtonClicked,
             )
         },
         content = {
@@ -209,7 +197,7 @@ private fun AddExpenseScreenView(
                 SpacerFour()
                 ExpenseCategoriesField(
                     selectedCategories = uiState.selectedCategories,
-                    openCategoryScreens = onNavigateToCategories
+                    goToCategoryScreen = goToCategoryScreen,
                 )
                 SpacerFill(modifier = Modifier.weight(weight = 1f))
                 ButtonView(
@@ -366,7 +354,7 @@ fun ExpenseDateField(
 @Composable
 fun ExpenseCategoriesField(
     selectedCategories: List<Category>,
-    openCategoryScreens: () -> Unit,
+    goToCategoryScreen: () -> Unit,
 ) {
     val color = MaterialTheme.colorScheme.onBackground
     RowFieldView(
@@ -397,7 +385,7 @@ fun ExpenseCategoriesField(
                 iconType = IconType.Default,
             )
         },
-        onClick = openCategoryScreens,
+        onClick = goToCategoryScreen,
     )
 }
 
@@ -485,29 +473,26 @@ fun getFormattedDateFromMilli(date: Long): String {
 @Preview
 @Composable
 fun AddExpenseScreenViewPreview() {
+    val uiState = AddExpenseScreenState(
+        amount = "32,55",
+        name = "Maça",
+        selectedDate = getCurrentTimeInMillis(),
+        description = "Aquele negocio lá",
+        selectedCategories = listOf(Category(
+            categoryId = 1,
+            name = "teste",
+            icon = "ic_tag",
+            canRemove = false,
+            isChecked = false
+        )),
+        createdAt = 0L,
+        expenseId = 0L,
+    )
     AddExpenseScreenView(
-        navHostController = rememberNavController(),
-        uiState = AddExpenseScreenState(
-            amount = "32,55",
-            name = "Maça",
-            selectedDate = getCurrentTimeInMillis(),
-            description = "Aquele negocio lá",
-            selectedCategories = listOf(Category(
-                categoryId = 1,
-                name = "teste",
-                icon = "ic_tag",
-                canRemove = false,
-                isChecked = false
-            )),
-            createdAt = 0L,
-            expenseId = 0L,
-        ),
-        onUiStateIsUpdated = {
-
-        },
-        onAddClick = {
-
-        },
-        onNavigateToCategories = {}
+        uiState = uiState,
+        onUiStateIsUpdated = {},
+        onAddClick = {},
+        onBackButtonClicked = {},
+        goToCategoryScreen = {},
     )
 }

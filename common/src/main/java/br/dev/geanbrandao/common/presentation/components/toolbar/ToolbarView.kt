@@ -14,8 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import br.dev.geanbrandao.common.presentation.components.icon.IconView
 import br.dev.geanbrandao.common.presentation.components.spacer.SpacerThree
 import br.dev.geanbrandao.common.presentation.components.text.TextToolbar
@@ -35,16 +33,16 @@ sealed class ToolbarType(val toolbarType: ToolbarTypeEnum) {
 
 @Composable
 fun ToolbarView(
-    navHostController: NavHostController,
     toolbarTitle: String,
     modifier: Modifier = Modifier,
+    onBackButtonClicked: () -> Unit = {},
     toolbarType: ToolbarType = ToolbarType.Navigation,
 ) {
     Card(
         shape = RectangleShape,
     ) {
         Row(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.secondary)
                 .padding(all = PaddingTwo),
@@ -54,9 +52,8 @@ fun ToolbarView(
                 icon = rememberVectorPainter(image = Icons.Rounded.ArrowBack),
                 tint = MaterialTheme.colorScheme.onSecondary,
                 modifier = Modifier.align(alignment = Alignment.CenterVertically),
-            ) {
-                navHostController.navigateUp()
-            }
+                onClick = onBackButtonClicked,
+            )
             SpacerThree()
             TextToolbar(
                 text = toolbarTitle,
@@ -70,5 +67,5 @@ fun ToolbarView(
 @Preview
 @Composable
 private fun ToolbarViewPreview() {
-    ToolbarView(navHostController = rememberNavController(), toolbarTitle = "Titulo")
+    ToolbarView(toolbarTitle = "Titulo", onBackButtonClicked = {})
 }

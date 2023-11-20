@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
 import br.dev.geanbrandao.common.presentation.components.toolbar.ToolbarView
 
 @Composable
@@ -47,7 +46,7 @@ private fun LoadingView() {
 private fun BaseScreenPreview() {
     BaseScreen(
         header = {
-            ToolbarView(navHostController = rememberNavController(), toolbarTitle = "Base screen title")
+            ToolbarView(toolbarTitle = "Base screen title")
         },
         isLoading = true,
     ) {

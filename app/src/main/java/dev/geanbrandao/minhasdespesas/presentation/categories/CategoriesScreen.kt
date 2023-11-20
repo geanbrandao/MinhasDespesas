@@ -29,8 +29,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import br.dev.geanbrandao.common.presentation.BaseScreen
 import br.dev.geanbrandao.common.presentation.components.RowFieldView
 import br.dev.geanbrandao.common.presentation.components.button.ButtonType
@@ -51,7 +49,6 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CategoriesScreen(
-    navHostController: NavHostController,
     onNavigateBackToAddExpense: (argument: String?) -> Unit,
     viewModel: CategoriesViewModel = koinViewModel()
 ) {
@@ -65,7 +62,6 @@ fun CategoriesScreen(
     val categories = viewModel.categories.collectAsState()
 
     CategoriesScreenView(
-        navHostController = navHostController,
         categories = categories.value,
         createNewCategory = { newCategory: String ->
             viewModel.addNewCategory(newCategory)
@@ -92,7 +88,6 @@ fun CategoriesScreen(
 
 @Composable
 private fun CategoriesScreenView(
-    navHostController: NavHostController,
     categories: List<Category>,
     createNewCategory: (categoryName: String) -> Unit,
     onCategoryRemoved: (categoryId: Long) -> Unit,
@@ -106,7 +101,7 @@ private fun CategoriesScreenView(
             .fillMaxSize(),
         header = {
             ToolbarView(
-                navHostController = navHostController,
+                onBackButtonClicked = {}, // todo adicionar voltar
                 toolbarTitle = stringResource(id = R.string.fragment_add_edit_expense_text_select_the_categories)
             )
         },
@@ -245,7 +240,6 @@ private fun CreateCategoryDialog(
 @Composable
 fun CategoriesScreenViewPreview() {
     CategoriesScreenView(
-        navHostController = rememberNavController(),
         categories = createCategoryHelper(),
         createNewCategory = {
 

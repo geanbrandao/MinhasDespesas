@@ -45,6 +45,10 @@ class MyExpensesRepositoryImpl(
         return dao.getCategories()
     }
 
+    override suspend fun getCategories(ids: List<Long>): List<CategoryEntity> {
+        return dao.getCategories(ids = ids)
+    }
+
     override suspend fun getCategory(categoryId: Long): CategoryEntity? {
         return dao.getCategory(categoryId)
     }

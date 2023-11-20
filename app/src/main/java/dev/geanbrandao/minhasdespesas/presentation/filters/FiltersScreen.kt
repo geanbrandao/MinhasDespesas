@@ -68,7 +68,7 @@ fun FiltersScreen(
     val context = LocalContext.current
     val onFiltersApply = viewModel.onFiltersApply.collectAsState()
 
-    if (onFiltersApply.value) navHostController.navigateUp()
+    if (onFiltersApply.value) navHostController.navigateUp() //change this
 
     FiltersScreenView(
         navHostController = navHostController,
@@ -114,7 +114,7 @@ private fun FiltersScreenView(
     BaseScreen(
         header = {
             ToolbarView(
-                navHostController = navHostController,
+                onBackButtonClicked = {}, // todo adicionar voltar
                 toolbarTitle = stringResource(id = R.string.fragment_filters_title_toolbar)
             )
         },

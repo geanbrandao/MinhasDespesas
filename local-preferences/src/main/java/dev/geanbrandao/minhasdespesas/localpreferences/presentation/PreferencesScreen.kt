@@ -76,7 +76,7 @@ private fun PreferencesScreenView(
     BaseScreen(
         header = {
             ToolbarView(
-                navHostController = navHostController,
+                onBackButtonClicked = {}, // todo adicionar voltar
                 toolbarTitle = stringResource(R.string.preferences_screen_toolbar_title),
             )
         },

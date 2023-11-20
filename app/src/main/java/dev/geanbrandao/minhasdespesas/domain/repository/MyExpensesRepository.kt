@@ -11,6 +11,7 @@ interface MyExpensesRepository {
     suspend fun getExpense(expenseId: Long): ExpensesWithCategories
     suspend fun updateExpense(expense: ExpenseEntity)
     suspend fun getCategories(): List<CategoryEntity>
+    suspend fun getCategories(ids: List<Long>): List<CategoryEntity>
     suspend fun getCategory(categoryId: Long): CategoryEntity?
     suspend fun addCategories(categories: List<CategoryEntity>)
     suspend fun addCategory(category: CategoryEntity) : Long

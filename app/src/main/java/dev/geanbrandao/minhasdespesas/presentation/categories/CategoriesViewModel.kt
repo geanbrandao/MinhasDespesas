@@ -18,13 +18,9 @@ class CategoriesViewModel(
     private val useCases: MyExpensesUseCases,
 ) : ViewModel() {
 
-    private val argSelectedCategories = state.getStateFlow<String?>(Key.SELECTED_CATEGORIES, null)
+//    private val argSelectedCategories = state.getStateFlow<String?>(Key.SELECTED_CATEGORIES, null)
+    private val argSelectedCategories: String? = state[Key.SELECTED_CATEGORIES]
     val categories = state.getStateFlow<List<Category>>(key = KEY_CATEGORIES, initialValue = emptyList())
-
-
-    init {
-        println(argSelectedCategories.value)
-    }
 
     fun getCategories() {
         viewModelScope.launch {
@@ -32,7 +28,7 @@ class CategoriesViewModel(
                 .catch {
                     throw Exception(it)
                 }.collect {
-                    val idList = argSelectedCategories.value?.split(",")?.map { id -> id.toLong() }.orEmpty()
+                    val idList = argSelectedCategories?.split(",")?.map { id -> id.toLong() }.orEmpty()
                     val result = it.map { category: Category ->
                         if (category.categoryId in idList) {
                             category.copy(isChecked = true)

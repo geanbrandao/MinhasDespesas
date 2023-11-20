@@ -28,8 +28,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import br.dev.geanbrandao.common.domain.MoneyUtils.formatToBrl
 import br.dev.geanbrandao.common.domain.getCurrentTimeInMillis
 import br.dev.geanbrandao.common.presentation.BaseScreen
@@ -44,7 +42,6 @@ import br.dev.geanbrandao.common.presentation.resources.PaddingTwo
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.domain.model.Category
 import dev.geanbrandao.minhasdespesas.domain.model.Expense
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
 import dev.geanbrandao.minhasdespesas.presentation.filters.FilterByDateEnum
 import dev.geanbrandao.minhasdespesas.presentation.filters.FilterDate
 import dev.geanbrandao.minhasdespesas.presentation.filters.SelectedFilter
@@ -55,8 +52,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
-    navHostController: NavHostController,
     onNavigateToEditExpense: (expenseId: Long) -> Unit,
+    onNavigateToFilters: () -> Unit,
     viewModel: HomeViewModel = koinViewModel()
 ) {
     LaunchedEffect(key1 = Unit) {
@@ -68,7 +65,6 @@ fun HomeScreen(
         viewModel.getExpenses()
     }
     HomeScreenView(
-        navHostController = navHostController,
         selectedFilters = selectedFilters.value,
         expenses = expenses.value,
         onCleanFilters = {
@@ -78,17 +74,18 @@ fun HomeScreen(
             viewModel.removeExpense(expenseId)
         },
         onEditClicked = onNavigateToEditExpense,
+        onFilterButtonClicked = onNavigateToFilters,
     )
 }
 
 @Composable
 private fun HomeScreenView(
-    navHostController: NavHostController,
     selectedFilters: List<SelectedFilter>,
     expenses: List<Expense>,
     onCleanFilters: () -> Unit,
     onDeleteClicked: (id: Long) -> Unit,
     onEditClicked: (id: Long) -> Unit,
+    onFilterButtonClicked: () -> Unit,
 ) {
     Box {
         BaseScreen(
@@ -132,9 +129,7 @@ private fun HomeScreenView(
         )
         ActionButtonView(
             icon = painterResource(id = R.drawable.ic_filters),
-            onClick = {
-                  navHostController.navigate(Screen.Filters.route)
-            },
+            onClick = onFilterButtonClicked,
             modifier = Modifier.align(alignment = Alignment.BottomEnd)
         )
     }
@@ -279,16 +274,15 @@ private fun HomeScreenViewPreview() {
         )
     )
     HomeScreenView(
-        navHostController = rememberNavController(),
         selectedFilters = selectedFilters,
         expenses = list,
         onCleanFilters = {},
         onDeleteClicked = { id ->
             list.removeIf { it.expenseId == id }
         },
-
         onEditClicked = {
 
         },
+        onFilterButtonClicked = {}
     )
 }

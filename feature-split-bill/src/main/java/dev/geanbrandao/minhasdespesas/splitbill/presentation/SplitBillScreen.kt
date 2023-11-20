@@ -50,7 +50,7 @@ fun SplitBillScreenView(
     BaseScreen(
         header = {
             ToolbarView(
-                navHostController = navHostController,
+                onBackButtonClicked = {}, // todo adicionar voltar
                 toolbarTitle = "Dividir a conta"
             )
         }

@@ -11,7 +11,6 @@ import br.dev.geanbrandao.common.domain.toFloat
 import dev.geanbrandao.minhasdespesas.domain.model.Category
 import dev.geanbrandao.minhasdespesas.domain.model.Expense
 import dev.geanbrandao.minhasdespesas.domain.usecase.MyExpensesUseCases
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Key
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -20,7 +19,6 @@ import kotlinx.parcelize.Parcelize
 import org.koin.android.annotation.KoinViewModel
 
 private const val STATE_UI_STATE = "addExpenseScreenUiState"
-private const val STATE_SELECTED_CATEGORIES = "selectedCategoriesState"
 private const val STATE_CATEGORIES = "categoriesState"
 
 //private const val STATE_ARGUMENT = "argument"
@@ -31,17 +29,7 @@ class AddExpenseViewModel(
     private val useCases: MyExpensesUseCases,
 ) : ViewModel() {
 
-    // get from navigation
-    private val argSelectedCategories = state.getStateFlow<String?>(key = Key.SELECTED_CATEGORIES, null)
-//    private val argSelectedCategories = state.getStateFlow<String?>(key = STATE_ARGUMENT, null)
-    // save for screen recreation and process kill
-    private val selectedCategories = state.getStateFlow<List<Category>>(key = STATE_SELECTED_CATEGORIES, initialValue = emptyList())
-    private val categories = state.getStateFlow<List<Category>>(key = STATE_CATEGORIES, initialValue = emptyList())
-
-//    private val _insertOperationState = MutableStateFlow<OperationState<Boolean>>(OperationState.Loading(isLoading = false))
-//    val insertOperationState = _insertOperationState.asStateFlow()
-
-    private val _insertedOrUpdated = Channel<Boolean>()
+    private val _insertedOrUpdated = Channel<Boolean>() // todo throw a navigationEvent
     val insertedOrUpdated = _insertedOrUpdated.receiveAsFlow()
 
     val uiState = state.getStateFlow(
@@ -51,17 +39,11 @@ class AddExpenseViewModel(
             name = "",
             selectedDate = getCurrentTimeInMillis(),
             description = "",
-            selectedCategories = selectedCategories.value,
+            selectedCategories = emptyList(),
             createdAt = getCurrentTimeInMillis(),
             expenseId = 0,
         )
     )
-
-    init {
-        getCategories()
-        getExpense()
-        println("MEULOG viewModel- ${state.get<String?>("selectedCategories")}")
-    }
 
     fun addExpense() {
         viewModelScope.launch {
@@ -87,8 +69,8 @@ class AddExpenseViewModel(
         }
     }
 
-    private fun getExpense() {
-        state.get<String?>(Key.EXPENSE_ID)?.let {
+    fun getExpense(expenseId: String?) {
+        expenseId?.let {
             viewModelScope.launch {
                 useCases.getExpense(it.toLong())
                     .catch {
@@ -125,12 +107,16 @@ class AddExpenseViewModel(
     }
 
     fun updateSelectedCategories(argument: String?) {
-        println("MEULOG updateSelectedCategories- ${state.get<String?>("selectedCategories")}")
-        val idList = argument?.split(",")?.map { id -> id.toLong() }.orEmpty()
-        val result = categories.value.filter { category: Category ->
-            category.categoryId in idList
+        viewModelScope.launch {
+            val ids = argument?.split(",")?.map { id -> id.toLong() }.orEmpty()
+            useCases.getCategoriesUsingId(ids)
+                .catch {
+                    throw Exception(it)
+                }.collect {
+                    state[STATE_UI_STATE] = uiState.value.copy(selectedCategories = it)
+                }
+
         }
-        state[STATE_UI_STATE] = uiState.value.copy(selectedCategories = result)
     }
 
     private fun createExpenseModel() = Expense(
@@ -143,8 +129,6 @@ class AddExpenseViewModel(
         createdAt = uiState.value.createdAt,
         updatedAt = getCurrentTimeInMillis(),
     )
-
-
 }
 
 @Parcelize
@@ -162,8 +146,10 @@ data class AddExpenseScreenState(
         get() = amount != "0,00" && name.isNotEmpty() && selectedDate.isValidDate()
 }
 
-sealed class OperationState<out T> {
-    data class Loading(val isLoading: Boolean): OperationState<Nothing>()
-    data class Success<T>(val data: T): OperationState<T>()
-    data class Error(val message: String = "", val exception: Throwable): OperationState<Nothing>()
-}
+// get from navigation
+//    private val argSelectedCategories = state.getStateFlow<String?>(key = Key.SELECTED_CATEGORIES, null)
+//sealed class OperationState<out T> {
+//    data class Loading(val isLoading: Boolean): OperationState<Nothing>()
+//    data class Success<T>(val data: T): OperationState<T>()
+//    data class Error(val message: String = "", val exception: Throwable): OperationState<Nothing>()
+//}

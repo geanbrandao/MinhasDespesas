@@ -34,7 +34,7 @@ class FiltersViewModel(
 
 
     private val _onFiltersApply = MutableStateFlow(false)
-    val onFiltersApply = _onFiltersApply.asStateFlow()
+    val onFiltersApply = _onFiltersApply.asStateFlow() // change this to channel flow, maybe is a better approach
 
     val selectedFilters: Flow<List<SelectedFilter>> = combine(categories, filterDate) { arg1: List<Category>, arg2: FilterDate? ->
         val filtersWithOnlyCategories = arg1.filter { it.isChecked }.map {

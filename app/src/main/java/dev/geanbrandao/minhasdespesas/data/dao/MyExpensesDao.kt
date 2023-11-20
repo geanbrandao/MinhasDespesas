@@ -68,6 +68,10 @@ interface MyExpensesDao {
     @Query("SELECT * FROM CategoryEntity")
     suspend fun getCategories(): List<CategoryEntity>
 
+    @Transaction
+    @Query("SELECT * FROM CategoryEntity WHERE categoryId IN (:ids)")
+    suspend fun getCategories(ids: List<Long>): List<CategoryEntity>
+
     @Query("SELECT * FROM CategoryEntity WHERE categoryId = :id")
     suspend fun getCategory(id: Long): CategoryEntity?
 
