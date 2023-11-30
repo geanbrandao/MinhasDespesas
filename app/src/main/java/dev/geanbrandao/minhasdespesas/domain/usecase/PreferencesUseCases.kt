@@ -6,4 +6,5 @@ import org.koin.core.annotation.Single
 data class PreferencesUseCases(
     val setSelectedFiltersUseCase: SetSelectedFiltersUseCase,
     val getSelectedFiltersUseCase: GetSelectedFiltersUseCase,
+    val getSwipeDirection: GetSwipeDirection,
 )

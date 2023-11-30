@@ -115,6 +115,7 @@ fun NavGraph(navHostController: NavHostController) {
                 }
             )
         ) { navBackStackEntry: NavBackStackEntry ->
+//            val selectedCategories = navBackStackEntry.arguments?.getString(Key.SELECTED_CATEGORIES)
             val selectedCategories = navBackStackEntry.savedStateHandle.get<String?>(Key.SELECTED_CATEGORIES)
             val expenseId = navBackStackEntry.arguments?.getString(Key.EXPENSE_ID)
             AddExpenseScreen(
@@ -166,7 +167,8 @@ fun NavGraph(navHostController: NavHostController) {
                         key = Key.SELECTED_CATEGORIES,
                         argument = argument,
                     )
-                }
+                },
+                goBack = { navigationEvent.value = NavigateBack }
             )
         }
         composable(route = Screen.SplitBill.route) {

@@ -15,20 +15,14 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import org.koin.core.annotation.Single
 
-enum class ThemeNameEnum(val value: String) {
-    AUTO(value = THEME_AUTO),
-    LIGHT(value = THEME_LIGHT),
-    DARK(value = THEME_DARK);
-
-    companion object {
-        fun from(themeName: String) =
-            values().find { it.value == themeName } ?: throw Exception("Tema $themeName não existe")
-    }
-}
-
+// theme options
 const val THEME_AUTO = "auto"
 const val THEME_LIGHT = "light"
 const val THEME_DARK = "dark"
+// swipe options
+const val SWIPE_BOTH = "both"
+const val SWIPE_RIGHT = "right"
+const val SWIPE_LEFT = "left"
 
 @Single
 class PreferencesDataStoreImpl(
@@ -45,7 +39,7 @@ class PreferencesDataStoreImpl(
                 }
             }
             .map { value: Preferences ->
-                value[KEY_THEME_NAME] ?: ThemeNameEnum.AUTO.value
+                value[KEY_THEME_NAME] ?: THEME_AUTO
             }
     }
 
@@ -65,7 +59,7 @@ class PreferencesDataStoreImpl(
                 }
             }
             .map { value: Preferences ->
-                value[KEY_SWIPE_NAME] ?: "both"
+                value[KEY_SWIPE_NAME] ?: SWIPE_BOTH
             }
     }
 

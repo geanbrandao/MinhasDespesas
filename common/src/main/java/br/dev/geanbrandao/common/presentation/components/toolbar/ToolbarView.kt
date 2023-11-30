@@ -35,8 +35,7 @@ sealed class ToolbarType(val toolbarType: ToolbarTypeEnum) {
 fun ToolbarView(
     toolbarTitle: String,
     modifier: Modifier = Modifier,
-    onBackButtonClicked: () -> Unit = {},
-    toolbarType: ToolbarType = ToolbarType.Navigation,
+    onBackButtonClicked: () -> Unit,
 ) {
     Card(
         shape = RectangleShape,

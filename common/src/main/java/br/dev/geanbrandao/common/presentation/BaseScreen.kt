@@ -46,13 +46,16 @@ private fun LoadingView() {
 private fun BaseScreenPreview() {
     BaseScreen(
         header = {
-            ToolbarView(toolbarTitle = "Base screen title")
+            ToolbarView(
+                toolbarTitle = "Base screen title",
+                onBackButtonClicked = {},
+            )
         },
         isLoading = true,
     ) {
         Text(
             text = "BaseScreenPreview",
-            Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         )
     }
 }

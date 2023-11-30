@@ -1,6 +1,7 @@
 package br.dev.geanbrandao.common.presentation.components.swipetoreveal
 
 import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.AnchoredDraggableState
@@ -10,28 +11,144 @@ import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
-import br.dev.geanbrandao.common.R
-import br.dev.geanbrandao.common.presentation.components.icon.IconView
+import androidx.compose.ui.unit.dp
+import br.dev.geanbrandao.common.presentation.components.swipetoreveal.DragAnchors.Default
 import br.dev.geanbrandao.common.presentation.components.swipetoreveal.DragAnchors.End
 import br.dev.geanbrandao.common.presentation.components.swipetoreveal.DragAnchors.Start
-import br.dev.geanbrandao.common.presentation.resources.PaddingTwo
 import kotlin.math.roundToInt
 
 enum class DragAnchors {
     Default,
     Start,
     End,
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SwipeBothSides(
+    modifier: Modifier = Modifier,
+    onDeleteClicked: () -> Unit,
+    onEditClicked: () -> Unit,
+    content: @Composable RowScope.() -> Unit,
+) {
+
+    val density = LocalDensity.current
+    val maxSwipeWidth = with(density) { 56.dp.toPx() }
+
+    val state = remember {
+        RevealState(
+            initialValue = Default,
+            positionalThreshold = { distance: Float -> distance * 0.5f },
+            velocityThreshold = { with(density) { 100.dp.toPx() } },
+            animationSpec = tween(),
+        )
+    }
+
+    SwipeToReveal(
+        state = state,
+        maxSwipeWidth = maxSwipeWidth,
+        directions = setOf(Start, End),
+        background = {
+            if (state.dismissDirection == Start) {
+                BgSwipeToEdit {
+                    onEditClicked()
+                }
+            } else if (state.dismissDirection == End) {
+                BgSwipeToDelete {
+                    onDeleteClicked()
+                }
+            }
+        },
+        dismissContent = content,
+        modifier = modifier,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SwipeRight(
+    modifier: Modifier = Modifier,
+    onDeleteClicked: () -> Unit,
+    onEditClicked: () -> Unit,
+    content: @Composable RowScope.() -> Unit,
+) {
+    val density = LocalDensity.current
+    val maxSwipeWidth = with(density) { 112.dp.toPx() }
+
+    val state = remember {
+        RevealState(
+            initialValue = Default,
+            positionalThreshold = { distance: Float -> distance * 0.5f },
+            velocityThreshold = { with(density) { 100.dp.toPx() } },
+            animationSpec = tween(),
+        )
+    }
+
+    SwipeToReveal(
+        state = state,
+        maxSwipeWidth = maxSwipeWidth,
+        directions = setOf(Start),
+        background = {
+            if (state.dismissDirection == Start) {
+                BgSwipeOneSide(
+                    onEditClick = onEditClicked,
+                    onDeleteClick = onDeleteClicked,
+                )
+            }
+        },
+        dismissContent = content,
+        modifier = modifier,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SwipeLeft(
+    modifier: Modifier = Modifier,
+    onDeleteClicked: () -> Unit,
+    onEditClicked: () -> Unit,
+    content: @Composable RowScope.() -> Unit,
+) {
+    val density = LocalDensity.current
+    val maxSwipeWidth = with(density) { 112.dp.toPx() }
+
+    val state = remember {
+        RevealState(
+            initialValue = Default,
+            positionalThreshold = { distance: Float -> distance * 0.5f },
+            velocityThreshold = { with(density) { 100.dp.toPx() } },
+            animationSpec = tween(),
+        )
+    }
+
+    SwipeToReveal(
+        state = state,
+        maxSwipeWidth = maxSwipeWidth,
+        directions = setOf(End),
+        background = {
+            if (state.dismissDirection == End) {
+                BgSwipeOneSide(
+                    onEditClick = onEditClicked,
+                    onDeleteClick = onDeleteClicked,
+                    isLeft = true,
+                )
+            }
+        },
+        dismissContent = content,
+        modifier = modifier,
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -54,7 +171,7 @@ fun SwipeToReveal(
             )
             .onSizeChanged { _ ->
                 val newAnchors = DraggableAnchors {
-                    DragAnchors.Default at 0f
+                    Default at 0f
                     if (Start in directions) {
                         Start at maxSwipeWidth
                     }
@@ -77,51 +194,6 @@ fun SwipeToReveal(
 }
 
 
-@Composable
-fun BgSwipeToDelete(
-    onClick: () -> Unit,
-) {
-    val backgroundColor = MaterialTheme.colorScheme.errorContainer
-    val iconColor = MaterialTheme.colorScheme.onErrorContainer
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = backgroundColor)
-    ) {
-        IconView(
-            icon = painterResource(id = R.drawable.ic_delete),
-            tint = iconColor,
-            modifier = Modifier
-                .align(alignment = Alignment.CenterEnd)
-                .padding(horizontal = PaddingTwo),
-            onClick = onClick,
-        )
-    }
-}
-
-@Composable
-fun BgSwipeToEdit(
-    onClick: () -> Unit,
-) {
-    val backgroundColor = MaterialTheme.colorScheme.secondaryContainer
-    val iconColor = MaterialTheme.colorScheme.onSecondaryContainer
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = backgroundColor)
-    ) {
-        IconView(
-            icon = painterResource(id = R.drawable.ic_edit),
-            tint = iconColor,
-            modifier = Modifier
-                .align(alignment = Alignment.CenterStart)
-                .padding(horizontal = PaddingTwo),
-            onClick = onClick,
-        )
-    }
-}
 
 @OptIn(ExperimentalFoundationApi::class)
 class RevealState constructor(
@@ -134,7 +206,7 @@ class RevealState constructor(
 
     internal val anchoredDraggableState = AnchoredDraggableState(
         initialValue = initialValue,
-        animationSpec =  animationSpec,
+        animationSpec = animationSpec,
         confirmValueChange = confirmValueChange,
         positionalThreshold = positionalThreshold,
         velocityThreshold = velocityThreshold,
@@ -149,3 +221,55 @@ class RevealState constructor(
             null
         else if (offset > 0f) Start else End
 }
+
+@Preview
+@Composable
+private fun SwipeBothSidesPreview() {
+    SwipeBothSides(
+        onEditClicked = {},
+        onDeleteClicked = {},
+        content = {
+            Box(
+                modifier = Modifier
+                    .background(color = Color.White)
+                    .height(55.dp)
+                    .fillMaxWidth()
+            )
+        }
+    )
+}
+
+    @Preview
+@Composable
+private fun SwipeRightPreview() {
+    SwipeRight(
+        onEditClicked = {},
+        onDeleteClicked = {},
+        content = {
+            Box(
+                modifier = Modifier
+                    .background(color = Color.White)
+                    .height(55.dp)
+                    .fillMaxWidth()
+            )
+        }
+    )
+}
+
+@Preview
+@Composable
+private fun SwipeLeftPreview() {
+    SwipeLeft(
+        onEditClicked = {},
+        onDeleteClicked = {},
+        content = {
+            Box(
+                modifier = Modifier
+                    .background(color = Color.White)
+                    .height(55.dp)
+                    .fillMaxWidth()
+            )
+        }
+    )
+}
+

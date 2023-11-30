@@ -37,10 +37,6 @@ class MyExpensesRepositoryImpl(
         return dao.getExpense(id = expenseId)
     }
 
-    override suspend fun updateExpense(expense: ExpenseEntity) {
-        dao.updateExpense(expense = expense)
-    }
-
     override suspend fun getCategories(): List<CategoryEntity> {
         return dao.getCategories()
     }

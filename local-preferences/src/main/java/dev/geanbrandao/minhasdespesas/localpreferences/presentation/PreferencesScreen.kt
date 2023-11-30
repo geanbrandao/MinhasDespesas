@@ -37,7 +37,6 @@ import br.dev.geanbrandao.common.presentation.components.toolbar.ToolbarView
 import br.dev.geanbrandao.common.presentation.resources.MarginOne
 import br.dev.geanbrandao.common.presentation.resources.PaddingTwo
 import dev.geanbrandao.minhasdespesas.localpreferences.R
-import dev.geanbrandao.minhasdespesas.localpreferences.domain.ThemeNameEnum
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -48,10 +47,10 @@ fun PreferencesScreen(
 
     val selectedTheme = viewModel.selectedTheme.collectAsState()
     val selectedSwipe = viewModel.selectedSwipe.collectAsState()
-    
+
     PreferencesScreenView(
-        selectedTheme = selectedTheme.value,
-        selectedSwipe = selectedSwipe.value,
+        selectedValueTheme = selectedTheme.value,
+        selectedValueSwipe = selectedSwipe.value,
         onSelectedThemeOption = {
             viewModel.updateSelectedTheme(it)
         },
@@ -64,8 +63,8 @@ fun PreferencesScreen(
 
 @Composable
 private fun PreferencesScreenView(
-    selectedTheme: String?,
-    selectedSwipe: String?,
+    selectedValueTheme: String?,
+    selectedValueSwipe: String?,
     onSelectedThemeOption: (option: String) -> Unit,
     onSelectedSwipeOption: (option: String) -> Unit,
     onBackButtonClicked: () -> Unit,
@@ -78,14 +77,14 @@ private fun PreferencesScreenView(
                 toolbarTitle = stringResource(R.string.preferences_screen_toolbar_title),
             )
         },
-        isLoading = selectedTheme.isNull()
+        isLoading = selectedValueTheme.isNull()
     ) {
         ThemeOptionSettingView(
-            selectedTheme = selectedTheme,
+            selectedOption = selectedValueTheme,
             onSelectedThemeOption = onSelectedThemeOption,
         )
         SwipeOptionSettingsView(
-            selectedOption = selectedSwipe,
+            selectedOption = selectedValueSwipe,
             onSelectedSwipeOption = onSelectedSwipeOption
         )
     }
@@ -96,78 +95,72 @@ private fun SwipeOptionSettingsView(
     selectedOption: String?,
     onSelectedSwipeOption: (option: String) -> Unit,
 ) {
-    val options = getSwipeOptions()
     val settingsOptionsIsOpen = remember { mutableStateOf(false) }
-    selectedOption?.let {
-        SettingsItemView(
-            title = stringResource(id = R.string.preferences_swipe_config_label),
-            subtitle = selectedOption,
-            icon = painterResource(id = R.drawable.ic_swipe),
-        ) {
-            settingsOptionsIsOpen.value = true
-        }
-        if (settingsOptionsIsOpen.value) {
-            SettingsOptionsDialogView(
-                options = options,
-                selectedOption = selectedOption,
-                onSelectedOption = onSelectedSwipeOption,
-                onDismissRequest = {
-                    settingsOptionsIsOpen.value = false
-                },
-            )
-        }
+
+    val options = getSwipeOptions()
+    val selectedLabel = options.getLabelOrFirst(selectedOption)
+
+    SettingsItemView(
+        title = stringResource(id = R.string.preferences_swipe_config_label),
+        subtitle = selectedLabel,
+        icon = painterResource(id = R.drawable.ic_swipe),
+    ) {
+        settingsOptionsIsOpen.value = true
+    }
+    if (settingsOptionsIsOpen.value) {
+        SettingsOptionsDialogView(
+            options = options,
+            selectedOption = selectedOption.orEmpty(),
+            onSelectedOption = onSelectedSwipeOption,
+            onDismissRequest = {
+                settingsOptionsIsOpen.value = false
+            },
+        )
     }
 }
 
 @Composable
 private fun ThemeOptionSettingView(
-    selectedTheme: String?,
+    selectedOption: String?,
     onSelectedThemeOption: (option: String) -> Unit,
 ) {
-
-    val options = getThemeOptions()
     val settingsOptionsIsOpen = remember { mutableStateOf(false) }
 
-    selectedTheme?.let {
-        val (icon, themeLabel) = when (ThemeNameEnum.from(selectedTheme)) {
-            ThemeNameEnum.AUTO -> {
-                Pair(
-                    first = painterResource(id = R.drawable.ic_auto),
-                    second = stringArrayResource(id = R.array.preferences_theme_entries)[0]
-                )
-            }
+    val options = getThemeOptions()
+    val label = options.getLabelOrFirst(selectedOption)
+    val icon = when (selectedOption) {
+        stringArrayResource(id = R.array.preferences_theme_values)[0] -> {
+            painterResource(id = R.drawable.ic_auto)
+        }
 
-            ThemeNameEnum.LIGHT -> {
-                Pair(
-                    first = painterResource(id = R.drawable.ic_light),
-                    second = stringArrayResource(id = R.array.preferences_theme_entries)[1]
-                )
-            }
+        stringArrayResource(id = R.array.preferences_theme_values)[1] -> {
+            painterResource(id = R.drawable.ic_light)
+        }
 
-            ThemeNameEnum.DARK -> {
-                Pair(
-                    first = painterResource(id = R.drawable.ic_dark),
-                    second = stringArrayResource(id = R.array.preferences_theme_entries)[2]
-                )
-            }
+        stringArrayResource(id = R.array.preferences_theme_values)[2] -> {
+            painterResource(id = R.drawable.ic_dark)
         }
-        SettingsItemView(
-            title = stringResource(id = R.string.preferences_theme_label),
-            subtitle = themeLabel,
-            icon = icon,
-        ) {
-            settingsOptionsIsOpen.value = true
+
+        else -> {
+            painterResource(id = R.drawable.ic_auto)
         }
-        if (settingsOptionsIsOpen.value) {
-            SettingsOptionsDialogView(
-                options = options,
-                selectedOption = selectedTheme,
-                onSelectedOption = onSelectedThemeOption,
-                onDismissRequest = {
-                    settingsOptionsIsOpen.value = false
-                },
-            )
-        }
+    }
+    SettingsItemView(
+        title = stringResource(id = R.string.preferences_theme_label),
+        subtitle = label,
+        icon = icon,
+    ) {
+        settingsOptionsIsOpen.value = true
+    }
+    if (settingsOptionsIsOpen.value) {
+        SettingsOptionsDialogView(
+            options = options,
+            selectedOption = selectedOption.orEmpty(),
+            onSelectedOption = onSelectedThemeOption,
+            onDismissRequest = {
+                settingsOptionsIsOpen.value = false
+            },
+        )
     }
 }
 
@@ -258,18 +251,19 @@ private fun SettingsOptionsDialogView(
 
 @Composable
 private fun getThemeOptions(): List<SettingOption> {
-    val optionsLabel = stringArrayResource(id = R.array.preferences_theme_entries)
+    val optionsLabel = stringArrayResource(id = R.array.preferences_theme_labels)
+    val optionsValues = stringArrayResource(id = R.array.preferences_theme_values)
     return listOf(
         SettingOption(
-            value = ThemeNameEnum.AUTO.value,
+            value = optionsValues[0],
             label = optionsLabel[0]
         ),
         SettingOption(
-            value = ThemeNameEnum.LIGHT.value,
+            value = optionsValues[1],
             label = optionsLabel[1]
         ),
         SettingOption(
-            value = ThemeNameEnum.DARK.value,
+            value = optionsValues[2],
             label = optionsLabel[2]
         ),
     )
@@ -294,6 +288,10 @@ private fun getSwipeOptions(): List<SettingOption> {
         ),
     )
 }
+private fun List<SettingOption>.getLabelOrFirst(value: String?): String {
+    return this.firstOrNull { it.value == value }?.label ?: this[0].label
+}
+
 
 data class SettingOption(
     val value: String,
@@ -304,8 +302,8 @@ data class SettingOption(
 @Composable
 private fun PreferencesScreenViewPreview() {
     PreferencesScreenView(
-        selectedTheme = "auto",
-        selectedSwipe = "Ambos os lados",
+        selectedValueTheme = "auto",
+        selectedValueSwipe = "Ambos os lados",
         onSelectedThemeOption = {},
         onSelectedSwipeOption = {},
         onBackButtonClicked = {}
@@ -317,7 +315,7 @@ private fun PreferencesScreenViewPreview() {
 private fun ThemeOptionSettingViewPreview() {
     Column(Modifier.background(color = Color.White)) {
         ThemeOptionSettingView(
-            selectedTheme = "auto",
+            selectedOption = "auto",
             onSelectedThemeOption = {}
         )
     }

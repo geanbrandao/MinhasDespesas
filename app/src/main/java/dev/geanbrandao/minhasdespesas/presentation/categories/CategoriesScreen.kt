@@ -50,6 +50,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CategoriesScreen(
     popBackWithResult: (argument: String?) -> Unit,
+    goBack: () -> Unit,
     viewModel: CategoriesViewModel = koinViewModel()
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -75,7 +76,8 @@ fun CategoriesScreen(
         onCheckChangeListener = { isChecked: Boolean, item: Category ->
             viewModel.updateSelectedCategories(categoryId = item.categoryId, isChecked = isChecked)
         },
-        onNavigateBackToAddExpense = { popBackWithResult(buildArgument(categories.value)) }
+        onNavigateBackToAddExpense = { popBackWithResult(buildArgument(categories.value)) },
+        onBackButtonClicked = goBack,
     )
 }
 
@@ -95,6 +97,7 @@ private fun CategoriesScreenView(
     onCategoryEdit: (categoryId: Long) -> Unit,
     onCheckChangeListener: (isChecked: Boolean, item: Category) -> Unit,
     onNavigateBackToAddExpense: () -> Unit,
+    onBackButtonClicked: () -> Unit = {},
 ) {
     BaseScreen(
         modifier = Modifier
@@ -102,7 +105,7 @@ private fun CategoriesScreenView(
             .fillMaxSize(),
         header = {
             ToolbarView(
-                onBackButtonClicked = {}, // todo adicionar voltar
+                onBackButtonClicked = onBackButtonClicked,
                 toolbarTitle = stringResource(id = R.string.fragment_add_edit_expense_text_select_the_categories)
             )
         },

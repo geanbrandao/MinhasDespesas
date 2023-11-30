@@ -3,10 +3,17 @@
     <string name="preferences_screen_toolbar_title">Configurações</string>
     <string name="preferences_theme_label">Temas</string>
     <string name="preferences_swipe_config_label">Opções ao arrastar</string>
-    <string-array name="preferences_theme_entries">
+
+    <string-array name="preferences_theme_labels">
         <item>Padrão do sistema</item>
         <item>Claro</item>
         <item>Escuro</item>
+    </string-array>
+
+    <string-array name="preferences_theme_values">
+        <item>auto</item>
+        <item>light</item>
+        <item>dark</item>
     </string-array>
 
     <string-array name="preferences_swipe_labels">

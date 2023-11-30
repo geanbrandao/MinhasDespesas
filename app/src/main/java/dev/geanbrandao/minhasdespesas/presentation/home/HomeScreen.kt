@@ -39,12 +39,18 @@ import br.dev.geanbrandao.common.presentation.components.swipetoreveal.BgSwipeTo
 import br.dev.geanbrandao.common.presentation.components.swipetoreveal.BgSwipeToEdit
 import br.dev.geanbrandao.common.presentation.components.swipetoreveal.DragAnchors
 import br.dev.geanbrandao.common.presentation.components.swipetoreveal.RevealState
+import br.dev.geanbrandao.common.presentation.components.swipetoreveal.SwipeBothSides
+import br.dev.geanbrandao.common.presentation.components.swipetoreveal.SwipeLeft
+import br.dev.geanbrandao.common.presentation.components.swipetoreveal.SwipeRight
 import br.dev.geanbrandao.common.presentation.components.swipetoreveal.SwipeToReveal
 import br.dev.geanbrandao.common.presentation.resources.PaddingOne
 import br.dev.geanbrandao.common.presentation.resources.PaddingTwo
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.domain.model.Category
 import dev.geanbrandao.minhasdespesas.domain.model.Expense
+import dev.geanbrandao.minhasdespesas.localpreferences.domain.SWIPE_BOTH
+import dev.geanbrandao.minhasdespesas.localpreferences.domain.SWIPE_LEFT
+import dev.geanbrandao.minhasdespesas.localpreferences.domain.SWIPE_RIGHT
 import dev.geanbrandao.minhasdespesas.presentation.filters.FilterByDateEnum
 import dev.geanbrandao.minhasdespesas.presentation.filters.FilterDate
 import dev.geanbrandao.minhasdespesas.presentation.filters.SelectedFilter
@@ -55,10 +61,17 @@ import org.koin.androidx.compose.koinViewModel
 
 // todo fazer todas as telas que carregam dados usarem lauchedEffect com lifecycle
 // todo BUG - Não está atualizando as categorias ao tentar editar uma despesa
+//todo BUG na hora de editar as categorias selecionadas da despesa
 // todo ver como estão sendo ordenas as despeas na home
 // todo depois de criar categoria não ta fecha o teclado
 // todo por algum motivo ta colocando caps na primera letra de todas as palavras na descrição e no nome da despesa
 // todo procurar se seria possivel o viewModel contralar os eventos de navegação
+/**
+ *
+ * podia ter uma viewModel base e dentro dele ficar a lógica de navegação
+ * então a cada ação do usuário chamaria um metodo dispatch event com algum identificador
+ * para informar ao viewModel base, como construir a rota de navegação e devolver o evento em um channel
+ */
 @Composable
 fun HomeScreen(
     openEditExpenseScreen: (expenseId: Long) -> Unit,
@@ -68,10 +81,12 @@ fun HomeScreen(
     val expenses = viewModel.expenses.collectAsState()
     val selectedFilters = viewModel.selectedFilters.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
+    val swipeDirection = viewModel.swipeDirection.collectAsState()
 
     LaunchedEffect(key1 = lifecycleOwner.lifecycle) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.getSelectedFilters()
+            viewModel.getSwipeDirection()
         }
     }
     LaunchedEffect(selectedFilters.value, lifecycleOwner.lifecycle) {
@@ -79,9 +94,11 @@ fun HomeScreen(
             viewModel.getExpenses()
         }
     }
+    // todo transform in state
     HomeScreenView(
         selectedFilters = selectedFilters.value,
         expenses = expenses.value,
+        swipeDirection = swipeDirection.value,
         onCleanFilters = {
             viewModel.setSelectedFilter(emptyList())
         },
@@ -97,6 +114,7 @@ fun HomeScreen(
 private fun HomeScreenView(
     selectedFilters: List<SelectedFilter>,
     expenses: List<Expense>,
+    swipeDirection: String,
     onCleanFilters: () -> Unit,
     onDeleteClicked: (id: Long) -> Unit,
     onEditClicked: (id: Long) -> Unit,
@@ -132,7 +150,8 @@ private fun HomeScreenView(
                             item.expenseId
                         }
                     ) { index, item ->
-                        SwipeTo(
+                        HandleSwipe(
+                            swipeDirection = swipeDirection,
                             item = item,
                             isLastItem = index == expenses.lastIndex,
                             onDeleteClicked = onDeleteClicked,
@@ -147,6 +166,57 @@ private fun HomeScreenView(
             onClick = onFilterButtonClicked,
             modifier = Modifier.align(alignment = Alignment.BottomEnd)
         )
+    }
+}
+
+@Composable
+private fun HandleSwipe(
+    swipeDirection: String,
+    isLastItem: Boolean,
+    onDeleteClicked: (id: Long) -> Unit,
+    onEditClicked: (id: Long) -> Unit,
+    item: Expense,
+) {
+    when(swipeDirection) {
+        SWIPE_BOTH -> {
+            SwipeBothSides(
+                onDeleteClicked = {
+                  onDeleteClicked(item.expenseId)
+                },
+                onEditClicked = {
+                    onEditClicked(item.expenseId)
+                },
+                content = {
+                    ItemExpenseView(item = item, isLastItem = isLastItem)
+                }
+            )
+        }
+        SWIPE_RIGHT -> {
+            SwipeRight(
+                onDeleteClicked = {
+                    onDeleteClicked(item.expenseId)
+                },
+                onEditClicked = {
+                    onEditClicked(item.expenseId)
+                },
+                content = {
+                    ItemExpenseView(item = item, isLastItem = isLastItem)
+                }
+            )
+        }
+        SWIPE_LEFT -> {
+            SwipeLeft(
+                onDeleteClicked = {
+                    onDeleteClicked(item.expenseId)
+                },
+                onEditClicked = {
+                    onEditClicked(item.expenseId)
+                },
+                content = {
+                    ItemExpenseView(item = item, isLastItem = isLastItem)
+                }
+            )
+        }
     }
 }
 
@@ -291,6 +361,7 @@ private fun HomeScreenViewPreview() {
     HomeScreenView(
         selectedFilters = selectedFilters,
         expenses = list,
+        swipeDirection = "both",
         onCleanFilters = {},
         onDeleteClicked = { id ->
             list.removeIf { it.expenseId == id }
@@ -298,6 +369,6 @@ private fun HomeScreenViewPreview() {
         onEditClicked = {
 
         },
-        onFilterButtonClicked = {}
+        onFilterButtonClicked = {},
     )
 }

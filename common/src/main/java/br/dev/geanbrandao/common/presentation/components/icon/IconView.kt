@@ -1,5 +1,6 @@
 package br.dev.geanbrandao.common.presentation.components.icon
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -66,7 +67,9 @@ private fun IconViewPreview() {
         IconView(
             icon = painterResource(id = R.drawable.ic_tag),
             tint = MaterialTheme.colorScheme.onSecondary,
-            iconType = IconType.Input
+            iconType = IconType.Input,
+            modifier = Modifier.background(color = Color.Green)
+//                .padding(16.dp)
         )
         IconView(
             icon = painterResource(id = R.drawable.ic_tag),

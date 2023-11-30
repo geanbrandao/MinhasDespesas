@@ -2,11 +2,14 @@ package dev.geanbrandao.minhasdespesas.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import dev.geanbrandao.minhasdespesas.MainViewModel
+import dev.geanbrandao.minhasdespesas.localpreferences.domain.THEME_AUTO
+import dev.geanbrandao.minhasdespesas.localpreferences.domain.THEME_DARK
+import dev.geanbrandao.minhasdespesas.localpreferences.domain.THEME_LIGHT
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -82,9 +85,9 @@ fun AppTheme(
 ) {
     val selectedTheme = viewModel.selectedTheme.collectAsState()
     val useDarkTheme: Boolean = when (selectedTheme.value) {
-        "dark" -> true
-        "light" -> false
-        "auto" -> isSystemInDarkTheme()
+        THEME_DARK -> true
+        THEME_LIGHT -> false
+        THEME_AUTO -> isSystemInDarkTheme()
         else -> isSystemInDarkTheme()
     }
 
