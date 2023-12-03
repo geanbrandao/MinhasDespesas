@@ -30,6 +30,9 @@ class AddExpenseViewModel(
     private val _insertedOrUpdated = Channel<Boolean>() // todo throw a navigationEvent
     val insertedOrUpdated = _insertedOrUpdated.receiveAsFlow()
 
+    private val _navigateToCategories = Channel<Boolean>()
+    val navigateToCategories = _navigateToCategories.receiveAsFlow()
+
     val uiState = state.getStateFlow(
         key = STATE_UI_STATE,
         initialValue = AddExpenseScreenState(

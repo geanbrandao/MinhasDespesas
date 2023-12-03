@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import dev.geanbrandao.minhasdespesas.localpreferences.data.PreferencesDataStore
+import dev.geanbrandao.minhasdespesas.localpreferences.data.PreferencesKeys.KEY_SELECTED_CATEGORIES
 import dev.geanbrandao.minhasdespesas.localpreferences.data.PreferencesKeys.KEY_SELECTED_FILTERS
 import dev.geanbrandao.minhasdespesas.localpreferences.data.PreferencesKeys.KEY_SWIPE_NAME
 import dev.geanbrandao.minhasdespesas.localpreferences.data.PreferencesKeys.KEY_THEME_NAME
@@ -86,6 +87,26 @@ class PreferencesDataStoreImpl(
             }
             .map { value: Preferences ->
                 value[KEY_SELECTED_FILTERS]
+            }
+    }
+
+    override suspend fun setSelectedCategoriesIds(selectedIds: String) {
+        dataStore.edit { value: MutablePreferences ->
+            value[KEY_SELECTED_CATEGORIES] = selectedIds
+        }
+    }
+
+    override suspend fun getSelectedCategoriesIds(): Flow<String?> {
+        return dataStore.data
+            .catch { throwable: Throwable ->
+                if (throwable is IOException) {
+                    emit(emptyPreferences())
+                } else {
+                    throw throwable
+                }
+            }
+            .map { value: Preferences ->
+                value[KEY_SELECTED_CATEGORIES]
             }
     }
 }
