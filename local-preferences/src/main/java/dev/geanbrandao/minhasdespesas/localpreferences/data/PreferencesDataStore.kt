@@ -9,6 +9,6 @@ interface PreferencesDataStore {
     suspend fun setSwipe(swipeName: String)
     suspend fun setSelectedFilters(selectedFilters: String)
     suspend fun getSelectedFilters(): Flow<String?>
-    suspend fun setSelectedCategoriesIds(selectedIds: String)
+    suspend fun setSelectedCategoriesIds(selectedIds: String?)
     suspend fun getSelectedCategoriesIds(): Flow<String?>
 }

@@ -72,6 +72,7 @@ dependencies {
     implementation(project(":feature-split-bill"))
     implementation(project(":common"))
     implementation(project(":local-preferences"))
+    implementation(project(":navigation"))
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)

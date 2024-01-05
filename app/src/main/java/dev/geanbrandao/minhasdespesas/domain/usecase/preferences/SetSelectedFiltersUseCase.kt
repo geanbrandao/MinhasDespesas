@@ -1,4 +1,4 @@
-package dev.geanbrandao.minhasdespesas.domain.usecase
+package dev.geanbrandao.minhasdespesas.domain.usecase.preferences
 
 import dev.geanbrandao.minhasdespesas.localpreferences.data.PreferencesDataStore
 import dev.geanbrandao.minhasdespesas.presentation.filters.SelectedFilter

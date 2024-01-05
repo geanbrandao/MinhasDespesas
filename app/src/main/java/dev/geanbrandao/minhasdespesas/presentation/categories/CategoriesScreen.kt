@@ -55,7 +55,7 @@ fun CategoriesScreen(
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     LaunchedEffect(lifecycleOwner.lifecycle) {
-        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             viewModel.getCategories()
         }
     }
@@ -76,17 +76,19 @@ fun CategoriesScreen(
         onCheckChangeListener = { isChecked: Boolean, item: Category ->
             viewModel.updateSelectedCategories(categoryId = item.categoryId, isChecked = isChecked)
         },
-        onNavigateBackToAddExpense = { popBackWithResult(buildArgument(categories.value)) },
-        onBackButtonClicked = goBack,
+        onNavigateBackToAddExpense = {
+//            popBackWithResult(buildArgument(categories.value))
+             viewModel.navigateBack(buildArgument(categories.value))
+        },
+        onBackButtonClicked = { viewModel.navigateBack() },
     )
 }
 
-private fun buildArgument(categories: List<Category>) : String? {
+private fun buildArgument(categories: List<Category>) : List<Long> {
     return categories // "1,2" ou null
         .filter { it.isChecked }
         .map { it.categoryId }
-        .takeIf { it.isNotEmpty() }
-        ?.joinToString(",")
+        .takeIf { it.isNotEmpty() }.orEmpty()
 }
 
 @Composable

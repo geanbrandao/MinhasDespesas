@@ -70,30 +70,33 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AddExpenseScreen(
     // arguments
-    argSelectedCategories: String?,
-    argExpenseId: String?,
+//    argSelectedCategories: String?,
+//    argExpenseId: String?,
     // navigation
-    openCategories: (selectedCategories: String?) -> Unit,
-    goBack: () -> Unit,
+//    openCategories: (selectedCategories: String?) -> Unit,
+//    goBack: () -> Unit,
     // viewModel
     viewModel: AddExpenseViewModel = koinViewModel(),
 ) {
     val uiState = viewModel.uiState.collectAsState()
 
-    ObserveAsEvents(
-        flow = viewModel.insertedOrUpdated,
-        onEvent = {
-            if (it) { goBack() }
+//    ObserveAsEvents(
+//        flow = viewModel.insertedOrUpdated,
+//        onEvent = {
+//            if (it) { goBack() }
+//        }
+//    )
+
+//    LaunchedEffect(key1 = argSelectedCategories) {
+////        viewModel.updateSelectedCategories(argSelectedCategories)
+//    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(lifecycleOwner.lifecycle) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.getSelectedCategoriesIds()
         }
-    )
-
-    LaunchedEffect(key1 = argSelectedCategories) {
-        viewModel.updateSelectedCategories(argSelectedCategories)
     }
-
-    LaunchedEffect(key1 = argExpenseId, block = {
-        viewModel.getExpense(expenseId = argExpenseId)
-    })
 
     AddExpenseScreenView(
         uiState = uiState.value,
@@ -108,14 +111,11 @@ fun AddExpenseScreen(
             }
         },
         goToCategoryScreen = {
-            val argument = uiState.value.selectedCategories
-                .map { it.categoryId }
-                .takeIf { it.isNotEmpty() }
-                ?.joinToString(",")
-
-            openCategories(argument) // todo subir essa lógica de navegação para o navGraph
+            viewModel.navigateToCategoriesScreen()
         },
-        onBackButtonClicked = goBack,
+        onBackButtonClicked = {
+            viewModel.navigateBack()
+        },
     )
 }
 

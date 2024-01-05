@@ -11,6 +11,9 @@ import br.dev.geanbrandao.common.domain.toFloat
 import dev.geanbrandao.minhasdespesas.domain.model.Category
 import dev.geanbrandao.minhasdespesas.domain.model.Expense
 import dev.geanbrandao.minhasdespesas.domain.usecase.MyExpensesUseCases
+import dev.geanbrandao.minhasdespesas.domain.usecase.preferences.PreferencesUseCases
+import dev.geanbrandao.minhasdespesas.navigation.data.AppNavigator
+import dev.geanbrandao.minhasdespesas.navigation.domain.Destination
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -25,13 +28,9 @@ private const val STATE_CATEGORIES = "categoriesState"
 class AddExpenseViewModel(
     private val state: SavedStateHandle,
     private val useCases: MyExpensesUseCases,
+    private val preferencesUseCases: PreferencesUseCases,
+    private val appNavigator: AppNavigator,
 ) : ViewModel() {
-
-    private val _insertedOrUpdated = Channel<Boolean>() // todo throw a navigationEvent
-    val insertedOrUpdated = _insertedOrUpdated.receiveAsFlow()
-
-    private val _navigateToCategories = Channel<Boolean>()
-    val navigateToCategories = _navigateToCategories.receiveAsFlow()
 
     val uiState = state.getStateFlow(
         key = STATE_UI_STATE,
@@ -46,6 +45,19 @@ class AddExpenseViewModel(
         )
     )
 
+    private val expenseId = state.get<String>(Destination.Expense.EXPENSE_ID_KEY).also {
+        getExpense(expenseId = it)
+        println("DEBUG123 expenseId $it")
+    }
+
+
+
+    private val _insertedOrUpdated = Channel<Boolean>() // todo throw a navigationEvent
+    val insertedOrUpdated = _insertedOrUpdated.receiveAsFlow()
+
+    private val _navigateToCategories = Channel<Boolean>()
+    val navigateToCategories = _navigateToCategories.receiveAsFlow()
+
     fun addExpense() {
         viewModelScope.launch {
             useCases.addExpense(createExpenseModel())
@@ -53,7 +65,7 @@ class AddExpenseViewModel(
                     throw Exception(it)
                 }.collect {
                     println("#### THIS IS MY EXPENSE ID $it")
-                    _insertedOrUpdated.send(true)
+                    navigateBack()
                 }
         }
     }
@@ -65,7 +77,7 @@ class AddExpenseViewModel(
                     throw Exception(it)
                 }.collect {
                     println("#### THIS IS MY EXPENSE ID $it")
-                    _insertedOrUpdated.send(true)
+                    navigateBack()
                 }
         }
     }
@@ -73,7 +85,8 @@ class AddExpenseViewModel(
     fun getExpense(expenseId: String?) {
         expenseId
             // prevent expense from being reloaded when already get loaded
-            .takeIf { uiState.value.expenseId == 0L }
+            // todo check if still need this logic
+//            ?.takeIf { uiState.value.expenseId == 0L }
             ?.let {
             viewModelScope.launch {
                 useCases.getExpense(it.toLong())
@@ -110,16 +123,50 @@ class AddExpenseViewModel(
         state[STATE_UI_STATE] = uiState
     }
 
-    fun updateSelectedCategories(argument: String?) {
+    fun getSelectedCategoriesIds() {
         viewModelScope.launch {
-            val ids = argument?.split(",")?.map { id -> id.toLong() }.orEmpty()
-            useCases.getCategoriesUsingId(ids)
+            preferencesUseCases.getSelectedCategoriesIdsUseCase()
+                .catch {
+                    throw Exception(it)
+                }.collect { result: List<Long> ->
+                    updateSelectedCategories(result)
+                }
+        }
+    }
+
+    fun cleanSelectedCategoriesIds() {
+        viewModelScope.launch {
+            preferencesUseCases.setSelectedCategoriesIdsUseCase(emptyList())
+                .catch {
+                    throw Exception(it)
+                }.collect {
+
+                }
+        }
+    }
+
+    private fun updateSelectedCategories(list: List<Long>) {
+        viewModelScope.launch {
+            useCases.getCategoriesUsingId(list)
                 .catch {
                     throw Exception(it)
                 }.collect {
                     state[STATE_UI_STATE] = uiState.value.copy(selectedCategories = it)
                 }
+        }
+    }
 
+    fun navigateBack() = appNavigator.tryNavigateBack()
+
+    fun navigateToCategoriesScreen() {
+        viewModelScope.launch {
+            val list = uiState.value.selectedCategories.map { it.categoryId }
+            preferencesUseCases.setSelectedCategoriesIdsUseCase(list)
+                .catch {
+                    throw Exception(it)
+                }.collect {
+                    appNavigator.navigateTo(Destination.Categories())
+                }
         }
     }
 
@@ -149,11 +196,3 @@ data class AddExpenseScreenState(
     val isNextButtonEnabled : Boolean
         get() = amount != "0,00" && name.isNotEmpty() && selectedDate.isValidDate()
 }
-
-// get from navigation
-//    private val argSelectedCategories = state.getStateFlow<String?>(key = Key.SELECTED_CATEGORIES, null)
-//sealed class OperationState<out T> {
-//    data class Loading(val isLoading: Boolean): OperationState<Nothing>()
-//    data class Success<T>(val data: T): OperationState<T>()
-//    data class Error(val message: String = "", val exception: Throwable): OperationState<Nothing>()
-//}

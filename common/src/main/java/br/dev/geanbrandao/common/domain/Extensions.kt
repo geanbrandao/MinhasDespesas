@@ -205,3 +205,5 @@ fun String.ignoreAccents(): String {
 }
 
 fun String.completeRoute(key: String, newValue: String) = this.replace("{$key}", newValue)
+
+fun Boolean?.orFalse() = this ?: false

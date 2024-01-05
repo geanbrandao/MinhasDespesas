@@ -5,8 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.geanbrandao.minhasdespesas.domain.model.Category
 import dev.geanbrandao.minhasdespesas.domain.usecase.MyExpensesUseCases
-import dev.geanbrandao.minhasdespesas.navigation.domain.Key
+import dev.geanbrandao.minhasdespesas.domain.usecase.preferences.PreferencesUseCases
+import dev.geanbrandao.minhasdespesas.navigation.data.AppNavigator
+import dev.geanbrandao.minhasdespesas.navigation.domain.Destination
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
@@ -16,30 +19,37 @@ private const val KEY_CATEGORIES = "category"
 class CategoriesViewModel(
     private val state: SavedStateHandle,
     private val useCases: MyExpensesUseCases,
+    private val preferencesUseCases: PreferencesUseCases,
+    private val appNavigator: AppNavigator,
 ) : ViewModel() {
 
+
+
 //    private val argSelectedCategories = state.getStateFlow<String?>(Key.SELECTED_CATEGORIES, null)
-    private val argSelectedCategories: String? = state[Key.SELECTED_CATEGORIES]
+//    private val argSelectedCategories: String? = state[Key.SELECTED_CATEGORIES]
+
     val categories = state.getStateFlow<List<Category>>(key = KEY_CATEGORIES, initialValue = emptyList())
 
     fun getCategories() {
         viewModelScope.launch {
-            useCases.getCategories()
-                .catch {
-                    throw Exception(it)
-                }.collect {
-                    val idList = argSelectedCategories?.split(",")?.map { id -> id.toLong() }.orEmpty()
-                    val result = it.map { category: Category ->
-                        if (category.categoryId in idList) {
-                            category.copy(isChecked = true)
-                        } else {
-                            category
-                        }
+            combine(
+                useCases.getCategories(), preferencesUseCases.getSelectedCategoriesIdsUseCase()
+            ) { categories: List<Category>, ids: List<Long> ->
+                categories.map { category ->
+                    if (category.categoryId in ids) {
+                        category.copy(isChecked = true)
+                    } else {
+                        category
                     }
-                    state[KEY_CATEGORIES] = result
                 }
+            }.catch {
+                throw Exception(it)
+            }.collect { result: List<Category> ->
+                state[KEY_CATEGORIES] = result
+            }
         }
     }
+
 
     fun updateSelectedCategories(categoryId: Long, isChecked: Boolean) {
         state[KEY_CATEGORIES] = categories.value.map { category ->
@@ -70,6 +80,21 @@ class CategoriesViewModel(
                 .catch { throw Exception(it) }
                 .collect {
                     getCategories()
+                }
+        }
+    }
+
+
+    fun navigateBack() = appNavigator.tryNavigateBack()
+
+    fun navigateBack(selectedIds: List<Long>) {
+        viewModelScope.launch {
+            preferencesUseCases.setSelectedCategoriesIdsUseCase(selectedIds)
+                .catch { throw Exception(it) }
+                .collect {
+                    appNavigator.navigateBack(
+                        route = Destination.Expense.fullRoute
+                    )
                 }
         }
     }

@@ -90,9 +90,9 @@ class PreferencesDataStoreImpl(
             }
     }
 
-    override suspend fun setSelectedCategoriesIds(selectedIds: String) {
+    override suspend fun setSelectedCategoriesIds(selectedIds: String?) {
         dataStore.edit { value: MutablePreferences ->
-            value[KEY_SELECTED_CATEGORIES] = selectedIds
+            value[KEY_SELECTED_CATEGORIES] = selectedIds.orEmpty()
         }
     }
 

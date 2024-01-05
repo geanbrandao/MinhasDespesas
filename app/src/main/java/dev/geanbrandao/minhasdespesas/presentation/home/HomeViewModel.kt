@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.geanbrandao.minhasdespesas.domain.model.Expense
 import dev.geanbrandao.minhasdespesas.domain.usecase.MyExpensesUseCases
-import dev.geanbrandao.minhasdespesas.domain.usecase.PreferencesUseCases
+import dev.geanbrandao.minhasdespesas.domain.usecase.preferences.PreferencesUseCases
 import dev.geanbrandao.minhasdespesas.localpreferences.domain.SWIPE_BOTH
+import dev.geanbrandao.minhasdespesas.navigation.data.AppNavigator
+import dev.geanbrandao.minhasdespesas.navigation.domain.Destination
 import dev.geanbrandao.minhasdespesas.presentation.filters.SelectedFilter
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -21,7 +23,7 @@ class HomeViewModel(
     private val state: SavedStateHandle,
     private val useCases: MyExpensesUseCases,
     private val preferencesUseCases: PreferencesUseCases,
-//    @Named("XPTO") private val dependency: String,
+    private val appNavigator: AppNavigator,
 ): ViewModel() {
 
     val expenses = state.getStateFlow<List<Expense>>(key = KEY_EXPENSE, initialValue = emptyList())
@@ -80,5 +82,17 @@ class HomeViewModel(
                     }
                 }
         }
+    }
+
+    fun navigateToEditExpenseScreen(expenseId: Long) {
+        appNavigator.tryNavigateTo(
+            route = Destination.Expense(expenseId = expenseId.toString())
+        )
+    }
+
+    fun navigateToFiltersScreen() {
+        appNavigator.tryNavigateTo(
+            route = Destination.Filters()
+        )
     }
 }

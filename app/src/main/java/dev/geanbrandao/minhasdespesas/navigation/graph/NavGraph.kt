@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
@@ -39,6 +38,7 @@ import dev.geanbrandao.minhasdespesas.presentation.filters.FiltersScreen
 import dev.geanbrandao.minhasdespesas.presentation.home.HomeScreen
 import dev.geanbrandao.minhasdespesas.presentation.profile.ProfileScreen
 import dev.geanbrandao.minhasdespesas.splitbill.presentation.SplitBillScreen
+import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalAnimationApi
 @Composable
@@ -89,10 +89,7 @@ fun NavGraph(navHostController: NavHostController) {
     ) {
 
         composable(route = Screen.Splashscreen.route) {
-            Splashscreen(
-                navHostController = navHostController,
-                modifier = Modifier,
-            )
+            Splashscreen()
         }
 
         composable(route = Screen.Expenses.route) {
@@ -119,15 +116,15 @@ fun NavGraph(navHostController: NavHostController) {
             val selectedCategories = navBackStackEntry.savedStateHandle.get<String?>(Key.SELECTED_CATEGORIES)
             val expenseId = navBackStackEntry.arguments?.getString(Key.EXPENSE_ID)
             AddExpenseScreen(
-                argSelectedCategories = selectedCategories,
-                argExpenseId = expenseId,
-                openCategories = { argument: String? ->  // "1,2" esse formato
-                    val route = argument?.let {
-                        Screen.Categories.route.completeRoute(Key.SELECTED_CATEGORIES, it)
-                    } ?: Screen.Categories.route
-                    navigationEvent.value = NavigateToCategories(destination = route)
-                },
-                goBack = { navigationEvent.value = NavigateBack }
+//                argSelectedCategories = selectedCategories,
+//                argExpenseId = expenseId,
+//                openCategories = { argument: String? ->  // "1,2" esse formato
+//                    val route = argument?.let {
+//                        Screen.Categories.route.completeRoute(Key.SELECTED_CATEGORIES, it)
+//                    } ?: Screen.Categories.route
+//                    navigationEvent.value = NavigateToCategories(destination = route)
+//                },
+//                goBack = { navigationEvent.value = NavigateBack }
             )
         }
 
@@ -168,7 +165,8 @@ fun NavGraph(navHostController: NavHostController) {
                         argument = argument,
                     )
                 },
-                goBack = { navigationEvent.value = NavigateBack }
+                goBack = { navigationEvent.value = NavigateBack },
+                viewModel = koinViewModel(viewModelStoreOwner = navBackStackEntry)
             )
         }
         composable(route = Screen.SplitBill.route) {

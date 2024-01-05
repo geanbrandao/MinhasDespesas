@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.geanbrandao.minhasdespesas.domain.model.Category
 import dev.geanbrandao.minhasdespesas.domain.usecase.MyExpensesUseCases
-import dev.geanbrandao.minhasdespesas.domain.usecase.PreferencesUseCases
+import dev.geanbrandao.minhasdespesas.domain.usecase.preferences.PreferencesUseCases
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

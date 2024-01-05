@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import dev.geanbrandao.minhasdespesas.navigation.bottomnavigationbar.NavBar
 import dev.geanbrandao.minhasdespesas.navigation.domain.Screen
 import dev.geanbrandao.minhasdespesas.navigation.graph.NavGraph
+import dev.geanbrandao.minhasdespesas.navigation.graph.NavigationGraph
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTheme
 
 @ExperimentalAnimationApi
@@ -63,9 +64,12 @@ class MainActivity : ComponentActivity() {
                     },
                 ) { paddingValues ->
                     Surface(
-                        modifier = Modifier.fillMaxSize().padding(paddingValues),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
                     ) {
-                        NavGraph(navHostController = navHostController)
+//                        NavGraph(navHostController = navHostController)
+                        NavigationGraph(navHostController = navHostController)
                     }
                 }
             }
@@ -105,7 +109,8 @@ fun DefaultPreview() {
             },
         ) { paddingValues ->
             Surface(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
                     .padding(paddingValues),
             ) {
                 NavGraph(navHostController = navHostController)

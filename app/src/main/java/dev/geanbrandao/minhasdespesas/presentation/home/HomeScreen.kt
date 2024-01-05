@@ -105,8 +105,14 @@ fun HomeScreen(
         onDeleteClicked = { expenseId: Long ->
             viewModel.removeExpense(expenseId)
         },
-        onEditClicked = openEditExpenseScreen,
-        onFilterButtonClicked = openFiltersScreen,
+//        onEditClicked = openEditExpenseScreen,
+        onEditClicked = {
+            viewModel.navigateToEditExpenseScreen(expenseId = it)
+        },
+//        onFilterButtonClicked = openFiltersScreen,
+        onFilterButtonClicked = {
+            viewModel.navigateToFiltersScreen()
+        },
     )
 }
 
