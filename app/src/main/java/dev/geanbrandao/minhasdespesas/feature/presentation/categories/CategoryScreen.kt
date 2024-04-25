@@ -9,30 +9,29 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.buttons.ButtonDefault
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerThree
 import dev.geanbrandao.minhasdespesas.common.components.toolbar.AppToolbar
-import dev.geanbrandao.minhasdespesas.feature.domain.model.SelectedCategoriesArg
-import dev.geanbrandao.minhasdespesas.feature.presentation.categories.components.ListCategoryOptions
+//import dev.geanbrandao.minhasdespesas.feature.domain.model.SelectedCategoriesArg
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CategoriesScreen(
     navHostController: NavHostController,
-    viewModel: CategoryViewModel = hiltViewModel()
+    viewModel: CategoryViewModel = koinViewModel()
 ) {
-    val categoryState = viewModel.state.value
+//    val categoryState = viewModel.state.value
 
-    val x = navHostController.previousBackStackEntry
-        ?.arguments?.getSerializable("SELECTED_CATEGORIES") as SelectedCategoriesArg?
-    val data = remember {
-        mutableStateOf(x)
-    }
-    println("DEBUG2 - ${x?.list}")
+//    val x = navHostController.previousBackStackEntry
+//        ?.arguments?.getSerializable("SELECTED_CATEGORIES") as SelectedCategoriesArg?
+//    val data = remember {
+//        mutableStateOf(x)
+//    }
+//    println("DEBUG2 - ${x?.list}")
     Column(
         modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
     ) {
@@ -41,13 +40,13 @@ fun CategoriesScreen(
             navHostController = navHostController
         )
         Column(modifier = Modifier.padding(horizontal = PaddingDefault)) {
-            ListCategoryOptions(
-                state = categoryState,
-                onCheckedChangeListener = { isChecked, categoryDb ->
-                    viewModel.onCategoryCheckChange(isChecked = isChecked, categoryDb = categoryDb)
-                },
-                modifier = Modifier.weight(weight = 1f)
-            )
+//            ListCategoryOptions(
+//                state = categoryState,
+//                onCheckedChangeListener = { isChecked, categoryDb ->
+//                    viewModel.onCategoryCheckChange(isChecked = isChecked, categoryDb = categoryDb)
+//                },
+//                modifier = Modifier.weight(weight = 1f)
+//            )
             ButtonDefault(stringId = R.string.button_default_text_ok)
             SpacerThree()
         }

@@ -1,10 +1,9 @@
 package dev.geanbrandao.minhasdespesas.feature.presentation.add.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
@@ -20,8 +19,6 @@ import dev.geanbrandao.minhasdespesas.common.components.icons.IconInput
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerFill
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
 import dev.geanbrandao.minhasdespesas.common.utils.extensions.clickableRoundedEffect
-import dev.geanbrandao.minhasdespesas.common.utils.extensions.toStringDateFormatted
-import dev.geanbrandao.minhasdespesas.feature.presentation.categories.components.ListCategoriesItemSmall
 import io.github.boguszpawlowski.composecalendar.CalendarState
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
@@ -39,8 +36,9 @@ fun ViewCalendarDate(
         )
         SpacerFill(modifier = Modifier.weight(weight = 1f))
         Text(
-            text = calendarState.selectionState.selection.firstOrNull()?.toStringDateFormatted()
-                .orEmpty(),
+            text = "",
+//            calendarState.selectionState.selection.firstOrNull()?.toStringDateFormatted()
+//                .orEmpty(),
             modifier = Modifier
                 .align(alignment = CenterVertically)
                 .clickableRoundedEffect {
@@ -96,7 +94,7 @@ fun ViewCategoriesList(
             modifier = Modifier.align(alignment = CenterVertically)
         )
         SpacerTwo()
-        ListCategoriesItemSmall(data = data, modifier = Modifier.weight(weight = 1f))
+//        ListCategoriesItemSmall(data = data, modifier = Modifier.weight(weight = 1f))
         SpacerTwo()
         IconDefault(
             iconId = R.drawable.ic_arrow_right,

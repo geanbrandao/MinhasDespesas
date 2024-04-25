@@ -32,7 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.geanbrandao.minhasdespesas.R
@@ -43,7 +43,7 @@ import dev.geanbrandao.minhasdespesas.common.components.toolbar.AppToolbar
 import dev.geanbrandao.minhasdespesas.common.log.DebugLog
 import dev.geanbrandao.minhasdespesas.common.utils.extensions.clickableRoundedEffect
 import dev.geanbrandao.minhasdespesas.feature.domain.hekko.TypeFilterDateEnum
-import dev.geanbrandao.minhasdespesas.feature.presentation.filters.components.ListCategoryOptions
+//import dev.geanbrandao.minhasdespesas.feature.presentation.filters.components.ListCategoryOptions
 import dev.geanbrandao.minhasdespesas.feature.presentation.filters.components.ListSelectedFilters
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.CardElevationLow
@@ -51,6 +51,7 @@ import dev.geanbrandao.minhasdespesas.ui.theme.CornersDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.MarginThree
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 import dev.geanbrandao.minhasdespesas.ui.theme.RotationHalf
+import org.koin.androidx.compose.koinViewModel
 
 private val log: DebugLog = DebugLog("FiltersScreen")
 
@@ -58,9 +59,9 @@ private val log: DebugLog = DebugLog("FiltersScreen")
 @Composable
 fun FiltersScreen(
     navHostController: NavHostController,
-    viewModel: FiltersViewModel = hiltViewModel()
+    viewModel: FiltersViewModel = koinViewModel()
 ) {
-    val filtersState = viewModel.state
+//    val filtersState = viewModel.state
 
     val activeFilters = viewModel.stateActiveFilters
 
@@ -78,7 +79,9 @@ fun FiltersScreen(
         )
         LazyColumn {
             item {
-                Box(modifier = Modifier.fillMaxWidth().padding(all = MarginThree)) {
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = MarginThree)) {
                     ListSelectedFilters(
                         dataList = activeFilters.value,
                         modifier = Modifier.align(alignment = Alignment.CenterStart),
@@ -108,13 +111,13 @@ fun FiltersScreen(
                     onColor = onColor,
                     onClickTopic = {}
                 ) {
-                    ListCategoryOptions(
-                        state = filtersState.value,
-                        onCheckedChangeListener = { isChecked, categoryDb ->
-                            viewModel.onCategoryCheckChange(isChecked = isChecked, categoryDb = categoryDb)
-                        },
-                        modifier = Modifier.wrapContentHeight()
-                    )
+//                    ListCategoryOptions(
+//                        state = filtersState.value,
+//                        onCheckedChangeListener = { isChecked, categoryDb ->
+//                            viewModel.onCategoryCheckChange(isChecked = isChecked, categoryDb = categoryDb)
+//                        },
+//                        modifier = Modifier.wrapContentHeight()
+//                    )
                 }
                 SpacerThree()
             }

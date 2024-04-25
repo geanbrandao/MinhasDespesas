@@ -1,5 +1,6 @@
 package dev.geanbrandao.minhasdespesas.common.utils.extensions
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material.ripple.rememberRipple
@@ -17,9 +18,10 @@ inline fun Modifier.clickableRoundedEffect(crossinline onClick: () -> Unit): Mod
 }
 inline fun Modifier.clickableNoRippleEffect(crossinline onClick: () -> Unit): Modifier = composed {
     clickable(
-        indication = null,
+        indication = rememberRipple(bounded = false),
         interactionSource = remember { MutableInteractionSource() }
     ) {
+        Log.d("CLICK", "NoRippleEffect")
         onClick()
     }
 }

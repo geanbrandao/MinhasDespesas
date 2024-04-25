@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Icon
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,7 +24,6 @@ import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
 import dev.geanbrandao.minhasdespesas.common.components.texts.TextDefault
 import dev.geanbrandao.minhasdespesas.common.utils.extensions.clickableRoundedEffect
-import dev.geanbrandao.minhasdespesas.feature.presentation.filters.components.ItemFilter
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
 
@@ -77,7 +76,7 @@ fun FiltersButton(
     if (activeFiltersSize < 1) {
         TextDefault(
             text = stringResource(id = R.string.warning_message_select_some_filter_here),
-            textColor = MaterialTheme.colorScheme.onBackground,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .padding(all = PaddingDefault)
                 .clickableRoundedEffect { onClick() },

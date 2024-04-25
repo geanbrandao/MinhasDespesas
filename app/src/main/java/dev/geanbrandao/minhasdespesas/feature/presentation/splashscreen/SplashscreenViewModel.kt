@@ -1,37 +1,45 @@
 package dev.geanbrandao.minhasdespesas.feature.presentation.splashscreen
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.geanbrandao.minhasdespesas.common.utils.DatabaseOperationState
-import dev.geanbrandao.minhasdespesas.core.database.db.CategoryDb
-import dev.geanbrandao.minhasdespesas.feature.domain.use_case.ExpenseUseCases
-import javax.inject.Inject
-import kotlinx.coroutines.Job
+import dev.geanbrandao.minhasdespesas.data.entity.CategoryEntity
+import dev.geanbrandao.minhasdespesas.domain.usecase.MyExpensesUseCases
+import dev.geanbrandao.minhasdespesas.navigation.data.AppNavigator
+import dev.geanbrandao.minhasdespesas.navigation.domain.Destination
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
 
-@HiltViewModel
-class SplashscreenViewModel @Inject constructor(
-    private val expenseUseCases: ExpenseUseCases
+private const val KEY_IS_INSERTED = "isInserted"
+
+@KoinViewModel
+class SplashscreenViewModel(
+    private val state: SavedStateHandle,
+    private val useCases: MyExpensesUseCases,
+    private val appNavigator: AppNavigator,
 ): ViewModel() {
 
-    private val _state = mutableStateOf(DatabaseOperationState.NONE)
-    val state: State<DatabaseOperationState> = _state
+    val isReady = state.getStateFlow<Boolean>(key = KEY_IS_INSERTED, initialValue = false)
 
-    private var postCategoryJob: Job? = null
-
-    fun insertDefaultCategories(data: List<CategoryDb>) {
-        postCategoryJob?.cancel()
-        postCategoryJob = expenseUseCases.postCategories(data = data)
-            .onEach {
-                _state.value = it
-            }.catch {
-                // do something
-            }.launchIn(viewModelScope)
+    fun insertDefaultCategories(list: List<CategoryEntity>) {
+        viewModelScope.launch {
+            useCases.addCategories(list)
+                .catch { throw Exception(it) }
+                .collect {
+                    if (it) {
+                        navigateToHome()
+                    }
+                    state[KEY_IS_INSERTED] = it
+                }
+        }
     }
 
+    private suspend fun navigateToHome() {
+        appNavigator.navigateTo(
+            route = Destination.Expenses(),
+            popUpToRoute = Destination.Splashscreen(),
+            inclusive = true,
+        )
+    }
 }

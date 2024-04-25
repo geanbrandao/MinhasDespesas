@@ -1,16 +1,19 @@
 package dev.geanbrandao.minhasdespesas.ui.theme
 
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.collectAsState
+import dev.geanbrandao.minhasdespesas.MainViewModel
+import dev.geanbrandao.minhasdespesas.localpreferences.domain.THEME_AUTO
+import dev.geanbrandao.minhasdespesas.localpreferences.domain.THEME_DARK
+import dev.geanbrandao.minhasdespesas.localpreferences.domain.THEME_LIGHT
+import org.koin.androidx.compose.koinViewModel
 
-private val LightThemeColors = lightColorScheme(
+
+private val LightColors = lightColorScheme(
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
     primaryContainer = md_theme_light_primaryContainer,
@@ -36,8 +39,14 @@ private val LightThemeColors = lightColorScheme(
     outline = md_theme_light_outline,
     inverseOnSurface = md_theme_light_inverseOnSurface,
     inverseSurface = md_theme_light_inverseSurface,
+    inversePrimary = md_theme_light_inversePrimary,
+    surfaceTint = md_theme_light_surfaceTint,
+    outlineVariant = md_theme_light_outlineVariant,
+    scrim = md_theme_light_scrim,
 )
-private val DarkThemeColors = darkColorScheme(
+
+
+private val DarkColors = darkColorScheme(
     primary = md_theme_dark_primary,
     onPrimary = md_theme_dark_onPrimary,
     primaryContainer = md_theme_dark_primaryContainer,
@@ -63,35 +72,33 @@ private val DarkThemeColors = darkColorScheme(
     outline = md_theme_dark_outline,
     inverseOnSurface = md_theme_dark_inverseOnSurface,
     inverseSurface = md_theme_dark_inverseSurface,
+    inversePrimary = md_theme_dark_inversePrimary,
+    surfaceTint = md_theme_dark_surfaceTint,
+    outlineVariant = md_theme_dark_outlineVariant,
+    scrim = md_theme_dark_scrim,
 )
 
 @Composable
 fun AppTheme(
-    useDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    viewModel: MainViewModel = koinViewModel(),
+    content: @Composable() () -> Unit,
 ) {
-//    val colorScheme =
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//        val context = LocalContext.current
-//        if (useDarkTheme) {
-//            dynamicDarkColorScheme(context = context)
-//        } else {
-//            dynamicLightColorScheme(context = context)
-//        }
-//    }
-//        else {
-//    val colorScheme = if (useDarkTheme) {
-//        DarkThemeColors
-//    } else {
-//        LightThemeColors
-//    }
-//    }
+    val selectedTheme = viewModel.selectedTheme.collectAsState()
+    val useDarkTheme: Boolean = when (selectedTheme.value) {
+        THEME_DARK -> true
+        THEME_LIGHT -> false
+        THEME_AUTO -> isSystemInDarkTheme()
+        else -> isSystemInDarkTheme()
+    }
+
+    val colors = if (!useDarkTheme) {
+        LightColors
+    } else {
+        DarkColors
+    }
+
     MaterialTheme(
-        colorScheme = if (useDarkTheme) DarkThemeColors else LightThemeColors,
-        typography = AppTypography,
+        colorScheme = colors,
         content = content
     )
 }
-
-val ColorSwipeToDelete = error
-val ColorSwipeToEdit = seed

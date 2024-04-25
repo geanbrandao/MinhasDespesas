@@ -1,11 +1,18 @@
 package dev.geanbrandao.minhasdespesas.common.utils.extensions
 
-import java.time.LocalDate
-import java.time.OffsetDateTime
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-fun LocalDate.toStringDateFormatted(): String {
+
+fun Long.getFormattedDateFromMilli(): String {
+    val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(this), ZoneId.systemDefault())
+    return date.toStringDateFormatted()
+}
+
+fun LocalDateTime.toStringDateFormatted(): String {
     val builder = StringBuilder()
     builder.append(this.getDayName().capitalize(Locale.getDefault()))
     builder.append(", ")
@@ -15,20 +22,20 @@ fun LocalDate.toStringDateFormatted(): String {
     return builder.toString()
 }
 
-fun LocalDate.getMonth3LettersName(): String =
+fun LocalDateTime.getMonth3LettersName(): String =
     DateTimeFormatter.ofPattern("MMM", Locale.getDefault()).format(this)
 
-fun LocalDate.getDayNumber(): String =
+fun LocalDateTime.getDayNumber(): String =
     DateTimeFormatter.ofPattern("dd", Locale.getDefault()).format(this)
 
-fun LocalDate.getYearNumber(): String =
+fun LocalDateTime.getYearNumber(): String =
     DateTimeFormatter.ofPattern("yyyy", Locale.getDefault()).format(this)
 
-fun LocalDate.getMonthName(): String =
+fun LocalDateTime.getMonthName(): String =
     DateTimeFormatter.ofPattern("MMMM", Locale.getDefault()).format(this)
 
-fun LocalDate.getDayName(): String =
+fun LocalDateTime.getDayName(): String =
     DateTimeFormatter.ofPattern("EEEE", Locale.getDefault()).format(this)
 
-fun LocalDate.getDayName3LettersName(): String =
+fun LocalDateTime.getDayName3LettersName(): String =
     DateTimeFormatter.ofPattern("EEE", Locale.getDefault()).format(this)

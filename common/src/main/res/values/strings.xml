@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="swipe_icon_edit_text">Editar</string>
+    <string name="swipe_icon_remove_text">Remover</string>
+</resources>

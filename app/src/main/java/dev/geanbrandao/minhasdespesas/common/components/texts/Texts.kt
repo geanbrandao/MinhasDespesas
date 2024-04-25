@@ -84,14 +84,14 @@ fun TextItemCategory(categoryName: String, modifier: Modifier, color: Color) {
 @Composable
 fun TextDefault(
     text: String,
-    textColor: Color,
+    color: Color,
     modifier: Modifier = Modifier
 ) {
     Text(
         text = text,
         style = AppTypography.bodyLarge,
         fontWeight = FontWeight.Normal,
-        color = textColor,
+        color = color,
         modifier = modifier,
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
@@ -122,14 +122,35 @@ fun TextTitleLarge(text: String, color: Color = MaterialTheme.colorScheme.onBack
 }
 
 @Composable
-fun TextLabelMedium(text: String, color: Color = MaterialTheme.colorScheme.onBackground) {
+fun TextLabelMedium(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.onBackground
+) {
     Text(
         text = text,
         style = AppTypography.labelMedium,
         fontWeight = FontWeight.Light,
         color = color,
+        modifier = modifier,
     )
 }
+
+@Composable
+fun TextLabelStrong(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.onBackground
+) {
+    Text(
+        text = text,
+        style = AppTypography.titleMedium,
+        fontWeight = FontWeight.Bold,
+        color = color,
+        modifier = modifier,
+    )
+}
+
 
 @Composable
 fun TextBodyMediumSingleLine(

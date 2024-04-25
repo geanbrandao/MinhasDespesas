@@ -5,7 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -30,7 +31,9 @@ fun AppToolbar(
     color: Color = MaterialTheme.colorScheme.secondaryContainer,
     onColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
 ) {
-    Card(elevation = 1.dp, shape = RectangleShape) {
+    Card(
+        shape = RectangleShape,
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

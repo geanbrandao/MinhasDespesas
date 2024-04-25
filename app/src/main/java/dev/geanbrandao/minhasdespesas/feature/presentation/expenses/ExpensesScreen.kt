@@ -6,14 +6,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material3.Card
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,28 +23,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.geanbrandao.minhasdespesas.R
 import dev.geanbrandao.minhasdespesas.common.components.FiltersButton
 import dev.geanbrandao.minhasdespesas.common.components.spacer.SpacerTwo
-import dev.geanbrandao.minhasdespesas.core.database.db.ExpenseWithCategoriesDb
+//import dev.geanbrandao.minhasdespesas.core.database.db.ExpenseWithCategoriesDb
+//import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.components.ItemExpenseWithSwipe
 import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.components.ScreenWarningWithTitleMessage
-import dev.geanbrandao.minhasdespesas.feature.presentation.expenses.components.ItemExpenseWithSwipe
-import dev.geanbrandao.minhasdespesas.feature.presentation.navigation.utils.Screen
-import dev.geanbrandao.minhasdespesas.feature.presentation.splashscreen.util.navigateForNavBar
+import dev.geanbrandao.minhasdespesas.navigation.domain.Screen
 import dev.geanbrandao.minhasdespesas.ui.theme.AppTypography
-import dev.geanbrandao.minhasdespesas.ui.theme.CardElevation
 import dev.geanbrandao.minhasdespesas.ui.theme.PaddingDefault
+import org.koin.androidx.compose.koinViewModel
 
-
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ExpensesScreen(
     modifier: Modifier,
     navHostController: NavHostController,
-    viewModel: ExpensesViewModel = hiltViewModel(),
+    viewModel: ExpensesViewModel = koinViewModel(),
 ) {
     val stateExpenses = viewModel.stateExpenses.value
     val listFilters = remember {
@@ -80,23 +73,23 @@ fun ExpensesScreen(
                 ) { navHostController.navigate(Screen.Filters.route) }
             }
             Box(modifier = Modifier.fillMaxSize()) {
-                ListExpenses(
-                    itemExpenseList = stateExpenses.expenses,
-                    navHostController = navHostController,
-                    onSwipeToDelete = { expenseId ->
-
-                    },
-                    onSwipeToEdit = { expenseId ->
-
-                    }
-                )
-                HandleDisplayWarningMessage(
-                    modifier =  Modifier.align(alignment = Alignment.Center),
-                    listExpensesIsEmpty = stateExpenses.expenses.isEmpty(),
-                    listFiltersIsEmpty = listFilters.isEmpty()
-                )
+//                ListExpenses(
+//                    itemExpenseList = stateExpenses.expenses,
+//                    navHostController = navHostController,
+//                    onSwipeToDelete = { expenseId ->
+//
+//                    },
+//                    onSwipeToEdit = { expenseId ->
+//
+//                    }
+//                )
+//                HandleDisplayWarningMessage(
+//                    modifier =  Modifier.align(alignment = Alignment.Center),
+//                    listExpensesIsEmpty = stateExpenses.expenses.isEmpty(),
+//                    listFiltersIsEmpty = listFilters.isEmpty()
+//                )
                 FloatingActionButton(
-                    backgroundColor = MaterialTheme.colorScheme.secondary,
+//                    backgroundColor = MaterialTheme.colorScheme.secondary,
                     onClick = {
                         navHostController.navigate(Screen.Add.route)
                     },
@@ -147,26 +140,26 @@ private fun HandleDisplayWarningMessage(
 
 @Composable
 private fun ListExpenses(
-    itemExpenseList: List<ExpenseWithCategoriesDb>,
+//    itemExpenseList: List<ExpenseWithCategoriesDb>,
     navHostController: NavHostController,
     onSwipeToDelete: (id: Long) -> Unit,
     onSwipeToEdit: (id: Long) -> Unit,
 ) {
-    LazyColumn {
-        itemsIndexed(
-            items = itemExpenseList,
-            key = { _: Int, item: ExpenseWithCategoriesDb ->
-                item.hashCode()
-            }
-        ) { index, item ->
-            ItemExpenseWithSwipe(
-                expenseDb = item.expenseDb,
-                isLastItem = itemExpenseList.lastIndex == index,
-                onSwipeToDelete = onSwipeToDelete,
-                onSwipeToEdit = onSwipeToEdit,
-            )
-        }
-    }
+//    LazyColumn {
+//        itemsIndexed(
+//            items = itemExpenseList,
+//            key = { _: Int, item: ExpenseWithCategoriesDb ->
+//                item.hashCode()
+//            }
+//        ) { index, item ->
+//            ItemExpenseWithSwipe(
+//                expenseDb = item.expenseDb,
+//                isLastItem = itemExpenseList.lastIndex == index,
+//                onSwipeToDelete = onSwipeToDelete,
+//                onSwipeToEdit = onSwipeToEdit,
+//            )
+//        }
+//    }
 }
 
 @Composable
@@ -174,7 +167,7 @@ private fun ExpensesScreenHeader(
     amountExpense: MutableState<Float>,
     countExpense: MutableState<Int>
 ) {
-    Card(elevation = CardElevation) {
+    Card {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
